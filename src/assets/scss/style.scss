@@ -16416,3 +16416,15 @@ html .topbar {
   color: #fff;
   background-color: #000
 }
+
+@media only screen and (max-width: 576px) {
+  /* Further adjustments for smaller devices */
+  .mat-horizontal-content-container {
+    overflow: hidden;
+    padding: 0 !important;
+  }
+
+  .pageWrapper {
+    padding: 0px;
+  }
+}
