@@ -1,0 +1,19 @@
+.search {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+
+  .title {
+    width: 40%
+  }
+
+  .search-box {
+    width: 80%;
+
+    .mat-mdc-form-field {
+      width: 100%;
+    }
+  }
+}

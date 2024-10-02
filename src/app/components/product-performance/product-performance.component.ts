@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgApexchartsModule} from 'ng-apexcharts';
 import {TablerIconsModule} from 'angular-tabler-icons';
 import {CommonModule} from '@angular/common';
 import {MaterialModule} from "../../material.module";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
 
 interface JobData {
   jobId: number;
@@ -309,31 +312,35 @@ const ELEMENT_DATA: JobData[] = [
     TablerIconsModule,
     CommonModule,
   ],
+  styleUrls: ['./job.component.scss'],
   templateUrl: './product-performance.component.html',
 })
 export class AppProductPerformanceComponent implements OnInit {
 
   displayedColumns: string[] = [
     'image',
-    'jobTitle',      // Title or name of the job
-    'client',       // The company or client offering the job
-    'location',      // Job location
-    'datePosted',    // The date the job was posted
-    'salary',        // Salary or payment for the job
-    'jobType',       // Type of job (e.g., Full-time, Part-time, Contract)
-    'duration',      // Duration of the job (if applicable)
-    'action'         // Action column for applying or selecting the job
+    'jobTitle',
+    'location',
+    'datePosted',
+    'salary',
+    'jobType',
+    'duration',
+    'status',
+    'action'
   ];
-  dataSource = ELEMENT_DATA;
 
+  dataSource = new MatTableDataSource<JobData>(ELEMENT_DATA);
 
   months: { value: string, viewValue: string }[] = [];
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
-
-    this.generateMonths()
-  };
+    this.generateMonths();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   generateMonths() {
     const monthNames: string[] = [
@@ -344,16 +351,17 @@ export class AppProductPerformanceComponent implements OnInit {
     monthNames.forEach((monthName, index) => {
       const date: Date = new Date(2023, index);
       this.months.push({
-        value: date.toLocaleString('en', {month: 'short'}).toLowerCase(), // e.g., 'jan'
+        value: date.toLocaleString('en', {month: 'short'}).toLowerCase(),
         viewValue: `${monthName}`
       });
     });
   }
 
-  applyForJob(jobId: number): void {
-    console.log(`Applying for job with ID: ${jobId}`);
-    // You can add your logic here, e.g., open a dialog, send a request to a server, etc.
+  applyFilter({filterValue}: { filterValue: any }): void {
+    this.dataSource.filter = filterValue?.target?.value?.trim().toLowerCase();
   }
 
-
+  applyForJob(jobId: number): void {
+    console.log(`Applying for job with ID: ${jobId}`);
+  }
 }
