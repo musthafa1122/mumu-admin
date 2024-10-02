@@ -13,6 +13,7 @@ import {NgScrollbarModule} from 'ngx-scrollbar';
 import {TablerIconsModule} from 'angular-tabler-icons';
 import {HeaderComponent} from './header/header.component';
 import {MaterialModule} from "../../material.module";
+import {BrandingComponent} from "./sidebar/branding.component";
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -32,6 +33,7 @@ const BELOWMONITOR = 'screen and (max-width: 1023px)';
     NgScrollbarModule,
     TablerIconsModule,
     HeaderComponent,
+    BrandingComponent,
   ],
   templateUrl: './full.component.html',
   styleUrls: [],

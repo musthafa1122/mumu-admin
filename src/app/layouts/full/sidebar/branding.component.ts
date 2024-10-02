@@ -8,7 +8,7 @@ import {RouterModule} from '@angular/router';
   styles: [`
     .logo {
       max-width: 100%;
-      border-radius: 24px;
+      border-radius: 3px;
     }
   `],
   template: `

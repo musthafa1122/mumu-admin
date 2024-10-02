@@ -1,9 +1,20 @@
 <mat-toolbar class="topbar">
 
   <!-- Mobile Menu -->
-  <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex d-md-none justify-content-center">
-    <i-tabler name="menu-2" class="icon-20 d-flex"></i-tabler>
-  </button>
+  <!--  <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex d-md-none justify-content-center">-->
+  <!--    <i-tabler name="menu-2" class="icon-20 d-flex"></i-tabler>-->
+  <!--  </button>-->
+  <div style=" width: 353px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #093042">
+    <app-branding (click)="goHome()"></app-branding>
+
+    <div class="typewriter">
+      <h4>Services Made Simple!</h4>
+    </div>
+  </div>
 
 
   <span class="flex-1-auto"></span>
