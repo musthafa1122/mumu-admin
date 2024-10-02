@@ -3,7 +3,7 @@
   <!-- Vertical Sidebar -->
   <!-- ============================================================== -->
 
-  <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'" [opened]="!isOver"
+  <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'" [opened]="isOver"
                (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
     <div class="flex-layout">
       <app-sidebar (toggleMobileNav)="sidenav.toggle()" [showToggle]="isOver"></app-sidebar>

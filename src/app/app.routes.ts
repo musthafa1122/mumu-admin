@@ -3,6 +3,7 @@ import {BlankComponent} from './layouts/blank/blank.component';
 import {FullComponent} from './layouts/full/full.component';
 import {AppBadgeComponent} from "./pages/ui-components/badge/badge.component";
 import {HomeComponent} from "./pages/home/home.component";
+import {UserComponent} from "./components/user/user.component";
 
 export const routes: Routes = [
   {
@@ -13,6 +14,10 @@ export const routes: Routes = [
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full',
+      },
+      {
+        path: 'user',
+        component: UserComponent,
       },
       {
         path: 'dashboard',
@@ -55,4 +60,5 @@ export const routes: Routes = [
     path: 'home',
     component: HomeComponent,
   },
+
 ];
