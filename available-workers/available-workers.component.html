@@ -1,24 +1,18 @@
-<div class="search-box" style="    display: flex;
-    width: 100%;
-    align-items: flex-start;
-        padding: 6px;
-        flex-wrap: wrap;
-    justify-content: space-between;">
+<div class="search-box"
+     style="display: flex; width: 100%; align-items: flex-start; padding: 6px; flex-wrap: wrap; justify-content: space-between;">
   <div class="title">
     <mat-card-title>Find Trusted Local Helpers</mat-card-title>
     <mat-card-subtitle class="mat-body-1">Reliable drivers, bystanders, and errand runners for your everyday needs.
     </mat-card-subtitle>
   </div>
-  <mat-form-field appearance="outline" style="display: flex;
-    width: 49%;
-    align-items: center;">
+  <mat-form-field appearance="outline" style="display: flex; width: 49%; align-items: center;">
     <mat-label>Search</mat-label>
-    <input (keyup)="applyFilter({event : $event})" matInput placeholder="Search jobs...">
+    <input (keyup)="applyFilter($event)" matInput placeholder="Search workers...">
   </mat-form-field>
 </div>
 
 <div class="row">
-  <div *ngFor="let userCard of userCards" class="col-sm-6 col-lg-4">
+  <div *ngFor="let userCard of filteredCards" class="col-sm-6 col-lg-4">
     <mat-card style="border: solid 1px #4cda9e6b;
     border-radius: 3px;box-shadow: none;
 }

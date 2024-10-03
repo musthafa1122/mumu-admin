@@ -494,7 +494,17 @@ export class AvailableWorkersComponent {
     },
   ];
 
-  applyFilter({event}: { event: any }) {
-    console.log(event);
+
+  public filteredCards = this.userCards; // Array for filtered results
+
+  // Function to filter user cards based on the search term
+  applyFilter(event: KeyboardEvent) {
+    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
+
+    this.filteredCards = this.userCards.filter(userCard =>
+      userCard.name.toLowerCase().includes(searchTerm) ||
+      userCard.profession.toLowerCase().includes(searchTerm) ||
+      userCard.address.toLowerCase().includes(searchTerm)
+    );
   }
 }
