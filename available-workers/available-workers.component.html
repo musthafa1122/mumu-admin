@@ -1,0 +1,46 @@
+<div class="search-box" style="    display: flex;
+    width: 100%;
+    align-items: flex-start;
+        padding: 6px;
+        flex-wrap: wrap;
+    justify-content: space-between;">
+  <div class="title">
+    <mat-card-title>Find Trusted Local Helpers</mat-card-title>
+    <mat-card-subtitle class="mat-body-1">Reliable drivers, bystanders, and errand runners for your everyday needs.
+    </mat-card-subtitle>
+  </div>
+  <mat-form-field appearance="outline" style="display: flex;
+    width: 49%;
+    align-items: center;">
+    <mat-label>Search</mat-label>
+    <input (keyup)="applyFilter({event : $event})" matInput placeholder="Search jobs...">
+  </mat-form-field>
+</div>
+
+<div class="row">
+  <div *ngFor="let userCard of userCards" class="col-sm-6 col-lg-4">
+    <mat-card style="border: solid 1px #4cda9e6b;
+    border-radius: 3px;box-shadow: none;
+}
+">
+      <mat-card-content class="mat-mdc-card-content text-center p-24">
+        <img [src]="userCard.imgSrc" class="rounded-circle border p-5" width="100"/>
+        <h4 class="mat-mdc-card-title card-title m-t-16 m-b-0">{{ userCard.name }}</h4>
+        <span class="f-s-12">{{ userCard.profession }}</span>
+        <div class="m-t-20">
+          <button class="mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
+                  color="primary"
+          >Contact
+          </button>
+        </div>
+        <div class="m-t-20">
+          <span class="f-s-14">
+            {{ userCard.address }} <br/><br/>
+            Mo: {{ userCard.phone }}
+          </span>
+        </div>
+      </mat-card-content>
+      <mat-divider aria-orientation="horizontal"></mat-divider>
+    </mat-card>
+  </div>
+</div>
