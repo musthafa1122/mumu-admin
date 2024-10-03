@@ -24,6 +24,12 @@ import {UserComponent} from "../../components/user/user.component";
   ],
   templateUrl: './starter.component.html',
   encapsulation: ViewEncapsulation.None,
+  styles: [`.home-service {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+  }`]
 })
 export class StarterComponent {
 }
