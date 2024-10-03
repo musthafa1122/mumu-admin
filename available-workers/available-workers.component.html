@@ -1,10 +1,25 @@
-<div class="search-box"
-     style="display: flex; width: 100%; align-items: flex-start; padding: 6px; flex-wrap: wrap; justify-content: space-between;">
-  <div class="title">
-    <mat-card-title>Find Trusted Local Helpers</mat-card-title>
-    <mat-card-subtitle class="mat-body-1">Reliable drivers, bystanders, and errand runners for your everyday needs.
-    </mat-card-subtitle>
+<div class="bg-light-primary rounded p-y-30 p-x-24 m-b-30 overflow-hidden ng-star-inserted">
+  <div class="row">
+    <div class="col-sm-8"><h4 class="page-title m-0 f-s-20 f-w-600 m-b-16"> Find Trusted Local Helpers </h4>
+      <div class="d-flex align-items-center overflow-hidden">
+        <span class="breadcrumb-item active ng-star-inserted">Reliable drivers, bystanders, and errand runners for your
+          everyday needs.
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4 text-right position-relative">
+      <div class="breadcrumb-icon"><img alt="breadcrumb" src="../../../assets/images/svgs/bread2.png" width="165px">
+      </div>
+    </div>
   </div>
+</div><!---->
+<div class="search-box"
+     style="display: flex; width: 100%; align-items: flex-end; padding: 6px; flex-wrap: wrap; justify-content: flex-end;">
+  <!--  <div class="title">-->
+  <!--    <mat-card-title>Find Trusted Local Helpers</mat-card-title>-->
+  <!--    <mat-card-subtitle class="mat-body-1">Reliable drivers, bystanders, and errand runners for your everyday needs.-->
+  <!--    </mat-card-subtitle>-->
+  <!--  </div>-->
   <mat-form-field appearance="outline" style="display: flex; width: 49%; align-items: center;">
     <mat-label>Search</mat-label>
     <input (keyup)="applyFilter($event)" matInput placeholder="Search workers...">
