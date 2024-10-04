@@ -72,18 +72,10 @@ export class DriverServiceFormComponent implements OnInit {
       vehicleType: ['', Validators.required],
       duration: ['', Validators.required],
       pickupLocation: this.fb.group({
-        latitude: [0],
-        longitude: [0],
-        placeName: ['', Validators.required],
-        locationUrl: [''],
-        imageUrl: ['']
+        place: ['', Validators.required],
       }),
       dropoffLocation: this.fb.group({
-        latitude: [0],
-        longitude: [0],
-        placeName: ['', Validators.required],
-        locationUrl: [''],
-        imageUrl: ['']
+        place: ['', Validators.required],
       }),
       additionalServices: [[]]
     });
