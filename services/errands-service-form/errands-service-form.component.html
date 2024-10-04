@@ -1,0 +1,88 @@
+<div class="bg-light-thirtiary rounded p-y-30 p-x-24 m-b-30 overflow-hidden ng-star-inserted">
+  <div class="row">
+    <div class="col-sm-8">
+      <h4 class="page-title m-0 f-s-20 f-w-600 m-b-16">Looking for an Errand Runner?</h4>
+      <div class="d-flex align-items-center overflow-hidden">
+        <span class="breadcrumb-item active ng-star-inserted">
+          Quick and reliable errand services for your daily needs, from shopping to bill payments.
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4 text-right position-relative">
+      <div class="breadcrumb-icon">
+        <img alt="breadcrumb" src="../../../assets/images/svgs/service-details.png"
+             style="margin-top: -8px;" width="320px">
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Errand Service Request</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    <form [formGroup]="errandForm">
+      <div class="row">
+        <!-- Service Type -->
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Service Type</mat-label>
+            <mat-select formControlName="serviceType">
+              <mat-option *ngFor="let option of errandServiceTypes" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Priority Level -->
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Priority Level</mat-label>
+            <mat-select formControlName="priorityLevel">
+              <mat-option *ngFor="let option of priorityLevels" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Duration -->
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Duration</mat-label>
+            <mat-select formControlName="duration">
+              <mat-option *ngFor="let option of durations" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Additional Notes -->
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Additional Notes</mat-label>
+            <mat-select formControlName="additionalNotes" multiple>
+              <mat-option *ngFor="let option of additionalNotes" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Location -->
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Pickup/Service Location</mat-label>
+            <input formControlName="location" matInput>
+          </mat-form-field>
+        </div>
+      </div>
+      <mat-card-footer style="display: flex; justify-content: flex-end;">
+        <button (click)="submitErrandForm()" color="primary" mat-raised-button>Submit</button>
+      </mat-card-footer>
+    </form>
+  </mat-card-content>
+</mat-card>

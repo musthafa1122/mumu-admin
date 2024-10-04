@@ -1,17 +1,29 @@
-<div class="bg-light-primary rounded p-y-30 p-x-24 m-b-30 overflow-hidden ng-star-inserted">
-  <div class="row">
-    <div class="col-sm-8"><h4 class="page-title m-0 f-s-20 f-w-600 m-b-16"> Looking for a Driver? </h4>
-      <div class="d-flex align-items-center overflow-hidden">
-        <span class="breadcrumb-item active ng-star-inserted">Reliable drivers, bystanders, and errand runners for your
-          everyday needs.
-        </span>
+<div class="service-forms">
+  <div class="row" style="    display: flex;
+    justify-content: flex-end;">
+    <div class="col-lg-6" style="display: flex;
+    justify-content: flex-end;    align-items: baseline;
+    gap: 17px;">
+      <div style="font-size: 15px;
+    color: #093042;">
+        <span>Looking for another Service?</span>
       </div>
-    </div>
-    <div class="col-sm-4 text-right position-relative">
-      <div class="breadcrumb-icon"><img alt="breadcrumb" src="../../../assets/images/svgs/service-details.png"
-                                        style="margin-top: -8px;" width="111%">
-      </div>
+      <mat-form-field appearance="outline">
+        <mat-select [(value)]="selectedServiceType">
+          <mat-option [value]="parentServiceType.Drivers">Drivers</mat-option>
+          <mat-option [value]="parentServiceType.Bystanders">Bystanders</mat-option>
+          <mat-option [value]="parentServiceType.Errands">Errands</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
+  <!-- Driver Service Form -->
+  <app-driver-service-form *ngIf="selectedServiceType === parentServiceType.Drivers"></app-driver-service-form>
+
+  <!-- Bystander Service Form -->
+  <app-bystander-service-form
+    *ngIf="selectedServiceType === parentServiceType.Bystanders"></app-bystander-service-form>
+
+  <!-- Errands Service Form -->
+  <app-errands-service-form *ngIf="selectedServiceType === parentServiceType.Errands"></app-errands-service-form>
 </div>
-<app-user></app-user>
