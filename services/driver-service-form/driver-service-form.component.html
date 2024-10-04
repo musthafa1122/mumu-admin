@@ -58,12 +58,16 @@
             <mat-label>Pickup Location</mat-label>
             <input formControlName="pickupLocation" matInput>
           </mat-form-field>
+          <app-google-map-search-box
+            [label]="'Pickup Location'"
+            formControlName="pickupLocation">
+          </app-google-map-search-box>
         </div>
         <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Dropoff Location</mat-label>
-            <input formControlName="dropoffLocation" matInput>
-          </mat-form-field>
+          <app-google-map-search-box
+            [label]="'Dropoff Location'"
+            formControlName="dropoffLocation">
+          </app-google-map-search-box>
         </div>
         <div class="col-lg-6">
           <mat-form-field appearance="outline" class="w-100" color="primary">
@@ -78,7 +82,8 @@
       </div>
       <mat-card-footer style="display: flex;
     justify-content: flex-end;">
-        <button (click)="submitDriverForm()" color="primary" mat-raised-button>Submit</button>
+        <button (click)="submitDriverForm()" [disabled]="driverForm.invalid" color="primary" mat-raised-button>Submit
+        </button>
       </mat-card-footer>
     </form>
   </mat-card-content>

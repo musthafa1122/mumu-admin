@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {MaterialModule} from "../../../material.module";
 import {CommonModule} from "@angular/common";
 import {Router} from "@angular/router";
+import {GoogleMapSearchBoxComponent} from "../../../components/google-map-search-box/google-map-search-box.component";
 
 @Component({
   selector: 'app-driver-service-form',
@@ -10,7 +11,8 @@ import {Router} from "@angular/router";
   imports: [
     MaterialModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    GoogleMapSearchBoxComponent
   ],
   templateUrl: './driver-service-form.component.html',
   styleUrl: './driver-service-form.component.scss'
@@ -79,7 +81,7 @@ export class DriverServiceFormComponent implements OnInit {
     if (this.driverForm.valid) {
       const driverData = this.driverForm.value;
       console.log('Driver Service Request:', driverData);
-      this.router.navigate(['/history']);
+      // this.router.navigate(['/history']);
     }
   }
 }

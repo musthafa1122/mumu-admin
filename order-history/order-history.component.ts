@@ -6,6 +6,7 @@ import {MaterialModule} from "../../material.module";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortModule} from "@angular/material/sort";
+import {Appearance, MatGoogleMapsAutocompleteModule} from "@angular-material-extensions/google-maps-autocomplete";
 
 interface ServiceOrderData {
   orderId: number;
@@ -218,12 +219,15 @@ const ELEMENT_DATA: ServiceOrderData[] = [
     MaterialModule,
     TablerIconsModule,
     CommonModule,
-    MatSortModule
+    MatSortModule,
+    MatGoogleMapsAutocompleteModule
   ],
   templateUrl: './order-history.component.html',
   styleUrl: './order-history.component.scss'
 })
 export class OrderHistoryComponent implements AfterViewInit {
+  public appearance = Appearance;
+
   displayedColumns: string[] = [
     'image',
     'serviceType',
@@ -240,6 +244,7 @@ export class OrderHistoryComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
