@@ -74,14 +74,14 @@ export class DriverServiceFormComponent implements OnInit {
       pickupLocation: this.fb.group({
         latitude: [0],
         longitude: [0],
-        placeName: [''],
+        placeName: ['', Validators.required],
         locationUrl: [''],
         imageUrl: ['']
       }),
-      dropoffLocation: this.fb.group({ // Make sure this matches the formControlName
+      dropoffLocation: this.fb.group({
         latitude: [0],
         longitude: [0],
-        placeName: [''],
+        placeName: ['', Validators.required],
         locationUrl: [''],
         imageUrl: ['']
       }),
@@ -93,7 +93,7 @@ export class DriverServiceFormComponent implements OnInit {
     if (this.driverForm.valid) {
       const driverData = this.driverForm.value;
       console.log('Driver Service Request:', driverData);
-      this.router.navigate(['/history']);
+      // this.router.navigate(['/history']);
     }
   }
 }

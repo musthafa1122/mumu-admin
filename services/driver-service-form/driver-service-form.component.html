@@ -53,16 +53,17 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-lg-6" formGroupName="pickupLocation">
+        <div class="col-lg-6">
           <app-google-map-search-box
             [label]="'Pickup Location'"
-            formControlName="placeName">
+            formControlName="pickupLocation">
           </app-google-map-search-box>
         </div>
-        <div class="col-lg-6" formGroupName="dropoffLocation">
+
+        <div class="col-lg-6">
           <app-google-map-search-box
             [label]="'Drop Off Location'"
-            formControlName="placeName"> <!-- Ensure this matches exactly -->
+            formControlName="dropoffLocation">
           </app-google-map-search-box>
         </div>
         <div class="col-lg-6">
