@@ -85,7 +85,7 @@ export class DriverServiceFormComponent implements OnInit {
     if (this.driverForm.valid) {
       const driverData = this.driverForm.value;
       console.log('Driver Service Request:', driverData);
-      // this.router.navigate(['/history']);
+      this.router.navigate(['/history']);
     }
   }
 }
