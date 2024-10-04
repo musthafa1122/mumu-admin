@@ -53,20 +53,16 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Pickup Location</mat-label>
-            <input formControlName="pickupLocation" matInput>
-          </mat-form-field>
+        <div class="col-lg-6" formGroupName="pickupLocation">
           <app-google-map-search-box
             [label]="'Pickup Location'"
-            formControlName="pickupLocation">
+            formControlName="placeName">
           </app-google-map-search-box>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" formGroupName="dropoffLocation">
           <app-google-map-search-box
-            [label]="'Dropoff Location'"
-            formControlName="dropoffLocation">
+            [label]="'Drop Off Location'"
+            formControlName="placeName"> <!-- Ensure this matches exactly -->
           </app-google-map-search-box>
         </div>
         <div class="col-lg-6">
