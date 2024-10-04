@@ -27,3 +27,17 @@
   <!-- Errands Service Form -->
   <app-errands-service-form *ngIf="selectedServiceType === parentServiceType.Errands"></app-errands-service-form>
 </div>
+
+
+<p *ngIf="loading">Getting your location...</p>
+<div class="google_map_container">
+  <google-map [center]="mapCenter" [options]="mapOptions" [zoom]="mapZoom" width="100%">
+    <map-marker
+      #marker="mapMarker"
+      (mapClick)="openInfoWindow(marker)"
+      [options]="markerOptions"
+      [position]="mapCenter">
+    </map-marker>
+    <map-info-window>{{ markerInfoContent }}</map-info-window>
+  </google-map>
+</div>
