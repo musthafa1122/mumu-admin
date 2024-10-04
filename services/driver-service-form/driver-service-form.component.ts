@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MaterialModule} from "../../../material.module";
 import {CommonModule} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-driver-service-form',
@@ -56,7 +57,7 @@ export class DriverServiceFormComponent implements OnInit {
     {"label": "Airport Transfer", "value": "airportTransfer"}
   ]
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
   }
 
   ngOnInit() {
@@ -78,7 +79,7 @@ export class DriverServiceFormComponent implements OnInit {
     if (this.driverForm.valid) {
       const driverData = this.driverForm.value;
       console.log('Driver Service Request:', driverData);
-      // Handle driver service request submission
+      this.router.navigate(['/history']);
     }
   }
 }
