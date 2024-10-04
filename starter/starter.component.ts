@@ -29,7 +29,7 @@ import {UserComponent} from "../../components/user/user.component";
     flex-direction: column;
     gap: 14px;
     align-items: flex-start;
-    margin-top: 4rem;
+   
   }`]
 })
 export class StarterComponent {
