@@ -13,6 +13,8 @@
     </div>
   </div>
 </div><!---->
+
+
 <div class="search-box"
      style="display: flex; width: 100%; align-items: flex-end; padding: 6px; flex-wrap: wrap; justify-content: flex-end;">
   <!--  <div class="title">-->
@@ -20,14 +22,54 @@
   <!--    <mat-card-subtitle class="mat-body-1">Reliable drivers, bystanders, and errand runners for your everyday needs.-->
   <!--    </mat-card-subtitle>-->
   <!--  </div>-->
-  <mat-form-field appearance="outline" style="display: flex; width: 49%; align-items: center;">
-    <mat-label>Search</mat-label>
-    <input (keyup)="applyFilter($event)" matInput placeholder="Search workers...">
-  </mat-form-field>
+  <div style="display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;">
+
+    <div class="row" style="width: 60%;
+    margin: 0;
+    padding: 0;">
+      <div class="col-sm-6 col-lg-3">
+        <mat-card class="mat-mdc-card mdc-card shadow-none">
+          <div class="p-30 bg-light-primary text-center cursor-pointer rounded">
+            <h3
+              class="f-s-24 text-primary f-w-600 m-0 m-b-4">10</h3><h6 class="text-primary f-w-600 m-0 f-s-16">Total
+          </h6></div>
+        </mat-card>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <mat-card class="mat-mdc-card mdc-card shadow-none">
+          <div class="p-30 bg-light-warning text-center cursor-pointer rounded"><h3
+            class="f-s-24 text-warning m-0 m-b-4">
+            3</h3><h6 class="text-warning f-w-600 m-0 f-s-16">Drivers</h6></div>
+        </mat-card>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <mat-card class="mat-mdc-card mdc-card shadow-none">
+          <div class="p-30 bg-light-success text-center cursor-pointer rounded"><h3
+            class="f-s-24 text-success m-0 m-b-4">
+            3</h3><h6 class="text-success f-w-600 m-0 f-s-16">Bystanders</h6></div>
+        </mat-card>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <mat-card class="mat-mdc-card mdc-card shadow-none">
+          <div class="p-30 bg-light-error text-center cursor-pointer rounded"><h3 class="f-s-24 text-error m-0 m-b-4">
+            4</h3><h6 class="text-error f-w-600 m-0 f-s-16">Errands</h6></div>
+        </mat-card>
+      </div>
+    </div>
+    <mat-form-field appearance="outline" style="display: flex;  height: fit-content; width: 30%;">
+      <mat-label>Search</mat-label>
+      <input (keyup)="applyFilter($event)" matInput placeholder="Search workers...">
+    </mat-form-field>
+  </div>
+
 </div>
 
 <div class="row">
-  <div *ngFor="let userCard of filteredCards" class="col-sm-6 col-lg-4">
+  <div *ngFor="let userCard of filteredCards" class="col-sm-6 col-lg-3">
     <mat-card style="border: solid 1px #4cda9e6b;
     border-radius: 3px;box-shadow: none;
 }
@@ -37,14 +79,11 @@
         <h4 class="mat-mdc-card-title card-title m-t-16 m-b-0">{{ userCard.name }}</h4>
         <span class="f-s-12">{{ userCard.profession }}</span>
         <div class="m-t-20">
-          <button class="mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
-                  color="primary"
-          >Contact
+          <button color="primary" mat-stroked-button>Contact
           </button>
         </div>
         <div class="m-t-20">
           <span class="f-s-14">
-            {{ userCard.address }} <br/><br/>
             Mo: {{ userCard.phone }}
           </span>
         </div>

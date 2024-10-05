@@ -33,7 +33,7 @@ export class AppSideLoginComponent {
   submit() {
 
     this.authService.loginWithPopup().subscribe(data => {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/service-home']);
     })
     // this.router.navigate(['/']);
   }

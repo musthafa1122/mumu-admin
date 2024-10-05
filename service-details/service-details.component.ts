@@ -118,7 +118,7 @@ export class ServiceDetailsComponent implements OnInit {
         this.selectedServiceType = serviceTypeParam as ParentServiceType;
       } else {
         // Redirect or handle invalid serviceType (optional)
-        this.router.navigate(['/404']); // For example, redirect to a 404 page
+        // this.router.navigate(['/404']); // For example, redirect to a 404 page
       }
     });
   }
