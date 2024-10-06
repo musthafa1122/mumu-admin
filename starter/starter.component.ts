@@ -7,6 +7,7 @@ import {AppMonthlyEarningsComponent} from "../../components/monthly-earnings/mon
 import {AppProductPerformanceComponent} from "../../components/product-performance/product-performance.component";
 import {AppBlogCardsComponent} from "../../components/blog-card/blog-card.component";
 import {UserComponent} from "../../components/user/user.component";
+import {TablerIconsModule} from "angular-tabler-icons";
 
 
 @Component({
@@ -20,7 +21,8 @@ import {UserComponent} from "../../components/user/user.component";
     AppRecentTransactionsComponent,
     AppProductPerformanceComponent,
     AppBlogCardsComponent,
-    UserComponent
+    UserComponent,
+    TablerIconsModule
   ],
   templateUrl: './starter.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -29,7 +31,7 @@ import {UserComponent} from "../../components/user/user.component";
     flex-direction: column;
     gap: 14px;
     align-items: flex-start;
-   
+
   }`]
 })
 export class StarterComponent {
