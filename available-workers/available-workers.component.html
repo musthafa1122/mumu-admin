@@ -32,31 +32,32 @@
     margin: 0;
     padding: 0;">
       <div class="col-sm-6 col-lg-3">
-        <mat-card class="mat-mdc-card mdc-card shadow-none">
+        <mat-card (click)="clickFilter(null)" class="mat-mdc-card mdc-card shadow-none">
           <div class="p-30 bg-light-primary text-center cursor-pointer rounded">
             <h3
-              class="f-s-24 text-primary f-w-600 m-0 m-b-4">10</h3><h6 class="text-primary f-w-600 m-0 f-s-16">Total
+              class="f-s-24 text-primary f-w-600 m-0 m-b-4">{{ userCards?.length }}</h3><h6
+            class="text-primary f-w-600 m-0 f-s-16">Total
           </h6></div>
         </mat-card>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <mat-card class="mat-mdc-card mdc-card shadow-none">
+        <mat-card (click)="clickFilter('driver')" class="mat-mdc-card mdc-card shadow-none">
           <div class="p-30 bg-light-warning text-center cursor-pointer rounded"><h3
             class="f-s-24 text-warning m-0 m-b-4">
-            3</h3><h6 class="text-warning f-w-600 m-0 f-s-16">Drivers</h6></div>
+            {{ driversCount }}</h3><h6 class="text-warning f-w-600 m-0 f-s-16">Drivers</h6></div>
         </mat-card>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <mat-card class="mat-mdc-card mdc-card shadow-none">
+        <mat-card (click)="clickFilter('bystander')" class="mat-mdc-card mdc-card shadow-none">
           <div class="p-30 bg-light-success text-center cursor-pointer rounded"><h3
             class="f-s-24 text-success m-0 m-b-4">
-            3</h3><h6 class="text-success f-w-600 m-0 f-s-16">Bystanders</h6></div>
+            {{ bystandersCount }}</h3><h6 class="text-success f-w-600 m-0 f-s-16">Bystanders</h6></div>
         </mat-card>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <mat-card class="mat-mdc-card mdc-card shadow-none">
+        <mat-card (click)="clickFilter('errands')" class="mat-mdc-card mdc-card shadow-none">
           <div class="p-30 bg-light-error text-center cursor-pointer rounded"><h3 class="f-s-24 text-error m-0 m-b-4">
-            4</h3><h6 class="text-error f-w-600 m-0 f-s-16">Errands</h6></div>
+            {{ errandsCount }}</h3><h6 class="text-error f-w-600 m-0 f-s-16">Errands</h6></div>
         </mat-card>
       </div>
     </div>
