@@ -1,221 +1,53 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {NgApexchartsModule} from 'ng-apexcharts';
-import {TablerIconsModule} from 'angular-tabler-icons';
-import {CommonModule} from '@angular/common';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortModule} from '@angular/material/sort';
+import {Apollo, gql} from 'apollo-angular';
+import {Appearance, MatGoogleMapsAutocompleteModule} from '@angular-material-extensions/google-maps-autocomplete';
 import {MaterialModule} from "../../material.module";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort, MatSortModule} from "@angular/material/sort";
-import {Appearance, MatGoogleMapsAutocompleteModule} from "@angular-material-extensions/google-maps-autocomplete";
+import {CommonModule} from '@angular/common';
+import {TablerIconsModule} from 'angular-tabler-icons';
 
+// GraphQL Query
+const GET_SERVICE_ORDERS = gql`
+  query Query {
+    serviceOrders {
+      dateRequested
+      duration
+      email
+      imageUrl
+      location
+      orderId
+      orderType
+      salary
+      serviceType
+      specialNotes
+      status
+      title
+    }
+  }
+`;
+
+// Service Order Data Interface
 interface ServiceOrderData {
   orderId: number;
   serviceType: string;
-  title: string; // Service name or title (e.g., Plumber, Hospital Bystander)
+  title: string;
   location: string;
   dateRequested: string;
-  salary: number; // For bystanders or drivers (can be 0 for errands if unpaid)
-  orderType: string; // e.g., Contract, Part-time, etc.
-  duration: string; // e.g., 1 Day, 2 Weeks, etc.
-  status: string; // e.g., Available, Completed, In Progress
-  imageUrl?: string; // Optional service image
-  specialNotes?: string; // Optional additional info for each service
+  salary: number;
+  orderType: string;
+  duration: string;
+  status: string;
+  imageUrl?: string;
+  specialNotes?: string;
+  email: string;
 }
-
-const ELEMENT_DATA: ServiceOrderData[] = [
-  {
-    orderId: 1,
-    serviceType: 'Driver',
-    title: 'Driver - SafeDrive Rentals',
-    location: 'Bangalore, India',
-    dateRequested: '2024-09-30',
-    salary: 1200,
-    orderType: 'Part-time',
-    duration: '1 Week',
-    status: 'Available',
-    imageUrl: 'assets/images/products/s4.jpg',
-  },
-  {
-    orderId: 2,
-    serviceType: 'Bystander',
-    title: 'Hospital Bystander - Elderly Care',
-    location: 'New Delhi, India',
-    dateRequested: '2024-10-01',
-    salary: 1500,
-    orderType: 'Contract',
-    duration: '2 Days',
-    status: 'Completed',
-    imageUrl: 'assets/images/products/s5.jpg',
-  },
-  {
-    orderId: 3,
-    serviceType: 'Errands',
-    title: 'Grocery Shopping',
-    location: 'Mumbai, India',
-    dateRequested: '2024-09-28',
-    salary: 0, // Unpaid for errands
-    orderType: 'One-time',
-    duration: '1 Day',
-    status: 'In Progress',
-    imageUrl: 'assets/images/products/s6.jpg',
-    specialNotes: 'Handle with care - Perishable items',
-  },
-  {
-    orderId: 1,
-    serviceType: 'Driver',
-    title: 'Driver - SafeDrive Rentals',
-    location: 'Bangalore, India',
-    dateRequested: '2024-09-30',
-    salary: 1200,
-    orderType: 'Part-time',
-    duration: '1 Week',
-    status: 'Available',
-    imageUrl: 'assets/images/products/s4.jpg',
-  },
-  {
-    orderId: 2,
-    serviceType: 'Bystander',
-    title: 'Hospital Bystander - Elderly Care',
-    location: 'New Delhi, India',
-    dateRequested: '2024-10-01',
-    salary: 1500,
-    orderType: 'Contract',
-    duration: '2 Days',
-    status: 'Completed',
-    imageUrl: 'assets/images/products/s5.jpg',
-  },
-  {
-    orderId: 3,
-    serviceType: 'Errands',
-    title: 'Grocery Shopping',
-    location: 'Mumbai, India',
-    dateRequested: '2024-09-28',
-    salary: 0, // Unpaid for errands
-    orderType: 'One-time',
-    duration: '1 Day',
-    status: 'In Progress',
-    imageUrl: 'assets/images/products/s6.jpg',
-    specialNotes: 'Handle with care - Perishable items',
-  },
-  {
-    orderId: 1,
-    serviceType: 'Driver',
-    title: 'Driver - SafeDrive Rentals',
-    location: 'Bangalore, India',
-    dateRequested: '2024-09-30',
-    salary: 1200,
-    orderType: 'Part-time',
-    duration: '1 Week',
-    status: 'Available',
-    imageUrl: 'assets/images/products/s4.jpg',
-  },
-  {
-    orderId: 2,
-    serviceType: 'Bystander',
-    title: 'Hospital Bystander - Elderly Care',
-    location: 'New Delhi, India',
-    dateRequested: '2024-10-01',
-    salary: 1500,
-    orderType: 'Contract',
-    duration: '2 Days',
-    status: 'Completed',
-    imageUrl: 'assets/images/products/s5.jpg',
-  },
-  {
-    orderId: 3,
-    serviceType: 'Errands',
-    title: 'Grocery Shopping',
-    location: 'Mumbai, India',
-    dateRequested: '2024-09-28',
-    salary: 0, // Unpaid for errands
-    orderType: 'One-time',
-    duration: '1 Day',
-    status: 'In Progress',
-    imageUrl: 'assets/images/products/s6.jpg',
-    specialNotes: 'Handle with care - Perishable items',
-  },
-  {
-    orderId: 1,
-    serviceType: 'Driver',
-    title: 'Driver - SafeDrive Rentals',
-    location: 'Bangalore, India',
-    dateRequested: '2024-09-30',
-    salary: 1200,
-    orderType: 'Part-time',
-    duration: '1 Week',
-    status: 'Available',
-    imageUrl: 'assets/images/products/s4.jpg',
-  },
-  {
-    orderId: 2,
-    serviceType: 'Bystander',
-    title: 'Hospital Bystander - Elderly Care',
-    location: 'New Delhi, India',
-    dateRequested: '2024-10-01',
-    salary: 1500,
-    orderType: 'Contract',
-    duration: '2 Days',
-    status: 'Completed',
-    imageUrl: 'assets/images/products/s5.jpg',
-  },
-  {
-    orderId: 3,
-    serviceType: 'Errands',
-    title: 'Grocery Shopping',
-    location: 'Mumbai, India',
-    dateRequested: '2024-09-28',
-    salary: 0, // Unpaid for errands
-    orderType: 'One-time',
-    duration: '1 Day',
-    status: 'In Progress',
-    imageUrl: 'assets/images/products/s6.jpg',
-    specialNotes: 'Handle with care - Perishable items',
-  }, {
-    orderId: 1,
-    serviceType: 'Driver',
-    title: 'Driver - SafeDrive Rentals',
-    location: 'Bangalore, India',
-    dateRequested: '2024-09-30',
-    salary: 1200,
-    orderType: 'Part-time',
-    duration: '1 Week',
-    status: 'Available',
-    imageUrl: 'assets/images/products/s4.jpg',
-  },
-  {
-    orderId: 2,
-    serviceType: 'Bystander',
-    title: 'Hospital Bystander - Elderly Care',
-    location: 'New Delhi, India',
-    dateRequested: '2024-10-01',
-    salary: 1500,
-    orderType: 'Contract',
-    duration: '2 Days',
-    status: 'Completed',
-    imageUrl: 'assets/images/products/s5.jpg',
-  },
-  {
-    orderId: 3,
-    serviceType: 'Errands',
-    title: 'Grocery Shopping',
-    location: 'Mumbai, India',
-    dateRequested: '2024-09-28',
-    salary: 0, // Unpaid for errands
-    orderType: 'One-time',
-    duration: '1 Day',
-    status: 'In Progress',
-    imageUrl: 'assets/images/products/s6.jpg',
-    specialNotes: 'Handle with care - Perishable items',
-  },
-
-  // More data...
-];
 
 @Component({
   selector: 'app-order-history',
   standalone: true,
   imports: [
-    NgApexchartsModule,
     MaterialModule,
     TablerIconsModule,
     CommonModule,
@@ -223,9 +55,9 @@ const ELEMENT_DATA: ServiceOrderData[] = [
     MatGoogleMapsAutocompleteModule
   ],
   templateUrl: './order-history.component.html',
-  styleUrl: './order-history.component.scss'
+  styleUrls: ['./order-history.component.scss'],
 })
-export class OrderHistoryComponent implements AfterViewInit {
+export class OrderHistoryComponent implements AfterViewInit, OnInit {
   public appearance = Appearance;
 
   displayedColumns: string[] = [
@@ -237,23 +69,42 @@ export class OrderHistoryComponent implements AfterViewInit {
     'orderType',
     'duration',
     'status',
-    'action'
+    'action',
   ];
-
-  dataSource = new MatTableDataSource<ServiceOrderData>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  serviceOrders: ServiceOrderData[] = [];
+  dataSource!: MatTableDataSource<ServiceOrderData>;
 
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+  constructor(private apollo: Apollo) {
   }
 
+  ngOnInit(): void {
+    // Fetch service orders via Apollo GraphQL query
+    this.apollo
+      .watchQuery<{ serviceOrders: ServiceOrderData[] }>({
+        query: GET_SERVICE_ORDERS,
+      })
+      .valueChanges.subscribe((result) => {
+      this.serviceOrders = result?.data?.serviceOrders || [];
+      this.dataSource = new MatTableDataSource(this.serviceOrders);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
+  }
 
-  applyFilter(event: any): void {
-    this.dataSource.filter = event?.target?.value?.trim().toLowerCase();
+  ngAfterViewInit(): void {
+    // Ensure that paginator and sort are assigned after view is initialized
+    if (this.dataSource) {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   applyForJob(jobId: number): void {
