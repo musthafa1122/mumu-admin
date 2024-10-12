@@ -1,27 +1,28 @@
 <!-- Blog Card -->
-<mat-card class="cardWithShadow service-details">
-  <!-- Image -->
-  <div class="header-container">
-    <div class="row">
-      <div class="col-sm-8">
-        <h2 class="page-title">Service Order Details</h2>
-        <p>Order No: {{ serviceOrders?.id }}</p>
-        <span *ngIf="serviceOrders?.status === 'Available'"
-              class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12">Available</span>
-        <span *ngIf="serviceOrders?.status === 'In Progress'"
-              class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">In Progress</span>
-        <span *ngIf="serviceOrders?.status === 'Completed'"
-              class="bg-light-primary text-primary rounded f-w-600 p-6 p-y-4 f-s-12">Completed</span>
+<div class="header-container">
+  <div class="row">
+    <div class="col-sm-8">
+      <h2 class="page-title">Service Order Details</h2>
+      <p>Order No: {{ serviceOrders?.id }}</p>
+      <span *ngIf="serviceOrders?.status === 'Available'"
+            class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12">Available</span>
+      <span *ngIf="serviceOrders?.status === 'In Progress'"
+            class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">In Progress</span>
+      <span *ngIf="serviceOrders?.status === 'Completed'"
+            class="bg-light-primary text-primary rounded f-w-600 p-6 p-y-4 f-s-12">Completed</span>
+    </div>
+    <div class="col-sm-4 text-right position-relative">
+      <div class="breadcrumb-icon">
+        <img alt="breadcrumb" class="breadcrumb-img" src="../../../assets/images/svgs/service-details.png">
       </div>
-      <div class="col-sm-4 text-right position-relative">
-        <div class="breadcrumb-icon">
-          <img alt="breadcrumb" class="breadcrumb-img" src="../../../assets/images/svgs/service-details.png">
-        </div>
 
 
-      </div>
     </div>
   </div>
+</div>
+<mat-card class="cardWithShadow service-details">
+  <!-- Image -->
+
 
   <!-- Blog Body -->
   <mat-card-content class="service-details-content" style="padding: 30px">
@@ -85,10 +86,30 @@
           </div>
         </div>
       </div>
-      <div class="assigned-person-box">
-        <img alt="Assigned Person" class="assigned-person-img" src="/assets/images/profile/user-1.jpg">
-        <p class="assigned-person-label">Assigned person will appear here</p>
+
+
+      <div class="col-sm-6 col-lg-4">
+        <mat-card style="border: solid 1px  rgba(146,236,132,0.4);
+    border-radius: 3px;box-shadow: none;
+}
+">
+          <mat-card-content class="mat-mdc-card-content text-center p-24">
+            <img class="rounded-circle border p-5" src="/assets/images/profile/user-1.jpg" width="100"/>
+            <h4 class="mat-mdc-card-title card-title m-t-16 m-b-0">Assigned User</h4>
+            <span class="f-s-12">Profession</span>
+            <div class="m-t-20">
+              <button color="primary" mat-stroked-button>Contact
+              </button>
+            </div>
+            <div class="m-t-20">
+          <span class="f-s-14">
+            Mo: ***********
+          </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
+
     </div>
 
 

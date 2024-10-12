@@ -4,7 +4,7 @@ import {TablerIconsModule} from "angular-tabler-icons";
 import {AvailableWorkersComponent} from "../available-workers/available-workers.component";
 import {WorkersComponent} from "../available-workers/workers/workers.component";
 import {UserCard, WORKERS} from "../available-workers/constants";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {ServiceOrderData} from "../order-history/order-history.component";
 import {ActivatedRoute} from "@angular/router";
 import {Apollo, gql} from 'apollo-angular';
@@ -32,7 +32,7 @@ export const GET_SERVICE_ORDERS_BY_ID = gql`
 @Component({
   selector: 'app-service-order-details',
   standalone: true,
-  imports: [MaterialModule, TablerIconsModule, AvailableWorkersComponent, WorkersComponent, NgIf],
+  imports: [MaterialModule, TablerIconsModule, AvailableWorkersComponent, WorkersComponent, NgIf, NgForOf],
   templateUrl: './service-order-details.component.html',
   styleUrl: './service-order-details.component.scss',
   encapsulation: ViewEncapsulation.None
