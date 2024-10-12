@@ -1,0 +1,21 @@
+<div *ngFor="let userCard of filteredCards" class="col-sm-6 col-lg-4">
+  <mat-card style="border: solid 1px  rgba(146,236,132,0.4);
+    border-radius: 3px;box-shadow: none;
+}
+">
+    <mat-card-content class="mat-mdc-card-content text-center p-24">
+      <img [src]="userCard.imgSrc" class="rounded-circle border p-5" width="100"/>
+      <h4 class="mat-mdc-card-title card-title m-t-16 m-b-0">{{ userCard.name }}</h4>
+      <span class="f-s-12">{{ userCard.profession }}</span>
+      <div class="m-t-20">
+        <button color="primary" mat-stroked-button>Contact
+        </button>
+      </div>
+      <div class="m-t-20">
+          <span class="f-s-14">
+            Mo: {{ userCard.phone }}
+          </span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

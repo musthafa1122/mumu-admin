@@ -1,0 +1,156 @@
+<!-- Blog Card -->
+<mat-card class="cardWithShadow service-details ">
+  <!-- Image -->
+  <div class="bg-light-primary rounded p-y-30 p-x-24  overflow-hidden ng-star-inserted">
+    <div class="row">
+      <div class="col-sm-8"><h2 class="page-title m-0 f-s-20 f-w-600 m-b-16">
+        Service Order Details
+      </h2>
+        <p>Order No: 3242523523</p>
+        <div class="d-flex align-items-center overflow-hidden">
+
+        </div>
+
+      </div>
+      <div class="col-sm-4 text-right position-relative">
+        <div class="breadcrumb-icon"><img alt="breadcrumb" src="../../../assets/images/svgs/service-details.png"
+                                          style="margin-top: -8px;" width="320px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Blog Body -->
+  <mat-card-content class="p-24" style="display: flex">
+    <div style="    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 12px;">
+      <div>
+
+        <h3>You have got <span style="    color: #ffffff;
+    background: #50db9f;
+    padding: 4px;
+    border-radius: 43px;
+">18</span> proposals for this service. Please review them to choose the best one.</h3>
+      </div>
+
+      <div>
+        <div style="display: flex">
+          <div style="width: 100%">
+            <div class="container">
+
+              <!-- Image -->
+
+              <!-- Labels -->
+              <div class="label-container">
+                <div class="label-title">Title:</div>
+                <div class="label-value">Driver - SafeDrive Rentals</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Order ID:</div>
+                <div class="label-value">1</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Order Type:</div>
+                <div class="label-value">Part-time</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Service Type:</div>
+                <div class="label-value">Driver</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Location:</div>
+                <div class="label-value">Bangalore, India</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Date Requested:</div>
+                <div class="label-value">2024-09-30</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Duration:</div>
+                <div class="label-value">1 Week</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Salary:</div>
+                <div class="label-value">₹1200</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Status:</div>
+                <div class="label-value">Available</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Email:</div>
+                <div class="label-value">driversafedrive.com</div>
+              </div>
+
+              <div class="label-container">
+                <div class="label-title">Special Notes:</div>
+                <div class="label-value">None</div>
+              </div>
+
+            </div>
+          </div>
+          <mat-divider class="m-y-32"></mat-divider>
+
+
+          <app-workers [data]="workers" style="    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    overflow: auto;
+    height: 80vh;"></app-workers>
+        </div>
+      </div>
+    </div>
+
+
+  </mat-card-content>
+
+</mat-card>
+
+<!-- Comment Section -->
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <mat-card-title class="m-b-24 f-s-21">Post Comments</mat-card-title>
+
+    <form>
+      <!-- Comment Textarea -->
+      <mat-form-field appearance="outline" class="w-100">
+        <textarea matInput placeholder="Write a comment" rows="5"></textarea>
+      </mat-form-field>
+
+      <!-- Submit Button -->
+      <button color="primary" mat-flat-button type="submit">
+        Post Comment
+      </button>
+    </form>
+
+    <!-- Comments Title -->
+    <mat-card-title class="m-t-30 f-s-21 p-t-24">
+      Comments <span class="text-primary p-x-12 p-y-8 rounded bg-light-primary f-w-600 m-l-8 f-s-18">4</span>
+    </mat-card-title>
+
+    <!-- Individual Comment -->
+    <div class="bg-light rounded p-24 m-t-24">
+      <div class="d-flex align-items-center">
+        <img alt="user" class="rounded-circle" src="/assets/images/profile/user-2.jpg" width="35">
+        <span class="mat-body-2 f-w-600 m-l-12">Charlie Hamilton</span>
+        <span class="m-l-12 f-s-12 d-flex align-items-center">
+          <i-tabler class="icon-7 op-5 d-flex m-r-4" name="circle-filled"></i-tabler> now
+        </span>
+      </div>
+      <p class="m-t-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <button color="primary" mat-mini-fab>Reply</button>
+    </div>
+  </mat-card-content>
+</mat-card>

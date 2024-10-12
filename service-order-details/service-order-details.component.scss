@@ -1,0 +1,47 @@
+.service-details {
+
+
+  .pageWrapper.maxWidth {
+    max-width: none;
+  }
+
+  .container {
+    border: 1px #d6f7cf solid;
+    padding: 20px;
+    background-color: white;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+  }
+
+  .service-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+
+  .label-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .label-container:last-child {
+    border-bottom: none;
+  }
+
+  .label-title {
+    font-weight: 500;
+    color: #555;
+  }
+
+  .label-value {
+    font-weight: 700;
+    color: #333;
+  }
+}

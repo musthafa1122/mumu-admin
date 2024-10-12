@@ -16,7 +16,7 @@
 
 
 <div class="search-box"
-     style="display: flex; width: 100%; align-items: flex-end; padding: 6px; flex-wrap: wrap; justify-content: flex-end;">
+     style="display: flex; width: 100%; align-items:center; padding: 6px; flex-wrap: wrap; justify-content: flex-end;">
   <!--  <div class="title">-->
   <!--    <mat-card-title>Find Trusted Local Helpers</mat-card-title>-->
   <!--    <mat-card-subtitle class="mat-body-1">Reliable drivers, bystanders, and errand runners for your everyday needs.-->
@@ -70,26 +70,5 @@
 </div>
 
 <div class="row">
-  <div *ngFor="let userCard of filteredCards" class="col-sm-6 col-lg-3">
-    <mat-card style="border: solid 1px #4cda9e6b;
-    border-radius: 3px;box-shadow: none;
-}
-">
-      <mat-card-content class="mat-mdc-card-content text-center p-24">
-        <img [src]="userCard.imgSrc" class="rounded-circle border p-5" width="100"/>
-        <h4 class="mat-mdc-card-title card-title m-t-16 m-b-0">{{ userCard.name }}</h4>
-        <span class="f-s-12">{{ userCard.profession }}</span>
-        <div class="m-t-20">
-          <button color="primary" mat-stroked-button>Contact
-          </button>
-        </div>
-        <div class="m-t-20">
-          <span class="f-s-14">
-            Mo: {{ userCard.phone }}
-          </span>
-        </div>
-      </mat-card-content>
-      <mat-divider aria-orientation="horizontal"></mat-divider>
-    </mat-card>
-  </div>
+  <app-workers [data]="filteredCards" style="display: contents"></app-workers>
 </div>
