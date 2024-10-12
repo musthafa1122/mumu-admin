@@ -19,6 +19,9 @@ export class AvailableWorkersComponent implements OnInit {
   public bystandersCount = 0
   public userCards = WORKERS
   filteredCards!: UserCard[];
+  selectedFilter: string | null = null; // To track the selected filter
+
+  // Example method for filtering
 
   ngOnInit(): void {
     this.filteredCards = this.userCards;
@@ -40,6 +43,7 @@ export class AvailableWorkersComponent implements OnInit {
   }
 
   clickFilter(serviceType: 'driver' | 'errands' | 'bystander' | null) {
+    this.selectedFilter = serviceType;
     if (serviceType !== null) {
       this.filteredCards = this.userCards.filter(card => card.serviceType === serviceType);
     } else {

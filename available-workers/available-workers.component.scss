@@ -18,3 +18,15 @@
     color: #0a3042;
   }
 }
+
+.selected-filter {
+  color: #4ada9e;
+  border: 1px solid rgb(76 218 159) !important;
+  box-shadow: 0 0 10px rgb(229 250 239);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box-no-shadow {
+  box-shadow: none;
+  border: 1px #d6f7cf solid;
+}
