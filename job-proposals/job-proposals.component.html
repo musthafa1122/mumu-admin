@@ -1,0 +1,24 @@
+<mat-card>
+
+  <mat-card-content>
+    <mat-card-header style="    display: flex;
+    padding: 0;
+    align-items: center;
+    justify-content: space-between;margin-bottom: 12px">
+
+      <h3>
+        You have got
+        <span class="proposals-count">18</span>
+        proposals for this service. Please review them to choose the best one.
+      </h3>
+      <mat-slide-toggle
+        [(ngModel)]="isTableView"
+        class="mat-mdc-slide-toggle mat-accent">
+        {{ isTableView ? 'List View' : 'Table View' }}
+      </mat-slide-toggle>
+    </mat-card-header>
+    <app-job-proposals-list-view *ngIf="!isTableView" [data]="workers"
+                                 class="workers-list"></app-job-proposals-list-view>
+    <app-job-proposals-table-view *ngIf="isTableView" [data]="workers"></app-job-proposals-table-view>
+  </mat-card-content>
+</mat-card>

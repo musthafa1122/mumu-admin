@@ -16,7 +16,6 @@
         <img alt="breadcrumb" class="breadcrumb-img" src="../../../assets/images/svgs/service-details.png">
       </div>
 
-
     </div>
   </div>
 </div>
@@ -89,23 +88,28 @@
 
 
       <div class="col-sm-6 col-lg-4">
-        <mat-card style="border: solid 1px  rgba(146,236,132,0.4);
-    border-radius: 3px;box-shadow: none;
-}
-">
-          <mat-card-content class="mat-mdc-card-content text-center p-24">
-            <img class="rounded-circle border p-5" src="/assets/images/profile/user-1.jpg" width="100"/>
-            <h4 class="mat-mdc-card-title card-title m-t-16 m-b-0">Assigned User</h4>
-            <span class="f-s-12">Profession</span>
-            <div class="m-t-20">
-              <button color="primary" mat-stroked-button>Contact
-              </button>
-            </div>
-            <div class="m-t-20">
-          <span class="f-s-14">
-            Mo: ***********
-          </span>
-            </div>
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+          <mat-card-content class="mat-mdc-card-content p-y-24 text-center"><img alt="img" class="rounded-circle"
+                                                                                 src="/assets/images/profile/user-1.jpg"
+                                                                                 width="140">
+            <mat-card-title class="mat-mdc-card-title m-b-0 m-t-24">Tommoie Henderson</mat-card-title>
+            <mat-card-subtitle class="mat-mdc-card-subtitle mat-body-1 m-t-8 lh-24 m-b-24">Accept the request and <br>type
+              a message
+            </mat-card-subtitle>
+            <button
+              class="m-r-8 mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
+              color="primary"
+              mat-flat-button=""
+              mat-ripple-loader-class-name="mat-mdc-button-ripple"><span
+              class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span
+              class="mdc-button__label">Accept</span><span class="mat-mdc-focus-indicator"></span><span
+              class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span></button>
+            <button class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-warn mat-mdc-button-base"
+                    color="warn" mat-ripple-loader-class-name="mat-mdc-button-ripple"
+                    mat-stroked-button=""><span
+              class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span
+              class="mdc-button__label">Remove</span><span class="mat-mdc-focus-indicator"></span><span
+              class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span></button>
           </mat-card-content>
         </mat-card>
       </div>
@@ -115,17 +119,7 @@
 
   </mat-card-content>
 </mat-card>
-<mat-card>
-  <mat-card-content>
-    <mat-card-header><h3>
-      You have got
-      <span class="proposals-count">18</span>
-      proposals for this service. Please review them to choose the best one.
-    </h3></mat-card-header>
-    <app-workers [data]="workers" class="workers-list"></app-workers>
-
-  </mat-card-content>
-</mat-card>
+<app-job-proposals></app-job-proposals>
 <!-- Comment Section -->
 <mat-card class="cardWithShadow">
   <mat-card-content class="p-24">

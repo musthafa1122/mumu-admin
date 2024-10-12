@@ -1,0 +1,42 @@
+<div *ngFor="let jobProposal of data" class="col-sm-6 col-lg-4">
+  <mat-card style="border: solid 1px  rgba(146,236,132,0.4);
+    border-radius: 3px;box-shadow: none;
+}
+">
+    <mat-card-content class="mat-mdc-card-content text-center p-24">
+      <img [src]="jobProposal.imgSrc" class="rounded-circle border p-5" width="100"/>
+      <h4 class="mat-mdc-card-title card-title m-t-16 m-b-0">{{ jobProposal.name }}</h4>
+      <span class="f-s-12">{{ jobProposal.profession }}</span>
+
+
+      <div class="m-t-20">
+        <!-- Accept Button -->
+        <button
+          class="m-r-8"
+          color="primary"
+          mat-flat-button>
+          Accept
+        </button>
+
+        <!-- Remove Button -->
+        <button
+          color="warn"
+          mat-stroked-button>
+          Remove
+        </button>
+      </div>
+      <div class="m-t-20" style="    display: flex;
+    flex-direction: column;
+    align-items: center;">
+          <span class="f-s-14">
+            Mo: {{ jobProposal.phone }}
+          </span>
+        <span class="f-s-12">
+         <mat-icon *ngFor="let star of getStars(jobProposal.rating||0); let i = index" color="primary">
+        {{ star }}
+      </mat-icon>
+      </span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,79 @@
+<div class="table-responsive m-t-30">
+  <table [dataSource]="dataSource" class="w-100" mat-table matSort>
+
+    <!-- Image Column -->
+    <ng-container matColumnDef="image">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Image</th>
+      <td *matCellDef="let element" mat-cell>
+        <img [src]="element.imgSrc" alt="{{ element.name }}" class="rounded" width="48"/>
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+      <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Profession Column -->
+    <ng-container matColumnDef="profession">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Profession</th>
+      <td *matCellDef="let element" mat-cell>{{ element.profession }}</td>
+    </ng-container>
+
+    <!-- Service Type Column -->
+    <ng-container matColumnDef="serviceType">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Service Type</th>
+      <td *matCellDef="let element" mat-cell>{{ element.serviceType }}</td>
+    </ng-container>
+    <ng-container matColumnDef="rating">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Rating</th>
+      <td *matCellDef="let element" mat-cell>
+        <mat-icon *ngFor="let star of getStars(element.rating); let i = index" color="primary">
+          {{ star }}
+        </mat-icon>
+      </td>
+    </ng-container>
+    <!-- Address Column -->
+    <ng-container matColumnDef="address">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Address</th>
+      <td *matCellDef="let element" mat-cell>{{ element.address }}</td>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="phone">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Phone</th>
+      <td *matCellDef="let element" mat-cell>{{ element.phone }}</td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Action</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="m-t-20">
+          <!-- Accept Button -->
+          <button
+            class="m-r-8"
+            color="primary"
+            mat-flat-button>
+            Accept
+          </button>
+
+          <!-- Remove Button -->
+          <button
+            color="warn"
+            mat-stroked-button>
+            Remove
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Table Headers and Rows -->
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+  </table>
+
+  <!-- Add Pagination -->
+  <mat-paginator [pageSizeOptions]="[3,5,10, 25]" showFirstLastButtons></mat-paginator>
+</div>

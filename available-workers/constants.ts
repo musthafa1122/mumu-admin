@@ -7,6 +7,8 @@ export const WORKERS: UserCard[] = [
     address: '795 Folsom Ave, NY, 10003',
     phone: '(123) 456-7890',
     serviceType: 'driver',
+    rating: 4.5,
+    available: true,
   },
   {
     id: 2,
@@ -16,6 +18,8 @@ export const WORKERS: UserCard[] = [
     address: '36 W 138th St, NY, 10037',
     phone: '(212) 234-0783',
     serviceType: 'errands',
+    rating: 4.0,
+    available: false,
   },
   {
     id: 3,
@@ -25,6 +29,8 @@ export const WORKERS: UserCard[] = [
     address: '123 Main St, San Francisco, CA, 94105',
     phone: '(415) 987-6543',
     serviceType: 'bystander',
+    rating: 4.8,
+    available: true,
   },
   {
     id: 4,
@@ -34,6 +40,8 @@ export const WORKERS: UserCard[] = [
     address: '1725 Slough Ave, Scranton, PA, 18505',
     phone: '(570) 555-0000',
     serviceType: 'driver',
+    rating: 3.5,
+    available: true,
   },
   {
     id: 5,
@@ -43,6 +51,8 @@ export const WORKERS: UserCard[] = [
     address: '1855 Beet Farm Rd, Scranton, PA, 18505',
     phone: '(570) 555-5555',
     serviceType: 'errands',
+    rating: 4.3,
+    available: false,
   },
   {
     id: 6,
@@ -52,6 +62,8 @@ export const WORKERS: UserCard[] = [
     address: '1725 Slough Ave, Scranton, PA, 18505',
     phone: '(570) 555-1212',
     serviceType: 'bystander',
+    rating: 4.6,
+    available: true,
   },
   {
     id: 7,
@@ -61,6 +73,8 @@ export const WORKERS: UserCard[] = [
     address: '1725 Slough Ave, Scranton, PA, 18505',
     phone: '(570) 555-2222',
     serviceType: 'driver',
+    rating: 4.6,
+    available: true,
   },
   {
     id: 8,
@@ -70,6 +84,8 @@ export const WORKERS: UserCard[] = [
     address: '1725 Slough Ave, Scranton, PA, 18505',
     phone: '(570) 555-3333',
     serviceType: 'errands',
+    rating: 3.8,
+    available: false,
   },
   {
     id: 9,
@@ -79,6 +95,8 @@ export const WORKERS: UserCard[] = [
     address: '1725 Slough Ave, Scranton, PA, 18505',
     phone: '(570) 555-4444',
     serviceType: 'bystander',
+    rating: 4.9,
+    available: true,
   },
   {
     id: 10,
@@ -88,15 +106,8 @@ export const WORKERS: UserCard[] = [
     address: '1725 Slough Ave, Scranton, PA, 18505',
     phone: '(570) 555-5550',
     serviceType: 'driver',
-  },
-  {
-    id: 11,
-    imgSrc: 'assets/images/profile/user-2.jpg',
-    name: 'Kevin Malone',
-    profession: 'Errand Runner',
-    address: '1725 Slough Ave, Scranton, PA, 18505',
-    phone: '(570) 555-6666',
-    serviceType: 'errands',
+    rating: 1.7,
+    available: false,
   },
 ];
 
@@ -108,4 +119,6 @@ export interface UserCard {
   address: string;
   phone: string;
   serviceType: 'driver' | 'errands' | 'bystander';
+  rating?: number;  // Optional rating field (0-5 stars)
+  available?: boolean; // Optional availability status
 }
