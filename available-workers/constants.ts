@@ -122,3 +122,14 @@ export interface UserCard {
   rating?: number;  // Optional rating field (0-5 stars)
   available?: boolean; // Optional availability status
 }
+
+
+export enum ServiceStatus {
+  PENDING = 'Pending',        // Service request has been received but not yet processed
+  IN_PROGRESS = 'In Progress', // Service is currently being carried out
+  COMPLETED = 'Completed',      // Service has been completed successfully
+  CANCELLED = 'Cancelled',      // Service has been cancelled by the user or provider
+  FAILED = 'Failed',            // Service could not be completed due to an error or issue
+  ON_HOLD = 'On Hold',          // Service is temporarily paused for some reason
+  NOT_AVAILABLE = 'Not Available', // Service is not available for request
+}

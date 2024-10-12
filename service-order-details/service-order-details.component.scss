@@ -4,6 +4,35 @@
   overflow: hidden;
   margin-bottom: 18px;
   border-radius: 8px;
+
+}
+
+.bg-pending {
+  background-color: rgba(240, 248, 255, 0.6); /* Light blue for Pending with 70% opacity */
+}
+
+.bg-in-progress {
+  background-color: rgba(255, 241, 205, 0.6); /* Light yellow for In Progress with 70% opacity */
+}
+
+.bg-completed {
+  background-color: rgba(212, 237, 218, 0.6); /* Light green for Completed with 70% opacity */
+}
+
+.bg-cancelled {
+  background-color: rgba(248, 215, 218, 0.6); /* Light red for Cancelled with 70% opacity */
+}
+
+.bg-failed {
+  background-color: rgba(245, 198, 203, 0.6); /* Light pink for Failed with 70% opacity */
+}
+
+.bg-on-hold {
+  background-color: rgba(226, 227, 229, 0.6); /* Light gray for On Hold with 70% opacity */
+}
+
+.bg-not-available {
+  background-color: rgba(231, 243, 254, 0.6); /* Light blue for Not Available with 70% opacity */
 }
 
 .page-title {
@@ -29,6 +58,8 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
 
   .assigned-person-box {
     display: flex;
@@ -147,4 +178,12 @@
 
 .comment-body {
   margin-top: 16px;
+}
+
+@media (max-width: 1068px) {
+
+  .service-details-table {
+    width: 100%;
+  }
+
 }

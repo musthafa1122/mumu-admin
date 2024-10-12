@@ -8,6 +8,8 @@ import {MaterialModule} from "../../material.module";
 import {CommonModule} from '@angular/common';
 import {TablerIconsModule} from 'angular-tabler-icons';
 import {Router} from "@angular/router";
+import {ServiceStatusComponent} from "../../components/service-status/service-status.component";
+import {ServiceStatus} from "../available-workers/constants";
 
 // GraphQL Query
 export const GET_SERVICE_ORDERS = gql`
@@ -40,7 +42,7 @@ export interface ServiceOrderData {
   salary: number;
   orderType: string;
   duration: string;
-  status: string;
+  status: ServiceStatus;
   imageUrl?: string;
   specialNotes?: string;
   email: string;
@@ -55,7 +57,8 @@ export interface ServiceOrderData {
     TablerIconsModule,
     CommonModule,
     MatSortModule,
-    MatGoogleMapsAutocompleteModule
+    MatGoogleMapsAutocompleteModule,
+    ServiceStatusComponent
   ],
   templateUrl: './order-history.component.html',
   styleUrls: ['./order-history.component.scss'],

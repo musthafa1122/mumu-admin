@@ -1,21 +1,22 @@
 <!-- Blog Card -->
-<div class="header-container">
+<div [ngClass]="{
+    'bg-pending': serviceOrders?.status === serviceStatus.PENDING,
+    'bg-in-progress': serviceOrders?.status === serviceStatus.IN_PROGRESS,
+    'bg-completed': serviceOrders?.status === serviceStatus.COMPLETED,
+    'bg-cancelled': serviceOrders?.status === serviceStatus.CANCELLED,
+    'bg-failed': serviceOrders?.status === serviceStatus.FAILED,
+    'bg-on-hold': serviceOrders?.status === serviceStatus.ON_HOLD,
+    'bg-not-available': serviceOrders?.status === serviceStatus.NOT_AVAILABLE
+  }" class="header-container">
   <div class="row">
     <div class="col-sm-8">
       <h2 class="page-title">Service Order Details</h2>
       <p>Order No: {{ serviceOrders?.id }}</p>
-      <span *ngIf="serviceOrders?.status === 'Available'"
-            class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12">Available</span>
-      <span *ngIf="serviceOrders?.status === 'In Progress'"
-            class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">In Progress</span>
-      <span *ngIf="serviceOrders?.status === 'Completed'"
-            class="bg-light-primary text-primary rounded f-w-600 p-6 p-y-4 f-s-12">Completed</span>
     </div>
     <div class="col-sm-4 text-right position-relative">
       <div class="breadcrumb-icon">
         <img alt="breadcrumb" class="breadcrumb-img" src="../../../assets/images/svgs/service-details.png">
       </div>
-
     </div>
   </div>
 </div>
@@ -71,7 +72,9 @@
 
           <div class="label-container">
             <div class="label-title">Status:</div>
-            <div class="label-value">{{ serviceOrders?.status }}</div>
+            <div class="label-value">
+              <app-service-status [status]="serviceOrders?.status||''"></app-service-status>
+            </div>
           </div>
 
           <div class="label-container">
@@ -119,38 +122,50 @@
 
   </mat-card-content>
 </mat-card>
-<app-job-proposals></app-job-proposals>
 <!-- Comment Section -->
-<mat-card class="cardWithShadow">
-  <mat-card-content class="p-24">
-    <mat-card-title class="comment-title">Post Comments</mat-card-title>
 
-    <form>
-      <!-- Comment Textarea -->
-      <mat-form-field appearance="outline" class="w-100">
-        <textarea matInput placeholder="Write a comment" rows="5"></textarea>
-      </mat-form-field>
 
-      <!-- Submit Button -->
-      <button color="primary" mat-flat-button type="submit">Post Comment</button>
-    </form>
+<mat-tab-group class="mat-mdc-tab-group mat-primary" mat-align-tabs="start" mat-stretch-tabs="false"
+               style="--mat-tab-animation-duration: 500ms;">
+  <mat-tab label="Proposals">
+    <app-job-proposals></app-job-proposals>
 
-    <!-- Comments Title -->
-    <mat-card-title class="comments-section-title">
-      Comments <span class="comments-count">4</span>
-    </mat-card-title>
+  </mat-tab>
+  <mat-tab label="Comments">
+    <mat-card class="cardWithShadow">
+      <mat-card-content class="p-24">
 
-    <!-- Individual Comment -->
-    <div class="comment-container">
-      <div class="comment-header">
-        <img alt="user" class="user-img" src="/assets/images/profile/user-2.jpg">
-        <span class="user-name">Charlie Hamilton</span>
-        <span class="comment-time">
+        <form>
+          <!-- Comment Textarea -->
+          <mat-form-field appearance="outline" class="w-100">
+            <textarea matInput placeholder="Write a comment" rows="5"></textarea>
+          </mat-form-field>
+
+          <!-- Submit Button -->
+          <button color="primary" mat-flat-button type="submit">Post Comment</button>
+        </form>
+
+        <!-- Comments Title -->
+        <mat-card-title class="comments-section-title">
+          Comments <span class="comments-count">4</span>
+        </mat-card-title>
+
+        <!-- Individual Comment -->
+        <div class="comment-container">
+          <div class="comment-header">
+            <img alt="user" class="user-img" src="/assets/images/profile/user-2.jpg">
+            <span class="user-name">Charlie Hamilton</span>
+            <span class="comment-time">
           <i-tabler class="icon-7 op-5" name="circle-filled"></i-tabler> now
         </span>
-      </div>
-      <p class="comment-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <button color="primary" mat-mini-fab>Reply</button>
-    </div>
-  </mat-card-content>
-</mat-card>
+          </div>
+          <p class="comment-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <button color="primary" mat-mini-fab>Reply</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Transactions">
+    <app-recent-transactions></app-recent-transactions>
+  </mat-tab>
+</mat-tab-group>

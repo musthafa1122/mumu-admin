@@ -91,12 +91,7 @@
         <ng-container matColumnDef="status">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>Status</th>
           <td *matCellDef="let element" mat-cell>
-            <span *ngIf="element.status === 'Available'"
-                  class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12">Available</span>
-            <span *ngIf="element.status === 'In Progress'"
-                  class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">In Progress</span>
-            <span *ngIf="element.status === 'Completed'"
-                  class="bg-light-primary text-primary rounded f-w-600 p-6 p-y-4 f-s-12">Completed</span>
+            <app-service-status [status]="element.status"></app-service-status>
           </td>
         </ng-container>
 
