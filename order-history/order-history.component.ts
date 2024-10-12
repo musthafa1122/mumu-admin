@@ -7,11 +7,13 @@ import {Appearance, MatGoogleMapsAutocompleteModule} from '@angular-material-ext
 import {MaterialModule} from "../../material.module";
 import {CommonModule} from '@angular/common';
 import {TablerIconsModule} from 'angular-tabler-icons';
+import {Router} from "@angular/router";
 
 // GraphQL Query
-const GET_SERVICE_ORDERS = gql`
+export const GET_SERVICE_ORDERS = gql`
   query Query {
     serviceOrders {
+    id
       dateRequested
       duration
       email
@@ -29,8 +31,8 @@ const GET_SERVICE_ORDERS = gql`
 `;
 
 // Service Order Data Interface
-interface ServiceOrderData {
-  orderId: number;
+export interface ServiceOrderData {
+  id: number;
   serviceType: string;
   title: string;
   location: string;
@@ -42,6 +44,7 @@ interface ServiceOrderData {
   imageUrl?: string;
   specialNotes?: string;
   email: string;
+
 }
 
 @Component({
@@ -77,7 +80,7 @@ export class OrderHistoryComponent implements AfterViewInit, OnInit {
   serviceOrders: ServiceOrderData[] = [];
   dataSource!: MatTableDataSource<ServiceOrderData>;
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private router: Router,) {
   }
 
   ngOnInit(): void {
@@ -107,7 +110,8 @@ export class OrderHistoryComponent implements AfterViewInit, OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  applyForJob(jobId: number): void {
-    console.log(`Applying for job with ID: ${jobId}`);
+  applyForJob(orderID: number): void {
+    console.log(`Applying for job with ID: ${orderID}`);
+    this.router.navigate([`service-home/service-order-details/${orderID}`]);
   }
 }
