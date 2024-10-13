@@ -105,7 +105,8 @@
               mat-flat-button=""
               mat-ripple-loader-class-name="mat-mdc-button-ripple"><span
               class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span
-              class="mdc-button__label">Accept</span><span class="mat-mdc-focus-indicator"></span><span
+              (click)="openDialog()" class="mdc-button__label">Accept</span><span
+              class="mat-mdc-focus-indicator"></span><span
               class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span></button>
             <button class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-warn mat-mdc-button-base"
                     color="warn" mat-ripple-loader-class-name="mat-mdc-button-ripple"

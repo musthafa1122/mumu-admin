@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MaterialModule} from "../../material.module";
 import {TablerIconsModule} from "angular-tabler-icons";
 import {AvailableWorkersComponent} from "../available-workers/available-workers.component";
@@ -13,6 +13,8 @@ import {JobProposalsComponent} from "../job-proposals/job-proposals.component";
 import {ServiceStatusComponent} from "../../components/service-status/service-status.component";
 import {AppRecentTransactionsComponent} from "../../components/recent-transactions/recent-transactions.component";
 import {MatTabBody, MatTabHeader, MatTabsModule} from "@angular/material/tabs";
+import {MatDialog} from "@angular/material/dialog";
+import {WorkerProfileComponent} from "../available-workers/worker-profile/worker-profile.component";
 
 export const GET_SERVICE_ORDERS_BY_ID = gql`
   query serviceOrderById($id: ID!) {
@@ -41,8 +43,10 @@ export const GET_SERVICE_ORDERS_BY_ID = gql`
   templateUrl: './service-order-details.component.html',
   styleUrl: './service-order-details.component.scss',
   encapsulation: ViewEncapsulation.None
+
 })
 export class ServiceOrderDetailsComponent implements OnInit {
+  readonly dialog = inject(MatDialog);
   workers: UserCard[] = WORKERS;
   public serviceOrders!: ServiceOrderData;
   isTableView: boolean = false;
@@ -50,6 +54,16 @@ export class ServiceOrderDetailsComponent implements OnInit {
   private orderId!: string | null;
 
   constructor(private apollo: Apollo, private route: ActivatedRoute,) {
+  }
+
+  openDialog() {
+    const dialogConfig = {
+      width: '80%',  // Set the desired width
+      height: '80%', // Set the desired height
+    };
+
+    this.dialog.open(WorkerProfileComponent, dialogConfig);
+
   }
 
   ngOnInit(): void {
