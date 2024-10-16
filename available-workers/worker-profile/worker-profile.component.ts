@@ -35,6 +35,44 @@ import {JobProposalsComponent} from "../../job-proposals/job-proposals.component
 
 })
 export class WorkerProfileComponent {
+  cards = [
+    {
+      img: 'https://modernize-angular-main.netlify.app/assets/images/svgs/icon-user-male.svg',
+      value: 96,
+      textClass: 'text-primary',
+      bgClass: 'bg-light-primary'
+    },
+    {
+      img: 'https://modernize-angular-main.netlify.app/assets/images/svgs/icon-briefcase.svg',
+      value: 3650,
+      textClass: 'text-warning',
+      bgClass: 'bg-light-warning'
+    },
+    {
+      img: 'https://modernize-angular-main.netlify.app/assets/images/svgs/icon-mailbox.svg',
+      value: 356,
+      textClass: 'text-accent',
+      bgClass: 'bg-light-accent'
+    },
+    {
+      img: 'https://modernize-angular-main.netlify.app/assets/images/svgs/icon-favorites.svg',
+      value: 696,
+      textClass: 'text-error',
+      bgClass: 'bg-light-error'
+    },
+    {
+      img: 'https://modernize-angular-main.netlify.app/assets/images/svgs/icon-speech-bubble.svg',
+      value: '$96k',
+      textClass: 'text-success',
+      bgClass: 'bg-light-success'
+    },
+    {
+      img: 'https://modernize-angular-main.netlify.app/assets/images/svgs/icon-connect.svg',
+      value: 59,
+      textClass: 'text-accent',
+      bgClass: 'bg-light-accent'
+    }
+  ];
   user = {
     id: "12345",
     name: "John Doe",

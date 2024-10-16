@@ -1,0 +1,56 @@
+<div class="chat-main-container">
+  <!-- Side Menu Bar -->
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Main Content -->
+    <mat-sidenav-content>
+      <div class="content-container">
+        <!-- Friends List -->
+        <div class="friends-list">
+          <div class="mat-mdc-menu-content">
+            <!-- Loop through the users array -->
+            <button *ngFor="let user of users" aria-disabled="false"
+                    class="mat-mdc-menu-item mat-mdc-focus-indicator p-x-32 p-y-16"
+                    role="menuitem" tabindex="0">
+      <span class="mat-mdc-menu-item-text">
+        <div class="d-flex align-items-center">
+          <img [src]="user.profilePic" alt="" class="rounded-circle" width="48">
+          <div class="m-l-16">
+            <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">{{ user.name }}</h5>
+            <span>{{ user.orderId }}</span>
+          </div>
+        </div>
+      </span>
+              <div class="mat-ripple mat-mdc-menu-ripple"></div>
+            </button>
+          </div>
+        </div>        <!-- Chat Section -->
+        <div class="chat-section">
+          <div class="chat-header">
+            <h2>{{ selectedUser.name }}</h2>
+          </div>
+          <div class="chat-messages">
+            <div *ngFor="let message of messages" [class.sent]="message.sender === 'me'" class="chat-message">
+              <p>{{ message.text }}</p>
+            </div>
+          </div>
+          <div class="chat-input">
+            <mat-form-field appearance="outline" class="message-input">
+              <input [(ngModel)]="newMessage" matInput placeholder="Type a message">
+            </mat-form-field>
+            <button (click)="sendMessage()" color="primary" mat-icon-button>
+              <mat-icon>send</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+          <h3>Profile</h3>
+          <app-worker-profile></app-worker-profile>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+
