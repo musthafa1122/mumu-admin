@@ -13,10 +13,10 @@
                     role="menuitem" tabindex="0">
             <span class="mat-mdc-menu-item-text">
         <div class="d-flex align-items-center">
-          <img [src]="user.profilePic" alt="" class="rounded-circle" width="48">
+          <img [src]="user.imageUrl" alt="" class="rounded-circle" width="48">
           <div class="m-l-16" style="display: flex;flex-direction: column">
             <strong>{{ user.name }}</strong>
-            <span>{{ user.orderId }}</span>
+            <span>{{ user.email }}</span>
           </div>
         </div>
       </span>
@@ -27,7 +27,7 @@
         <div [ngClass]="{'chat-section': true, 'profile-open': isProfileSectionVisible}">
           <div class="chat-header">
             <div (click)="toggleProfileSection()" class="title-logo">
-              <img [src]="selectedUser.profilePic" alt="" class="rounded-circle" width="48">
+              <img [src]="selectedUser.imageUrl" alt="" class="rounded-circle" width="48">
               <h2>{{ selectedUser?.name || 'Select a user to chat' }}</h2>
             </div>
 
@@ -38,7 +38,7 @@
               <mat-icon>more_vert</mat-icon>
             </div>
           </div>
-          <div class="chat-messages">
+          <div #messageContainer class="chat-messages">
             <div (click)="showDate=!showDate"
                  *ngFor="let message of messages"
                  [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"

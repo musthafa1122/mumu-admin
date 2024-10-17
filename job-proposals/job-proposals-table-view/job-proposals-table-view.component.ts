@@ -6,9 +6,9 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {Appearance} from "@angular-material-extensions/google-maps-autocomplete";
 import {Router} from "@angular/router";
-import {ServiceOrderData} from "../../order-history/order-history.component";
 import {MaterialModule} from "../../../material.module";
 import {JobProposalHelper} from "../job-proposals.helper";
+import {ServiceOrderData} from "../../order-history/order-history.service";
 
 @Component({
   selector: 'app-job-proposals-table-view',

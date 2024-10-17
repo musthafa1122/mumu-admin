@@ -5,7 +5,7 @@ import {AvailableWorkersComponent} from "../available-workers/available-workers.
 import {WorkersComponent} from "../available-workers/workers/workers.component";
 import {ServiceStatus, UserCard, WORKERS} from "../available-workers/constants";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {OrderHistoryComponent, ServiceOrderData} from "../order-history/order-history.component";
+import {OrderHistoryComponent} from "../order-history/order-history.component";
 import {ActivatedRoute} from "@angular/router";
 import {Apollo, gql} from 'apollo-angular';
 import {FormsModule} from "@angular/forms";
@@ -15,6 +15,7 @@ import {AppRecentTransactionsComponent} from "../../components/recent-transactio
 import {MatTabBody, MatTabHeader, MatTabsModule} from "@angular/material/tabs";
 import {MatDialog} from "@angular/material/dialog";
 import {WorkerProfileComponent} from "../available-workers/worker-profile/worker-profile.component";
+import {ServiceOrderData} from "../order-history/order-history.service";
 
 export const GET_SERVICE_ORDERS_BY_ID = gql`
   query serviceOrderById($id: ID!) {
@@ -64,7 +65,6 @@ export class ServiceOrderDetailsComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   workers: UserCard[] = WORKERS;
   public serviceOrders!: ServiceOrderData;
-  isTableView: boolean = false;
   serviceStatus = ServiceStatus;
   private orderId!: string | null;
 

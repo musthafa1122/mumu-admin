@@ -1,120 +1,62 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MaterialModule} from "../../material.module";
-import {TablerIconsModule} from "angular-tabler-icons";
-import {NgScrollbarModule} from "ngx-scrollbar";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {WorkerProfileComponent} from "../available-workers/worker-profile/worker-profile.component";
-import {AppNavItemComponent} from "../../layouts/full/sidebar/nav-item/nav-item.component";
-import {HeaderComponent} from "../../layouts/full/header/header.component";
 import {RouterOutlet} from "@angular/router";
-import {SidebarComponent} from "../../layouts/full/sidebar/sidebar.component";
-import {ChatService} from "./chat.service";
+import {ChatService, Message} from "./chat.service";
+
+interface ChatContact {
+  name: string;
+  id: string;
+  phoneNumber: number;
+  email: string;
+  imageUrl: string;
+}
 
 @Component({
   selector: 'app-chat-application',
   standalone: true,
-  imports: [MaterialModule, NgScrollbarModule, TablerIconsModule, NgClass, FormsModule, NgForOf, WorkerProfileComponent, AppNavItemComponent, HeaderComponent, RouterOutlet, SidebarComponent, NgIf, DatePipe],
+  imports: [
+    MaterialModule,
+    NgClass,
+    FormsModule,
+    NgForOf,
+    WorkerProfileComponent,
+    RouterOutlet,
+    NgIf,
+    DatePipe
+  ],
   templateUrl: './chat-application.component.html',
-  styleUrl: './chat-application.component.scss',
+  styleUrls: ['./chat-application.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class ChatApplicationComponent implements OnInit {
-  menuItems = [
-    {label: 'Home', icon: 'home'},
-    {label: 'Chats', icon: 'chat'},
-    {label: 'Profile', icon: 'account_circle'},
-    {label: 'Settings', icon: 'settings'}
-  ];
-
-  users = [
-    {profilePic: '/assets/images/profile/user-1.jpg', name: 'Roman', orderId: 'Order ID: 12345'},
-    {profilePic: '/assets/images/profile/user-2.jpg', name: 'Salma', orderId: 'Order ID: 12346'},
-    {profilePic: '/assets/images/profile/user-3.jpg', name: 'John', orderId: 'Order ID: 12347'},
-    {profilePic: '/assets/images/profile/user-4.jpg', name: 'Jolly', orderId: 'Order ID: 12348'},
-    {profilePic: '/assets/images/profile/user-1.jpg', name: 'Alex', orderId: 'Order ID: 12349'},
-    {profilePic: '/assets/images/profile/user-2.jpg', name: 'Sophia', orderId: 'Order ID: 12350'},
-    {profilePic: '/assets/images/profile/user-3.jpg', name: 'Michael', orderId: 'Order ID: 12351'},
-    {profilePic: '/assets/images/profile/user-4.jpg', name: 'Isabella', orderId: 'Order ID: 12352'},
-    {profilePic: '/assets/images/profile/user-1.jpg', name: 'David', orderId: 'Order ID: 12353'},
-    {profilePic: '/assets/images/profile/user-2.jpg', name: 'Emily', orderId: 'Order ID: 12354'},
-    {profilePic: '/assets/images/profile/user-3.jpg', name: 'Daniel', orderId: 'Order ID: 12355'},
-    {profilePic: '/assets/images/profile/user-4.jpg', name: 'Olivia', orderId: 'Order ID: 12356'},
-    {profilePic: '/assets/images/profile/user-1.jpg', name: 'James', orderId: 'Order ID: 12357'},
-    {profilePic: '/assets/images/profile/user-2.jpg', name: 'Ava', orderId: 'Order ID: 12358'},
-    {profilePic: '/assets/images/profile/user-3.jpg', name: 'William', orderId: 'Order ID: 12359'},
-    {profilePic: '/assets/images/profile/user-4.jpg', name: 'Mia', orderId: 'Order ID: 12360'},
-    {profilePic: '/assets/images/profile/user-1.jpg', name: 'Henry', orderId: 'Order ID: 12361'},
-    {profilePic: '/assets/images/profile/user-2.jpg', name: 'Charlotte', orderId: 'Order ID: 12362'},
-    {profilePic: '/assets/images/profile/user-3.jpg', name: 'Matthew', orderId: 'Order ID: 12363'},
-    {profilePic: '/assets/images/profile/user-4.jpg', name: 'Amelia', orderId: 'Order ID: 12364'},
-    {profilePic: '/assets/images/profile/user-1.jpg', name: 'Ethan', orderId: 'Order ID: 12365'},
-    {profilePic: '/assets/images/profile/user-2.jpg', name: 'Harper', orderId: 'Order ID: 12366'},
-    {profilePic: '/assets/images/profile/user-3.jpg', name: 'Lucas', orderId: 'Order ID: 12367'},
-    {profilePic: '/assets/images/profile/user-4.jpg', name: 'Evelyn', orderId: 'Order ID: 12368'}
-  ];
-  selectedUser = this.users[0]; // Default selected user for chat
+  users: ChatContact[] = [];
   conversationId = '671108f393262517c74a555f';
-  messages = [
-    {text: 'Hello!', sender: 'me', date: new Date('2024-10-15T10:15:00')},
-    {text: 'Hi Roman!', sender: 'Roman', date: new Date('2024-10-15T10:16:00')},
-    {text: 'How are you?', sender: 'me', date: new Date('2024-10-15T10:17:00')},
-    {text: 'I am doing well, thanks!', sender: 'Roman', date: new Date('2024-10-15T10:18:00')},
-    {text: 'What are you up to today?', sender: 'me', date: new Date('2024-10-15T10:19:00')},
-    {text: 'Just working on some projects.', sender: 'Roman', date: new Date('2024-10-15T10:20:00')},
-    {text: 'That sounds good! Need any help?', sender: 'me', date: new Date('2024-10-15T10:21:00')},
-    {text: 'Not at the moment, but thanks!', sender: 'Roman', date: new Date('2024-10-15T10:22:00')},
-    {text: 'Any plans for the weekend?', sender: 'me', date: new Date('2024-10-15T10:23:00')},
-    {text: 'Thinking of going hiking.', sender: 'Roman', date: new Date('2024-10-15T10:24:00')},
-    {text: 'That sounds fun! Where?', sender: 'me', date: new Date('2024-10-15T10:25:00')},
-    {text: 'Probably in the mountains nearby.', sender: 'Roman', date: new Date('2024-10-15T10:26:00')},
-    {text: 'Nice! I love hiking.', sender: 'me', date: new Date('2024-10-15T10:27:00')},
-    {text: 'We should go together sometime.', sender: 'Roman', date: new Date('2024-10-15T10:28:00')},
-    {text: 'Definitely! Let’s plan it.', sender: 'me', date: new Date('2024-10-15T10:29:00')},
-    {text: 'Sounds good. I’ll check my schedule.', sender: 'Roman', date: new Date('2024-10-15T10:30:00')},
-    {text: 'Let me know!', sender: 'me', date: new Date('2024-10-15T10:31:00')},
-    {text: 'Will do! Any other updates from your side?', sender: 'Roman', date: new Date('2024-10-15T10:32:00')},
-    {text: 'Not much, just busy with work.', sender: 'me', date: new Date('2024-10-15T10:33:00')},
-    {text: 'I feel you. It’s been hectic lately.', sender: 'Roman', date: new Date('2024-10-15T10:34:00')},
-    {text: 'Yeah, we need a break!', sender: 'me', date: new Date('2024-10-15T10:35:00')}
-  ];
-
-
+  userId = '6708df417f34f8c4c3df65da';
+  messages = [{text: 'Hello!', sender: 'me', date: new Date('2024-10-15T10:15:00')}];
   newMessage = '';
-
-  profile = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    location: 'Munich, Germany',
-    profilePic: 'https://randomuser.me/api/portraits/men/1.jpg'
-  };
-  isProfileSectionVisible: boolean = false; // State to control profile section visibility
-  // Function to close the profile section
+  isProfileSectionVisible = false;
   showDate = false;
+  selectedUser: ChatContact = {
+    name: 'Please add contact',
+    id: '',
+    imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
+    email: '',
+    phoneNumber: 0
+  };
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   constructor(private chatService: ChatService) {
   }
 
   ngOnInit() {
-    // Subscribe to messages
-    this.chatService.subscribeToMessages(this.conversationId).subscribe({
-      next: (response: any) => {
-        if (response && response.data && response.data.messageSent) {
-          const newMessage = response.data.messageSent;
-          const res = {text: newMessage.content, sender: newMessage.sender.id, date: newMessage.createdAt};
-          this.messages.push(res);
-          console.log('New message received:', newMessage);
-        } else {
-          console.error('Received empty response for messageSent:', response);
-        }
-      },
-      error: (error) => {
-        console.error('Error subscribing to messages:', error);
-      }
-    });
+    this.loadChatContacts();
+    this.subscribeToMessages();
+    this.getAllMessages();
   }
 
-  // Function to toggle the profile section visibility
   toggleProfileSection() {
     this.isProfileSectionVisible = !this.isProfileSectionVisible;
   }
@@ -123,25 +65,98 @@ export class ChatApplicationComponent implements OnInit {
     this.isProfileSectionVisible = false;
   }
 
+  getAllMessages() {
+    this.chatService.getMessages(this.conversationId).subscribe({
+      next: (data: Message[] | any) => {
+        this.messages = this.mapMessages(data);
+        this.scrollToBottom();
+      },
+      error: (error: any) => {
+        console.error('Error fetching messages:', error);
+      }
+    });
+  }
+
+  mapMessages(messages: Message[]): any[] {
+    return messages.map((message: Message) => ({
+      text: message.content,
+      sender: message.sender.id === this.userId ? 'me' : message.sender.firstName,
+      date: new Date(message.createdAt)
+    }));
+  }
+
   sendMessage() {
     if (this.newMessage.trim()) {
-      this.chatService.sendMessage(this.conversationId, '6708df417f34f8c4c3df65da', this.newMessage).subscribe({
-        next: (response: any) => {
-          const sentMessage = response.data.sendMessage;
-
-          const res = {text: sentMessage.content, sender: 'me', date: new Date('2024-10-15T10:15:00')};
-          this.messages.push(res); // Add the sent message to the messages array
-          this.newMessage = ''; // Clear input after sending
-        },
-        error: (error) => {
-          console.error('Error sending message:', error);
-        }
+      this.chatService.sendMessage(this.conversationId, this.userId, this.newMessage).subscribe({
+        next: () => this.newMessage = '', // Clear input on successful send
+        error: (error) => console.error('Error sending message:', error)
       });
     }
   }
 
-  public selectUser(user: { orderId: string; profilePic: string; name: string }) {
+  selectUser(user: ChatContact) {
     this.selectedUser = user;
-    // this.toggleProfileSection()
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Scroll error:', err);
+    }
+  }
+
+  private loadChatContacts() {
+    this.chatService.getChatContacts().subscribe({
+      next: (response: any) => {
+        const assignedUsers = this.extractAssignedUsers(response);
+        this.users = this.getUniqueUsers(assignedUsers);
+        this.selectedUser = this.users[0]; // Default to the first user
+      },
+      error: (error) => {
+        console.error('Error fetching chat contacts:', error);
+      }
+    });
+  }
+
+  private extractAssignedUsers(response: any): ChatContact[] {
+    return response.data.serviceOrderByUserId
+      .map((order: any) => order.assignedUser ? {
+        name: `${order.assignedUser.firstName} ${order.assignedUser.lastName}`,
+        id: order.assignedUser.id,
+        phoneNumber: order.assignedUser.phoneNumber,
+        email: order.assignedUser.email,
+        imageUrl: order.assignedUser.image
+      } : null)
+      .filter((user: ChatContact | null): user is ChatContact => user !== null); // Type guard for non-null users
+  }
+
+  private getUniqueUsers(users: ChatContact[]): ChatContact[] {
+    return users.filter((user, index, self) =>
+      index === self.findIndex((u) => u.id === user.id)
+    );
+  }
+
+  private subscribeToMessages() {
+    this.chatService.subscribeToMessages(this.conversationId).subscribe({
+      next: (response: any) => this.handleNewMessage(response),
+      error: (error) => console.error('Error subscribing to messages:', error)
+    });
+  }
+
+  private handleNewMessage(response: any) {
+    if (response?.data?.messageSent) {
+      const newMessage = response.data.messageSent;
+      const mappedMessage = {
+        text: newMessage.content,
+        sender: newMessage.sender.id === this.userId ? 'me' : newMessage.sender.firstName,
+        date: new Date(newMessage.createdAt)
+      };
+      this.messages.push(mappedMessage);
+      this.scrollToBottom();
+      console.log('New message received:', newMessage);
+    } else {
+      console.error('Received empty response for messageSent:', response);
+    }
   }
 }
