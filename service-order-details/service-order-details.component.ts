@@ -32,6 +32,21 @@ export const GET_SERVICE_ORDERS_BY_ID = gql`
       specialNotes
       status
       title
+      user {
+      id
+      firstName
+      lastName
+      email
+      country
+      phoneNumber
+      state
+      city
+      dob
+      gender
+      password
+      emailVerified
+      phoneNumberVerified
+    }
     }
   }
 `;
