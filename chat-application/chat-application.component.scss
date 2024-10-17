@@ -4,7 +4,7 @@
 
 .chat-main-container {
   height: 82vh;
-  border: 1px solid #e9e9e9;
+  border: 1px solid #dcdcdc;
 
   .sidenav-container {
     height: 100%;
@@ -17,9 +17,29 @@
 
   .friends-list {
     width: 30%;
-    border-right: 1px solid #e0e0e0;
+    border-right: 1px solid #dcdcdc;
     background-color: white;
     overflow: auto;
+
+    .mat-mdc-menu-item {
+      // Base styles for the menu items
+      transition: background-color 0.3s ease;
+
+      // Style for the selected item
+      &.selected {
+        color: #3b9a7a; // Text color
+        background-color: #f6f6f6;
+        // Additional hover effects for selected item
+        &:hover {
+          background-color: #f6f6f6; // Darker shade on hover
+        }
+      }
+
+      // Optional: hover effect for non-selected items
+      &:hover {
+        background-color: #f6f6f6; // Light gray background on hover
+      }
+    }
   }
 
   .chat-section {
@@ -36,11 +56,45 @@
     }
   }
 
+
   .chat-header {
-    padding: 24px 24px 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
     cursor: pointer;
-    color: #4ada9e;
-    border-bottom: 1px solid #e0e0e0;
+    color: #093042;
+    border-bottom: 1px solid #dcdcdc;
+
+    .title-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #333333;
+    }
+
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 16px; /* Space between icons */
+
+      mat-icon {
+        cursor: pointer;
+        font-size: 24px;
+        color: #767676; /* Adjust the color */
+
+        &:hover {
+          color: #3b9a7a; /* Change color on hover */
+        }
+      }
+    }
   }
 
   .chat-messages {
@@ -58,14 +112,16 @@
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;
-    background-color: #e0e0e0;
+    background-color: #4cda9f;
+    color: #282828;
     display: flex;
     flex-direction: column;
     position: relative;
   }
 
   .chat-message.sent {
-    background-color: #c5e1a5;
+    background-color: #f6f6f6;
+    color: #282828;
     align-self: flex-end;
   }
 
@@ -75,7 +131,7 @@
 
   .message-date {
     font-size: 10px;
-    color: #888;
+    color: #282828;
     margin-top: 5px;
     align-self: flex-end;
   }
@@ -83,7 +139,7 @@
   .chat-input {
     display: flex;
     align-items: center;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #dcdcdc;
     padding: 10px;
   }
 
@@ -93,7 +149,7 @@
 
   .profile-section {
     width: 50%;
-    border-left: 1px solid #e0e0e0;
+    border-left: 1px solid #dcdcdc;
     background-color: white;
     overflow: auto;
     transition: width 0.3s ease-in-out;

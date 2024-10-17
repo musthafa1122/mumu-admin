@@ -87,14 +87,15 @@ export class ChatApplicationComponent {
     location: 'Munich, Germany',
     profilePic: 'https://randomuser.me/api/portraits/men/1.jpg'
   };
-  isProfileSectionVisible: boolean = true; // State to control profile section visibility
+  isProfileSectionVisible: boolean = false; // State to control profile section visibility
+  // Function to close the profile section
+  showDate = false;
 
   // Function to toggle the profile section visibility
   toggleProfileSection() {
     this.isProfileSectionVisible = !this.isProfileSectionVisible;
   }
 
-  // Function to close the profile section
   closeProfileSection() {
     this.isProfileSectionVisible = false;
   }

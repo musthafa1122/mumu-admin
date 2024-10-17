@@ -5,35 +5,46 @@
       <div class="content-container">
         <!-- Friends List -->
         <div class="friends-list">
-          <div class="mat-mdc-menu-content">
+          <div class="mat-mdc-menu-content p-0">
             <!-- Loop through the users array -->
             <button (click)="selectUser(user)" *ngFor="let user of users"
+                    [ngClass]="{'selected': selectedUser === user}"
                     class="mat-mdc-menu-item mat-mdc-focus-indicator p-x-32 p-y-16"
                     role="menuitem" tabindex="0">
-              <span class="mat-mdc-menu-item-text">
-                <div class="d-flex align-items-center">
-                  <img [src]="user.profilePic" alt="" class="rounded-circle" width="48">
-                  <div class="m-l-16">
-                    <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">{{ user.name }}</h5>
-                    <span>{{ user.orderId }}</span>
-                  </div>
-                </div>
-              </span>
+            <span class="mat-mdc-menu-item-text">
+        <div class="d-flex align-items-center">
+          <img [src]="user.profilePic" alt="" class="rounded-circle" width="48">
+          <div class="m-l-16" style="display: flex;flex-direction: column">
+            <strong>{{ user.name }}</strong>
+            <span>{{ user.orderId }}</span>
+          </div>
+        </div>
+      </span>
             </button>
           </div>
         </div>
-
         <!-- Chat Section -->
         <div [ngClass]="{'chat-section': true, 'profile-open': isProfileSectionVisible}">
-          <div (click)="toggleProfileSection()" class="chat-header">
-            <h2>{{ selectedUser?.name || 'Select a user to chat' }}</h2>
+          <div class="chat-header">
+            <div (click)="toggleProfileSection()" class="title-logo">
+              <img [src]="selectedUser.profilePic" alt="" class="rounded-circle" width="48">
+              <h2>{{ selectedUser?.name || 'Select a user to chat' }}</h2>
+            </div>
+
+            <!-- Icons on the right -->
+            <div class="header-icons">
+              <mat-icon>call</mat-icon>
+              <mat-icon>videocam</mat-icon>
+              <mat-icon>more_vert</mat-icon>
+            </div>
           </div>
           <div class="chat-messages">
-            <div *ngFor="let message of messages"
+            <div (click)="showDate=!showDate"
+                 *ngFor="let message of messages"
                  [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
                  class="chat-message">
-              <p>{{ message.text }}</p>
-              <span class="message-date">{{ message.date | date: 'short' }}</span>
+              <span>{{ message.text }}</span>
+              <span *ngIf="showDate" class="message-date">{{ message.date | date: 'short' }}</span>
             </div>
           </div>
           <div class="chat-input">
