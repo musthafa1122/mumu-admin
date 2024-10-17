@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MaterialModule} from "../../material.module";
 import {TablerIconsModule} from "angular-tabler-icons";
 import {NgScrollbarModule} from "ngx-scrollbar";
@@ -9,6 +9,7 @@ import {AppNavItemComponent} from "../../layouts/full/sidebar/nav-item/nav-item.
 import {HeaderComponent} from "../../layouts/full/header/header.component";
 import {RouterOutlet} from "@angular/router";
 import {SidebarComponent} from "../../layouts/full/sidebar/sidebar.component";
+import {ChatService} from "./chat.service";
 
 @Component({
   selector: 'app-chat-application',
@@ -18,7 +19,7 @@ import {SidebarComponent} from "../../layouts/full/sidebar/sidebar.component";
   styleUrl: './chat-application.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class ChatApplicationComponent {
+export class ChatApplicationComponent implements OnInit {
   menuItems = [
     {label: 'Home', icon: 'home'},
     {label: 'Chats', icon: 'chat'},
@@ -53,7 +54,7 @@ export class ChatApplicationComponent {
     {profilePic: '/assets/images/profile/user-4.jpg', name: 'Evelyn', orderId: 'Order ID: 12368'}
   ];
   selectedUser = this.users[0]; // Default selected user for chat
-
+  conversationId = '671108f393262517c74a555f';
   messages = [
     {text: 'Hello!', sender: 'me', date: new Date('2024-10-15T10:15:00')},
     {text: 'Hi Roman!', sender: 'Roman', date: new Date('2024-10-15T10:16:00')},
@@ -91,6 +92,28 @@ export class ChatApplicationComponent {
   // Function to close the profile section
   showDate = false;
 
+  constructor(private chatService: ChatService) {
+  }
+
+  ngOnInit() {
+    // Subscribe to messages
+    this.chatService.subscribeToMessages(this.conversationId).subscribe({
+      next: (response: any) => {
+        if (response && response.data && response.data.messageSent) {
+          const newMessage = response.data.messageSent;
+          const res = {text: newMessage.content, sender: newMessage.sender.id, date: newMessage.createdAt};
+          this.messages.push(res);
+          console.log('New message received:', newMessage);
+        } else {
+          console.error('Received empty response for messageSent:', response);
+        }
+      },
+      error: (error) => {
+        console.error('Error subscribing to messages:', error);
+      }
+    });
+  }
+
   // Function to toggle the profile section visibility
   toggleProfileSection() {
     this.isProfileSectionVisible = !this.isProfileSectionVisible;
@@ -102,8 +125,18 @@ export class ChatApplicationComponent {
 
   sendMessage() {
     if (this.newMessage.trim()) {
-      this.messages.push({text: this.newMessage, sender: 'me', date: new Date()});
-      this.newMessage = '';
+      this.chatService.sendMessage(this.conversationId, '6708df417f34f8c4c3df65da', this.newMessage).subscribe({
+        next: (response: any) => {
+          const sentMessage = response.data.sendMessage;
+
+          const res = {text: sentMessage.content, sender: 'me', date: new Date('2024-10-15T10:15:00')};
+          this.messages.push(res); // Add the sent message to the messages array
+          this.newMessage = ''; // Clear input after sending
+        },
+        error: (error) => {
+          console.error('Error sending message:', error);
+        }
+      });
     }
   }
 
