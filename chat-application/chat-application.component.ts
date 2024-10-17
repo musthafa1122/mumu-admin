@@ -2,7 +2,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {MaterialModule} from "../../material.module";
 import {TablerIconsModule} from "angular-tabler-icons";
 import {NgScrollbarModule} from "ngx-scrollbar";
-import {NgClass, NgForOf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {WorkerProfileComponent} from "../available-workers/worker-profile/worker-profile.component";
 import {AppNavItemComponent} from "../../layouts/full/sidebar/nav-item/nav-item.component";
@@ -13,7 +13,7 @@ import {SidebarComponent} from "../../layouts/full/sidebar/sidebar.component";
 @Component({
   selector: 'app-chat-application',
   standalone: true,
-  imports: [MaterialModule, NgScrollbarModule, TablerIconsModule, NgClass, FormsModule, NgForOf, WorkerProfileComponent, AppNavItemComponent, HeaderComponent, RouterOutlet, SidebarComponent],
+  imports: [MaterialModule, NgScrollbarModule, TablerIconsModule, NgClass, FormsModule, NgForOf, WorkerProfileComponent, AppNavItemComponent, HeaderComponent, RouterOutlet, SidebarComponent, NgIf, DatePipe],
   templateUrl: './chat-application.component.html',
   styleUrl: './chat-application.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -55,9 +55,29 @@ export class ChatApplicationComponent {
   selectedUser = this.users[0]; // Default selected user for chat
 
   messages = [
-    {text: 'Hello!', sender: 'me'},
-    {text: 'Hi there!', sender: 'John Doe'}
+    {text: 'Hello!', sender: 'me', date: new Date('2024-10-15T10:15:00')},
+    {text: 'Hi Roman!', sender: 'Roman', date: new Date('2024-10-15T10:16:00')},
+    {text: 'How are you?', sender: 'me', date: new Date('2024-10-15T10:17:00')},
+    {text: 'I am doing well, thanks!', sender: 'Roman', date: new Date('2024-10-15T10:18:00')},
+    {text: 'What are you up to today?', sender: 'me', date: new Date('2024-10-15T10:19:00')},
+    {text: 'Just working on some projects.', sender: 'Roman', date: new Date('2024-10-15T10:20:00')},
+    {text: 'That sounds good! Need any help?', sender: 'me', date: new Date('2024-10-15T10:21:00')},
+    {text: 'Not at the moment, but thanks!', sender: 'Roman', date: new Date('2024-10-15T10:22:00')},
+    {text: 'Any plans for the weekend?', sender: 'me', date: new Date('2024-10-15T10:23:00')},
+    {text: 'Thinking of going hiking.', sender: 'Roman', date: new Date('2024-10-15T10:24:00')},
+    {text: 'That sounds fun! Where?', sender: 'me', date: new Date('2024-10-15T10:25:00')},
+    {text: 'Probably in the mountains nearby.', sender: 'Roman', date: new Date('2024-10-15T10:26:00')},
+    {text: 'Nice! I love hiking.', sender: 'me', date: new Date('2024-10-15T10:27:00')},
+    {text: 'We should go together sometime.', sender: 'Roman', date: new Date('2024-10-15T10:28:00')},
+    {text: 'Definitely! Let’s plan it.', sender: 'me', date: new Date('2024-10-15T10:29:00')},
+    {text: 'Sounds good. I’ll check my schedule.', sender: 'Roman', date: new Date('2024-10-15T10:30:00')},
+    {text: 'Let me know!', sender: 'me', date: new Date('2024-10-15T10:31:00')},
+    {text: 'Will do! Any other updates from your side?', sender: 'Roman', date: new Date('2024-10-15T10:32:00')},
+    {text: 'Not much, just busy with work.', sender: 'me', date: new Date('2024-10-15T10:33:00')},
+    {text: 'I feel you. It’s been hectic lately.', sender: 'Roman', date: new Date('2024-10-15T10:34:00')},
+    {text: 'Yeah, we need a break!', sender: 'me', date: new Date('2024-10-15T10:35:00')}
   ];
+
 
   newMessage = '';
 
@@ -67,11 +87,27 @@ export class ChatApplicationComponent {
     location: 'Munich, Germany',
     profilePic: 'https://randomuser.me/api/portraits/men/1.jpg'
   };
+  isProfileSectionVisible: boolean = true; // State to control profile section visibility
+
+  // Function to toggle the profile section visibility
+  toggleProfileSection() {
+    this.isProfileSectionVisible = !this.isProfileSectionVisible;
+  }
+
+  // Function to close the profile section
+  closeProfileSection() {
+    this.isProfileSectionVisible = false;
+  }
 
   sendMessage() {
     if (this.newMessage.trim()) {
-      this.messages.push({text: this.newMessage, sender: 'me'});
+      this.messages.push({text: this.newMessage, sender: 'me', date: new Date()});
       this.newMessage = '';
     }
+  }
+
+  public selectUser(user: { orderId: string; profilePic: string; name: string }) {
+    this.selectedUser = user;
+    // this.toggleProfileSection()
   }
 }
