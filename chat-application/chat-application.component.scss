@@ -5,160 +5,148 @@
 .chat-main-container {
   height: 82vh;
   border: 1px solid #dcdcdc;
-
-  .sidenav-container {
-    height: 100%;
-  }
-
-  .content-container {
-    display: flex;
-    height: 100%;
-  }
-
-  .friends-list {
-    width: 25%;
-    border-right: 1px solid #dcdcdc;
-    background-color: white;
-    overflow: auto;
-
-    .mat-mdc-menu-item {
-      // Base styles for the menu items
-      transition: background-color 0.3s ease;
-
-      // Style for the selected item
-      &.selected {
-        color: #3b9a7a; // Text color
-        background-color: #f6f6f6;
-        // Additional hover effects for selected item
-        &:hover {
-          background-color: #f6f6f6; // Darker shade on hover
-        }
-      }
-
-      // Optional: hover effect for non-selected items
-      &:hover {
-        background-color: #f6f6f6; // Light gray background on hover
-      }
-    }
-  }
-
-  .chat-section {
-    width: 75%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: white;
-    overflow: auto;
-    transition: width 0.3s ease-in-out;
-
-    &.profile-open {
-      width: 50%;
-    }
-  }
-
-
-  .chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px;
-    cursor: pointer;
-    color: #093042;
-    border-bottom: 1px solid #dcdcdc;
-
-    .title-logo {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: #333333;
-    }
-
-
-    h2 {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .header-icons {
-      display: flex;
-      align-items: center;
-      gap: 16px; /* Space between icons */
-
-      mat-icon {
-        cursor: pointer;
-        font-size: 24px;
-        color: #767676; /* Adjust the color */
-
-        &:hover {
-          color: #3b9a7a; /* Change color on hover */
-        }
-      }
-    }
-  }
-
-  .chat-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 24px;
-    margin-bottom: 10px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .chat-message {
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 70%;
-    background-color: #4cda9f;
-    color: #282828;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .chat-message.sent {
-    background-color: #f6f6f6;
-    color: #282828;
-    align-self: flex-end;
-  }
-
-  .chat-message.received {
-    align-self: flex-start;
-  }
-
-  .message-date {
-    font-size: 10px;
-    color: #282828;
-    margin-top: 5px;
-    align-self: flex-end;
-  }
-
-  .chat-input {
-    display: flex;
-    align-items: center;
-    border-top: 1px solid #dcdcdc;
-    padding: 10px;
-  }
-
-  .message-input {
-    flex-grow: 1;
-  }
-
-  .profile-section {
-    width: 50%;
-    border-left: 1px solid #dcdcdc;
-    background-color: white;
-    overflow: auto;
-    transition: width 0.3s ease-in-out;
-
-    .close-button {
-      background: none;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  }
 }
+
+.sidenav-container {
+  height: 100%;
+}
+
+.content-container {
+  display: flex;
+  height: 100%;
+}
+
+.friends-list {
+  background-color: white;
+  overflow: auto;
+}
+
+.friends-list .mat-mdc-menu-item {
+  transition: background-color 0.3s ease;
+}
+
+.friends-list .mat-mdc-menu-item.selected {
+  color: #3b9a7a;
+  background-color: #f6f6f6;
+}
+
+.friends-list .mat-mdc-menu-item:hover {
+  background-color: #f6f6f6;
+}
+
+.chat-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  overflow: auto;
+  transition: width 0.3s ease-in-out;
+}
+
+.chat-section.profile-open {
+  width: 50%;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+  color: #093042;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.chat-header .title-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #333333;
+}
+
+.chat-header .header-icons mat-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #767676;
+}
+
+.header-icons {
+  display: flex;
+  gap: 14px;
+}
+
+.chat-header .header-icons mat-icon:hover {
+  color: #3b9a7a;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.chat-message {
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  background-color: #4cda9f;
+  color: #282828;
+}
+
+.chat-message.sent {
+  background-color: #f6f6f6;
+  align-self: flex-end;
+}
+
+.chat-message.received {
+  align-self: flex-start;
+}
+
+.message-date {
+  font-size: 10px;
+  color: #282828;
+  margin-top: 5px;
+  align-self: flex-end;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #dcdcdc;
+  padding: 10px;
+}
+
+.message-input {
+  flex-grow: 1;
+}
+
+.profile-section {
+  background-color: white;
+  overflow: auto;
+  transition: width 0.3s ease-in-out;
+}
+
+.profile-section .close-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.example-container {
+  width: 100%;
+  height: 100%;
+}
+
+.example-sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+

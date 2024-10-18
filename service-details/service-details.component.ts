@@ -3,7 +3,7 @@ import {UserComponent} from "../../components/user/user.component";
 import {ErrandsServiceFormComponent} from "../services/errands-service-form/errands-service-form.component";
 import {DriverServiceFormComponent} from "../services/driver-service-form/driver-service-form.component";
 import {BystanderServiceFormComponent} from "../services/bystander-service-form/bystander-service-form.component";
-import {ParentServiceType} from "../../components/blog-card/blog-card.component";
+import {ParentServiceType} from "../../components/service-home/service-home.component";
 import {MaterialModule} from "../../material.module";
 import {CommonModule} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -107,18 +107,12 @@ export class ServiceDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Get the serviceType from route parameters
     this.getCurrentLocation();
+    this.route.queryParamMap.subscribe(params => {
+      const serviceTypeParam = params.get('serviceType')?.toLowerCase();
 
-    this.route.paramMap.subscribe(params => {
-      const serviceTypeParam = params.get('serviceType');
-
-      // Check if the serviceTypeParam is a valid ParentServiceType
       if (serviceTypeParam && Object.values(ParentServiceType).includes(serviceTypeParam as ParentServiceType)) {
         this.selectedServiceType = serviceTypeParam as ParentServiceType;
-      } else {
-        // Redirect or handle invalid serviceType (optional)
-        // this.router.navigate(['/404']); // For example, redirect to a 404 page
       }
     });
   }

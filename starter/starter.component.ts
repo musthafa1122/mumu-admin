@@ -5,9 +5,9 @@ import {AppSalesOverviewComponent} from "../../components/sales-overview/sales-o
 import {AppYearlyBreakupComponent} from "../../components/yearly-breakup/yearly-breakup.component";
 import {AppMonthlyEarningsComponent} from "../../components/monthly-earnings/monthly-earnings.component";
 import {AppProductPerformanceComponent} from "../../components/product-performance/product-performance.component";
-import {AppBlogCardsComponent} from "../../components/blog-card/blog-card.component";
 import {UserComponent} from "../../components/user/user.component";
 import {TablerIconsModule} from "angular-tabler-icons";
+import {ServiceHomeComponent} from "../../components/service-home/service-home.component";
 
 
 @Component({
@@ -20,9 +20,9 @@ import {TablerIconsModule} from "angular-tabler-icons";
     AppMonthlyEarningsComponent,
     AppRecentTransactionsComponent,
     AppProductPerformanceComponent,
-    AppBlogCardsComponent,
     UserComponent,
-    TablerIconsModule
+    TablerIconsModule,
+    ServiceHomeComponent
   ],
   templateUrl: './starter.component.html',
   encapsulation: ViewEncapsulation.None,

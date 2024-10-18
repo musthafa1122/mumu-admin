@@ -1,74 +1,80 @@
 <div class="chat-main-container">
-  <mat-sidenav-container class="sidenav-container">
-    <!-- Main Content -->
-    <mat-sidenav-content>
-      <div class="content-container">
-        <!-- Friends List -->
-        <div class="friends-list">
-          <div class="mat-mdc-menu-content p-0">
-            <!-- Loop through the users array -->
-            <button (click)="selectUser(user)" *ngFor="let user of users"
-                    [ngClass]="{'selected': selectedUser === user}"
-                    class="mat-mdc-menu-item mat-mdc-focus-indicator p-x-32 p-y-16"
-                    role="menuitem" tabindex="0">
-            <span class="mat-mdc-menu-item-text">
-        <div class="d-flex align-items-center">
-          <img [src]="user.imageUrl" alt="" class="rounded-circle" width="48">
-          <div class="m-l-16" style="display: flex;flex-direction: column">
-            <strong>{{ user.name }}</strong>
-            <span>{{ user.email }}</span>
-          </div>
-        </div>
-      </span>
-            </button>
-          </div>
-        </div>
-        <!-- Chat Section -->
-        <div [ngClass]="{'chat-section': true, 'profile-open': isProfileSectionVisible}">
-          <div class="chat-header">
-            <div (click)="toggleProfileSection()" class="title-logo">
-              <img [src]="selectedUser.imageUrl" alt="" class="rounded-circle" width="48">
-              <h2>{{ selectedUser?.name || 'Select a user to chat' }}</h2>
-            </div>
+  <mat-drawer-container autosize class="example-container">
 
-            <!-- Icons on the right -->
-            <div class="header-icons">
-              <mat-icon>call</mat-icon>
-              <mat-icon>videocam</mat-icon>
-              <mat-icon>more_vert</mat-icon>
-            </div>
-          </div>
-          <div #messageContainer class="chat-messages">
-            <div (click)="showDate=!showDate"
-                 *ngFor="let message of messages"
-                 [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
-                 class="chat-message">
-              <span>{{ message.text }}</span>
-              <span *ngIf="showDate" class="message-date">{{ message.date | date: 'short' }}</span>
-            </div>
-          </div>
-          <div class="chat-input">
-            <mat-form-field appearance="outline" class="message-input">
-              <input (keyup.enter)="sendMessage()" [(ngModel)]="newMessage" matInput placeholder="Type a message">
-            </mat-form-field>
-            <button (click)="sendMessage()" color="primary" mat-icon-button>
-              <mat-icon>send</mat-icon>
-            </button>
-          </div>
-        </div>
+    <!-- Chat Section with header, messages, and input -->
+    <div [ngClass]="{'profile-open': isProfileSectionVisible}" class="chat-section">
+      <div class="chat-header">
+        <div class="title-logo">
+          <mat-icon (click)="drawer.toggle()">list</mat-icon>
 
-        <!-- Profile Section -->
-        <div *ngIf="isProfileSectionVisible" class="profile-section">
-          <button (click)="closeProfileSection()" class="close-button" style="float: right;">
-            <mat-icon class="d-flex align-items-center">
-             <span class="material-symbols-outlined">
-                    close
-                    </span>
-            </mat-icon>
-          </button>
-          <app-worker-profile></app-worker-profile>
+          <img (click)="drawer2.toggle()" [src]="selectedUser?.imageUrl" alt="" class="rounded-circle" width="48">
+          <h2 (click)="drawer2.toggle()">{{ selectedUser?.name || 'Select a user to chat' }}</h2>
+        </div>
+        <!-- Icons on the right -->
+        <div class="header-icons">
+          <mat-icon>call</mat-icon>
+          <mat-icon>videocam</mat-icon>
+          <mat-icon>more_vert</mat-icon>
         </div>
       </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+
+      <!-- Chat Messages -->
+      <div #messageContainer class="chat-messages">
+        <div (click)="showDate=!showDate"
+             *ngFor="let message of messages"
+             [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
+             class="chat-message">
+          <span>{{ message.text }}</span>
+          <span *ngIf="showDate" class="message-date">{{ message.date | date: 'short' }}</span>
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="chat-input">
+        <mat-form-field appearance="outline" class="message-input">
+          <input (keyup.enter)="sendMessage()" [(ngModel)]="newMessage" matInput placeholder="Type a message">
+        </mat-form-field>
+        <button (click)="sendMessage()" color="primary" mat-icon-button>
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- First Sidenav Toggle Button -->
+
+
+    <!-- Sidenav for Users List -->
+    <mat-drawer #drawer class="example-sidenav" mode="side" opened position="start">
+      <div class="friends-list">
+        <div class="mat-mdc-menu-content p-0">
+          <!-- Loop through the users array -->
+          <button (click)="selectUser(user)" *ngFor="let user of users" [ngClass]="{'selected': selectedUser === user}"
+                  class="mat-mdc-menu-item mat-mdc-focus-indicator p-x-32 p-y-16" role="menuitem" tabindex="0">
+            <span class="mat-mdc-menu-item-text">
+              <div class="d-flex align-items-center">
+                <img [src]="user.imageUrl" alt="" class="rounded-circle" width="48">
+                <div class="m-l-16" style="display: flex; flex-direction: column">
+                  <strong>{{ user.name }}</strong>
+                  <span>{{ user.email }}</span>
+                </div>
+              </div>
+            </span>
+          </button>
+        </div>
+      </div>
+    </mat-drawer>
+
+    <!-- Profile Section Sidenav -->
+    <mat-drawer #drawer2 class="example-sidenav" mode="side" position="end">
+      <div class="profile-section">
+        <button (click)="drawer2.toggle()" class="close-button" style="float: right;">
+          <mat-icon class="d-flex align-items-center">
+            <span class="material-symbols-outlined">close</span>
+          </mat-icon>
+        </button>
+        <app-worker-profile></app-worker-profile>
+      </div>
+    </mat-drawer>
+
+  </mat-drawer-container>
 </div>

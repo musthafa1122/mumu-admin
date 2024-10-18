@@ -1,10 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MaterialModule} from "../../material.module";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {WorkerProfileComponent} from "../available-workers/worker-profile/worker-profile.component";
 import {RouterOutlet} from "@angular/router";
 import {ChatService, Message} from "./chat.service";
+import {Subscription} from "rxjs";
 
 interface ChatContact {
   name: string;
@@ -31,7 +32,7 @@ interface ChatContact {
   styleUrls: ['./chat-application.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ChatApplicationComponent implements OnInit {
+export class ChatApplicationComponent implements OnInit, OnDestroy {
   users: ChatContact[] = [];
   showDate = false;
   conversationId = '';
@@ -40,7 +41,9 @@ export class ChatApplicationComponent implements OnInit {
   newMessage = '';
   isProfileSectionVisible = false;
   selectedUser: ChatContact = this.getDefaultUser();
-
+  messagesByChat: { [conversationId: string]: any[] } = {}; // Object to store messages for each chat
+  subscriptions: Subscription[] = []; // Array to store subscriptions
+  showFiller = false;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   constructor(private chatService: ChatService) {
@@ -52,9 +55,9 @@ export class ChatApplicationComponent implements OnInit {
 
   getCurrentUser() {
     this.chatService.getCurrentUserId().subscribe(data => {
-      this.loggedUserId = data
+      this.loggedUserId = data;
       this.loadChatContacts();
-    })
+    });
   }
 
   // Toggle profile section visibility
@@ -81,6 +84,11 @@ export class ChatApplicationComponent implements OnInit {
         error: (error) => console.error('Error sending message:', error)
       });
     }
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from all subscriptions when the component is destroyed
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   // Load all chat contacts
@@ -147,10 +155,11 @@ export class ChatApplicationComponent implements OnInit {
 
   // Subscribe to messages for the current conversation
   private subscribeToMessages() {
-    this.chatService.subscribeToMessages(this.conversationId).subscribe({
+    const subscription = this.chatService.subscribeToMessages(this.conversationId).subscribe({
       next: (response: any) => this.handleNewMessage(response),
       error: (error) => console.error('Error subscribing to messages:', error)
     });
+    this.subscriptions.push(subscription); // Track the subscription
   }
 
   // Handle incoming messages
@@ -162,6 +171,16 @@ export class ChatApplicationComponent implements OnInit {
         sender: newMessage.sender.id === this.loggedUserId ? 'me' : newMessage.sender.firstName,
         date: new Date(newMessage.createdAt)
       };
+
+      // If the conversationId does not exist in messagesByChat, initialize it
+      if (!this.messagesByChat[this.conversationId]) {
+        this.messagesByChat[this.conversationId] = [];
+      }
+
+      // Push the new message to the corresponding conversation's message list
+      this.messagesByChat[this.conversationId].push(newMessage);
+
+      // Add the message to the currently active chat
       this.messages.push(mappedMessage);
       this.scrollToBottom();
     } else {
