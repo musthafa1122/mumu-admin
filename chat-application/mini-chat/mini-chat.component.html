@@ -1,0 +1,24 @@
+<div class="chat-section">
+  <div class="chat-header">
+    <div class="title-logo">
+      <h3>Musthafa</h3>
+    </div>
+  </div>
+  <div #messageContainer class="chat-messages">
+    <div
+      *ngFor="let message of messages"
+      [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
+      class="chat-message">
+      <span>{{ message.text }}</span>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <mat-form-field appearance="outline" class="message-input">
+      <input (keyup.enter)="sendMessage()" [(ngModel)]="newMessage" matInput placeholder="Type a message">
+    </mat-form-field>
+    <button (click)="sendMessage()" color="primary" mat-icon-button>
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+</div>
