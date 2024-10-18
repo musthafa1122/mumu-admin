@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MaterialModule} from "../../material.module";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -6,6 +6,7 @@ import {WorkerProfileComponent} from "../available-workers/worker-profile/worker
 import {RouterOutlet} from "@angular/router";
 import {ChatService, Message} from "./chat.service";
 import {Subscription} from "rxjs";
+import {NgScrollbar, NgScrollbarModule} from "ngx-scrollbar";
 
 interface ChatContact {
   name: string;
@@ -26,7 +27,8 @@ interface ChatContact {
     WorkerProfileComponent,
     RouterOutlet,
     NgIf,
-    DatePipe
+    DatePipe,
+    NgScrollbarModule
   ],
   templateUrl: './chat-application.component.html',
   styleUrls: ['./chat-application.component.scss'],
@@ -44,7 +46,7 @@ export class ChatApplicationComponent implements OnInit, OnDestroy {
   messagesByChat: { [conversationId: string]: any[] } = {}; // Object to store messages for each chat
   subscriptions: Subscription[] = []; // Array to store subscriptions
   showFiller = false;
-  @ViewChild('messageContainer') private messageContainer!: ElementRef;
+  @ViewChild(NgScrollbar, {static: true}) scrollable: NgScrollbar | undefined;
 
   constructor(private chatService: ChatService) {
   }
@@ -89,6 +91,18 @@ export class ChatApplicationComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Unsubscribe from all subscriptions when the component is destroyed
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  // Scroll the message container to the bottom
+  public scrollToBottom(): void {
+    setTimeout(() => {
+      try {
+        // @ts-ignore
+        this.scrollable.scrollTo({bottom: 0})
+      } catch (err) {
+        console.error('Scroll error:', err);
+      }
+    }, 100); // You can adjust the delay if necessary
   }
 
   // Load all chat contacts
@@ -182,18 +196,10 @@ export class ChatApplicationComponent implements OnInit, OnDestroy {
 
       // Add the message to the currently active chat
       this.messages.push(mappedMessage);
+
       this.scrollToBottom();
     } else {
       console.error('Received empty response for messageSent:', response);
-    }
-  }
-
-  // Scroll the message container to the bottom
-  private scrollToBottom(): void {
-    try {
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error('Scroll error:', err);
     }
   }
 

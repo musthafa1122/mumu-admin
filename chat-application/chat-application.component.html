@@ -1,5 +1,5 @@
 <div class="chat-main-container">
-  <mat-drawer-container autosize class="example-container">
+  <mat-drawer-container autosize class="example-container" style="overflow: hidden !important;">
 
     <!-- Chat Section with header, messages, and input -->
     <div [ngClass]="{'profile-open': isProfileSectionVisible}" class="chat-section">
@@ -13,19 +13,22 @@
         <!-- Icons on the right -->
         <div class="header-icons">
           <mat-icon>call</mat-icon>
-          <mat-icon>videocam</mat-icon>
           <mat-icon>more_vert</mat-icon>
         </div>
       </div>
-      <div #messageContainer class="chat-messages">
-        <div (click)="showDate=!showDate"
-             *ngFor="let message of messages"
-             [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
-             class="chat-message">
-          <span>{{ message.text }}</span>
-          <span *ngIf="showDate" class="message-date">{{ message.date | date: 'short' }}</span>
+      <ng-scrollbar #messageContainer #scrollbarRef="ngScrollbar">
+
+        <div class="chat-messages">
+          <div (click)="showDate=!showDate"
+               *ngFor="let message of messages"
+               [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
+               class="chat-message">
+            <span>{{ message.text }}</span>
+            <span *ngIf="showDate" class="message-date">{{ message.date | date: 'short' }}</span>
+          </div>
         </div>
-      </div>
+      </ng-scrollbar>
+
       <div class="chat-input">
         <mat-form-field appearance="outline" class="message-input">
           <input (keyup.enter)="sendMessage()" [(ngModel)]="newMessage" matInput placeholder="Type a message">
