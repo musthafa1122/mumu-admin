@@ -33,19 +33,14 @@ interface ChatContact {
 })
 export class ChatApplicationComponent implements OnInit {
   users: ChatContact[] = [];
+  showDate = false;
   conversationId = '671108f393262517c74a555f';
   loggedUserId = '6708df417f34f8c4c3df65da';
-  messages = [{text: 'Hello!', sender: 'me', date: new Date('2024-10-15T10:15:00')}];
+  messages: { text: string; sender: string; date: Date }[] = [];
   newMessage = '';
   isProfileSectionVisible = false;
-  showDate = false;
-  selectedUser: ChatContact = {
-    name: 'Please add contact',
-    id: '',
-    imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
-    email: '',
-    phoneNumber: 0
-  };
+  selectedUser: ChatContact = this.getDefaultUser();
+
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   constructor(private chatService: ChatService) {
@@ -55,32 +50,7 @@ export class ChatApplicationComponent implements OnInit {
     this.loadChatContacts();
   }
 
-  getConversationId(user1Id: string, user2Id: string) {
-    this.chatService.getConversationId(user1Id, user2Id).subscribe({
-      next: (data: any) => {
-        console.log(data);
-        this.conversationId = data;
-        this.subscribeToMessages()
-        this.getAllMessages()
-      },
-      error: (error: any) => {
-        console.error('Error fetching conversation, trying to create one:', error);
-        // If there is an error, try creating a new conversation
-        this.chatService.createConversation(user1Id, user2Id).subscribe({
-          next: (data: any) => {
-            console.log('New conversation created:', data);
-            this.conversationId = data;
-            this.subscribeToMessages()
-
-          },
-          error: (createError: any) => {
-            console.error('Error creating conversation:', createError);
-          }
-        });
-      }
-    });
-  }
-
+  // Toggle profile section visibility
   toggleProfileSection() {
     this.isProfileSectionVisible = !this.isProfileSectionVisible;
   }
@@ -89,27 +59,14 @@ export class ChatApplicationComponent implements OnInit {
     this.isProfileSectionVisible = false;
   }
 
-  getAllMessages() {
-    this.chatService.getMessages(this.conversationId).subscribe({
-      next: (data: Message[] | any) => {
-        console.log(data)
-        this.messages = this.mapMessages(data);
-        this.scrollToBottom();
-      },
-      error: (error: any) => {
-        console.error('Error fetching messages:', error);
-      }
-    });
+  // Select a user and load the conversation
+  selectUser(user: ChatContact) {
+    this.selectedUser = user;
+    this.messages = [];
+    this.getConversationId(user.id, this.loggedUserId);
   }
 
-  mapMessages(messages: Message[]): any[] {
-    return messages.map((message: Message) => ({
-      text: message.content,
-      sender: message.sender.id === this.loggedUserId ? 'me' : message.sender.firstName,
-      date: new Date(message.createdAt)
-    }));
-  }
-
+  // Send a new message
   sendMessage() {
     if (this.newMessage.trim()) {
       this.chatService.sendMessage(this.conversationId, this.loggedUserId, this.newMessage).subscribe({
@@ -119,54 +76,69 @@ export class ChatApplicationComponent implements OnInit {
     }
   }
 
-  selectUser(user: ChatContact) {
-    this.selectedUser = user;
-    this.messages = []
-    this.getConversationId(user.id, this.loggedUserId)
-
-  }
-
-  private scrollToBottom(): void {
-    try {
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error('Scroll error:', err);
-    }
-  }
-
+  // Load all chat contacts
   private loadChatContacts() {
     this.chatService.getChatContacts().subscribe({
       next: (response: any) => {
-        const assignedUsers = this.extractAssignedUsers(response);
-        this.users = this.getUniqueUsers(assignedUsers);
+        this.users = this.extractUniqueUsers(response);
         this.selectedUser = this.users[0]; // Default to the first user
-
-        this.getConversationId(this.loggedUserId, this.selectedUser.id)
+        this.getConversationId(this.loggedUserId, this.selectedUser.id);
       },
-      error: (error) => {
-        console.error('Error fetching chat contacts:', error);
+      error: (error) => console.error('Error fetching chat contacts:', error)
+    });
+  }
+
+  // Get conversation ID for the selected users
+  private getConversationId(user1Id: string, user2Id: string) {
+    this.chatService.getConversationId(user1Id, user2Id).subscribe({
+      next: (data: any) => {
+        this.conversationId = data;
+        this.subscribeToMessages();
+        this.getAllMessages();
+      },
+      error: (error: any) => {
+        console.error('Error fetching conversation, trying to create one:', error);
+        this.createConversation(user1Id, user2Id);
       }
     });
   }
 
-  private extractAssignedUsers(response: any): ChatContact[] {
-    return response.data.serviceOrderByUserId
-      .map((order: any) => order.assignedUser ? {
-        name: `${order.assignedUser.firstName} ${order.assignedUser.lastName}`,
-        id: order.assignedUser.id,
-        phoneNumber: order.assignedUser.phoneNumber,
-        email: order.assignedUser.email,
-        imageUrl: order.assignedUser.image
-      } : null)
-      .filter((user: ChatContact | null): user is ChatContact => user !== null); // Type guard for non-null users
+  // Create a new conversation if it doesn't exist
+  private createConversation(user1Id: string, user2Id: string) {
+    this.chatService.createConversation(user1Id, user2Id).subscribe({
+      next: (data: any) => {
+        this.conversationId = data;
+        this.subscribeToMessages();
+      },
+      error: (createError: any) => {
+        console.error('Error creating conversation:', createError);
+      }
+    });
   }
 
-  private getUniqueUsers(users: ChatContact[]): ChatContact[] {
-    return users.filter((user, index, self) =>
-      index === self.findIndex((u) => u.id === user.id)
-    );
+  // Fetch all messages for the current conversation
+  private getAllMessages() {
+    this.chatService.getMessages(this.conversationId).subscribe({
+      next: (data: Message[] | any) => {
+        this.messages = this.mapMessages(data);
+        this.scrollToBottom();
+      },
+      error: (error: any) => {
+        console.error('Error fetching messages:', error);
+      }
+    });
   }
 
+  // Map the messages to the desired format
+  private mapMessages(messages: Message[]): any[] {
+    return messages.map((message: Message) => ({
+      text: message.content,
+      sender: message.sender.id === this.loggedUserId ? 'me' : message.sender.firstName,
+      date: new Date(message.createdAt)
+    }));
+  }
+
+  // Subscribe to messages for the current conversation
   private subscribeToMessages() {
     this.chatService.subscribeToMessages(this.conversationId).subscribe({
       next: (response: any) => this.handleNewMessage(response),
@@ -174,6 +146,7 @@ export class ChatApplicationComponent implements OnInit {
     });
   }
 
+  // Handle incoming messages
   private handleNewMessage(response: any) {
     if (response?.data?.messageSent && response?.data?.messageSent.conversationId === this.conversationId) {
       const newMessage = response.data.messageSent;
@@ -184,9 +157,50 @@ export class ChatApplicationComponent implements OnInit {
       };
       this.messages.push(mappedMessage);
       this.scrollToBottom();
-      console.log('New message received:', newMessage);
     } else {
       console.error('Received empty response for messageSent:', response);
     }
+  }
+
+  // Scroll the message container to the bottom
+  private scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Scroll error:', err);
+    }
+  }
+
+  // Extract unique users from the response
+  private extractUniqueUsers(response: any): ChatContact[] {
+    const assignedUsers = response.data.serviceOrderByUserId.map((order: any) => {
+      return order.assignedUser ? {
+        name: `${order.assignedUser.firstName} ${order.assignedUser.lastName}`,
+        id: order.assignedUser.id,
+        phoneNumber: order.assignedUser.phoneNumber,
+        email: order.assignedUser.email,
+        imageUrl: order.assignedUser.image
+      } : null;
+    }).filter((user: ChatContact | null): user is ChatContact => user !== null);
+
+    return this.getUniqueUsers(assignedUsers);
+  }
+
+  // Ensure users are unique by their IDs
+  private getUniqueUsers(users: ChatContact[]): ChatContact[] {
+    return users.filter((user, index, self) =>
+      index === self.findIndex((u) => u.id === user.id)
+    );
+  }
+
+  // Provide a default user
+  private getDefaultUser(): ChatContact {
+    return {
+      name: 'Please add contact',
+      id: '',
+      imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
+      email: '',
+      phoneNumber: 0
+    };
   }
 }
