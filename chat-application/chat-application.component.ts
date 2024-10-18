@@ -149,7 +149,7 @@ export class ChatApplicationComponent implements OnInit, OnDestroy {
     return messages.map((message: Message) => ({
       text: message.content,
       sender: message.sender.id === this.loggedUserId ? 'me' : message.sender.firstName,
-      date: new Date(message.createdAt)
+      date: message.createdAt
     }));
   }
 
@@ -169,7 +169,7 @@ export class ChatApplicationComponent implements OnInit, OnDestroy {
       const mappedMessage = {
         text: newMessage.content,
         sender: newMessage.sender.id === this.loggedUserId ? 'me' : newMessage.sender.firstName,
-        date: new Date(newMessage.createdAt)
+        date: newMessage.createdAt
       };
 
       // If the conversationId does not exist in messagesByChat, initialize it

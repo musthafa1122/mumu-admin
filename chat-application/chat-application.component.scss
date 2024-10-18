@@ -41,6 +41,7 @@
   background-color: white;
   overflow: auto;
   transition: width 0.3s ease-in-out;
+  height: 100%;
 }
 
 .chat-section.profile-open {
@@ -55,6 +56,8 @@
   cursor: pointer;
   color: #093042;
   border-bottom: 1px solid #dcdcdc;
+  height: 10%;
+
 }
 
 .chat-header .title-logo {
@@ -87,6 +90,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  height: 80%;
 }
 
 .chat-message {
@@ -101,10 +105,16 @@
 .chat-message.sent {
   background-color: #f6f6f6;
   align-self: flex-end;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
 }
 
 .chat-message.received {
   align-self: flex-start;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .message-date {
@@ -118,7 +128,8 @@
   display: flex;
   align-items: center;
   border-top: 1px solid #dcdcdc;
-  padding: 10px;
+  height: auto;
+  padding: 22px 10px 10px;
 }
 
 .message-input {

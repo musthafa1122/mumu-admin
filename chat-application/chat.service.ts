@@ -196,7 +196,7 @@ export class ChatService {
     return this.apollo.watchQuery({
       query: GET_CURRENT_USER_ID,
       variables: {
-        email: sessionStorage.getItem('email'),
+        email: sessionStorage.getItem('email') || 'mhdmusthafa500@gmail.com',
         phoneNumber: ''
       }
     }).valueChanges.pipe(

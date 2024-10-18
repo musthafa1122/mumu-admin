@@ -17,8 +17,6 @@
           <mat-icon>more_vert</mat-icon>
         </div>
       </div>
-
-      <!-- Chat Messages -->
       <div #messageContainer class="chat-messages">
         <div (click)="showDate=!showDate"
              *ngFor="let message of messages"
@@ -28,8 +26,6 @@
           <span *ngIf="showDate" class="message-date">{{ message.date | date: 'short' }}</span>
         </div>
       </div>
-
-      <!-- Chat Input -->
       <div class="chat-input">
         <mat-form-field appearance="outline" class="message-input">
           <input (keyup.enter)="sendMessage()" [(ngModel)]="newMessage" matInput placeholder="Type a message">
@@ -40,10 +36,6 @@
       </div>
     </div>
 
-    <!-- First Sidenav Toggle Button -->
-
-
-    <!-- Sidenav for Users List -->
     <mat-drawer #drawer class="example-sidenav" mode="side" opened position="start">
       <div class="friends-list">
         <div class="mat-mdc-menu-content p-0">
