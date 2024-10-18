@@ -34,7 +34,7 @@ interface ChatContact {
 export class ChatApplicationComponent implements OnInit {
   users: ChatContact[] = [];
   conversationId = '671108f393262517c74a555f';
-  userId = '6708df417f34f8c4c3df65da';
+  loggedUserId = '6708df417f34f8c4c3df65da';
   messages = [{text: 'Hello!', sender: 'me', date: new Date('2024-10-15T10:15:00')}];
   newMessage = '';
   isProfileSectionVisible = false;
@@ -53,8 +53,32 @@ export class ChatApplicationComponent implements OnInit {
 
   ngOnInit() {
     this.loadChatContacts();
-    this.subscribeToMessages();
-    this.getAllMessages();
+  }
+
+  getConversationId(user1Id: string, user2Id: string) {
+    this.chatService.getConversationId(user1Id, user2Id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.conversationId = data;
+        this.subscribeToMessages()
+        this.getAllMessages()
+      },
+      error: (error: any) => {
+        console.error('Error fetching conversation, trying to create one:', error);
+        // If there is an error, try creating a new conversation
+        this.chatService.createConversation(user1Id, user2Id).subscribe({
+          next: (data: any) => {
+            console.log('New conversation created:', data);
+            this.conversationId = data;
+            this.subscribeToMessages()
+
+          },
+          error: (createError: any) => {
+            console.error('Error creating conversation:', createError);
+          }
+        });
+      }
+    });
   }
 
   toggleProfileSection() {
@@ -68,6 +92,7 @@ export class ChatApplicationComponent implements OnInit {
   getAllMessages() {
     this.chatService.getMessages(this.conversationId).subscribe({
       next: (data: Message[] | any) => {
+        console.log(data)
         this.messages = this.mapMessages(data);
         this.scrollToBottom();
       },
@@ -80,14 +105,14 @@ export class ChatApplicationComponent implements OnInit {
   mapMessages(messages: Message[]): any[] {
     return messages.map((message: Message) => ({
       text: message.content,
-      sender: message.sender.id === this.userId ? 'me' : message.sender.firstName,
+      sender: message.sender.id === this.loggedUserId ? 'me' : message.sender.firstName,
       date: new Date(message.createdAt)
     }));
   }
 
   sendMessage() {
     if (this.newMessage.trim()) {
-      this.chatService.sendMessage(this.conversationId, this.userId, this.newMessage).subscribe({
+      this.chatService.sendMessage(this.conversationId, this.loggedUserId, this.newMessage).subscribe({
         next: () => this.newMessage = '', // Clear input on successful send
         error: (error) => console.error('Error sending message:', error)
       });
@@ -96,6 +121,9 @@ export class ChatApplicationComponent implements OnInit {
 
   selectUser(user: ChatContact) {
     this.selectedUser = user;
+    this.messages = []
+    this.getConversationId(user.id, this.loggedUserId)
+
   }
 
   private scrollToBottom(): void {
@@ -112,6 +140,8 @@ export class ChatApplicationComponent implements OnInit {
         const assignedUsers = this.extractAssignedUsers(response);
         this.users = this.getUniqueUsers(assignedUsers);
         this.selectedUser = this.users[0]; // Default to the first user
+
+        this.getConversationId(this.loggedUserId, this.selectedUser.id)
       },
       error: (error) => {
         console.error('Error fetching chat contacts:', error);
@@ -145,11 +175,11 @@ export class ChatApplicationComponent implements OnInit {
   }
 
   private handleNewMessage(response: any) {
-    if (response?.data?.messageSent) {
+    if (response?.data?.messageSent && response?.data?.messageSent.conversationId === this.conversationId) {
       const newMessage = response.data.messageSent;
       const mappedMessage = {
         text: newMessage.content,
-        sender: newMessage.sender.id === this.userId ? 'me' : newMessage.sender.firstName,
+        sender: newMessage.sender.id === this.loggedUserId ? 'me' : newMessage.sender.firstName,
         date: new Date(newMessage.createdAt)
       };
       this.messages.push(mappedMessage);

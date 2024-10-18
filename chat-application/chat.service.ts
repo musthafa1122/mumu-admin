@@ -51,6 +51,7 @@ const NEW_MESSAGE_SUBSCRIPTION = gql`
     messageSent(conversationId: $conversationId) {
       id
       content
+      conversationId
       sender {
         id
         firstName
@@ -76,6 +77,17 @@ const SEND_MESSAGE_MUTATION = gql`
   }
 `;
 
+const GET_CONVERSATION_ID = gql`query GetConversationByUserIds($user1Id: ID!, $user2Id: ID!) {
+  getConversationByUserIds(user1Id: $user1Id, user2Id: $user2Id) {
+    id
+  }
+}`
+
+const CREATE_CONVERSATION = gql`mutation CreateConversation($participants: [ID!]!) {
+  createConversation(participants: $participants) {
+    id
+  }
+}`
 
 const GET_CONVERSATION = gql`query GetConversations($userId: ID!) {
  query getConversations(userId: $userId) {
@@ -161,5 +173,30 @@ export class ChatService {
     );
   }
 
+  getConversationId(user1: string, user2: string): Observable<Conversation[]> {
+    return this.apollo.watchQuery({
+      query: GET_CONVERSATION_ID,
+      variables: {
+        user1Id: user1,
+        user2Id: user2
+      }
+    }).valueChanges.pipe(
+      map((result: any) => result.data?.getConversationByUserIds?.id) // Adjust the path according to your query structure
+    );
+  }
+
+
+  createConversation(user1: string, user2: string): Observable<Conversation> {
+    return this.apollo.mutate<{ createConversation: Conversation }>({
+      mutation: CREATE_CONVERSATION,
+      variables: {participants: [user1, user2]}
+    }).pipe(
+      map((response): any => response.data?.createConversation), // Extract the conversation from the response
+      catchError(error => {
+        console.error('Mutation error:', error);
+        return throwError(() => error); // Throw the error properly for further handling
+      })
+    );
+  }
 
 }
