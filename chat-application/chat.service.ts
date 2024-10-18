@@ -62,6 +62,13 @@ const NEW_MESSAGE_SUBSCRIPTION = gql`
   }
 `;
 
+const GET_CURRENT_USER_ID = gql`query Query($email: String!, $phoneNumber: String!) {
+  getUserByEmailOrPhone(email: $email, phoneNumber: $phoneNumber) {
+    id
+    email
+  }
+}`
+
 const SEND_MESSAGE_MUTATION = gql`
   mutation SendMessage($conversationId: ID!, $senderId: ID!, $content: String!) {
     sendMessage(conversationId: $conversationId, senderId: $senderId, content: $content) {
@@ -158,8 +165,8 @@ export class ChatService {
       });
   }
 
-  getChatContacts(): Observable<ApolloQueryResult<{ serviceOrders: ServiceOrderData[] }>> {
-    return this.orderHistoryService.getServiceHistory()
+  getChatContacts(userId: string): Observable<ApolloQueryResult<{ serviceOrders: ServiceOrderData[] }>> {
+    return this.orderHistoryService.getServiceHistory(userId)
   }
 
   getMessages(conversationId: string): Observable<Conversation[]> {
@@ -185,6 +192,17 @@ export class ChatService {
     );
   }
 
+  getCurrentUserId(): Observable<string> {
+    return this.apollo.watchQuery({
+      query: GET_CURRENT_USER_ID,
+      variables: {
+        email: sessionStorage.getItem('email'),
+        phoneNumber: ''
+      }
+    }).valueChanges.pipe(
+      map((result: any) => result.data?.getUserByEmailOrPhone?.id) // Adjust the path according to your query structure
+    );
+  }
 
   createConversation(user1: string, user2: string): Observable<Conversation> {
     return this.apollo.mutate<{ createConversation: Conversation }>({

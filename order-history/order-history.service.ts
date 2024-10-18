@@ -80,7 +80,8 @@ export class OrderHistoryService {
   constructor(private apollo: Apollo) {
   }
 
-  public getServiceHistory(userId: string = '6708df417f34f8c4c3df65da'): Observable<ApolloQueryResult<{
+  public getServiceHistory(userId: string
+  ): Observable<ApolloQueryResult<{
     serviceOrders: ServiceOrderData[]
   }>> {
     return this.apollo

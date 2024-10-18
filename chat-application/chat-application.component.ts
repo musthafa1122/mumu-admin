@@ -34,8 +34,8 @@ interface ChatContact {
 export class ChatApplicationComponent implements OnInit {
   users: ChatContact[] = [];
   showDate = false;
-  conversationId = '671108f393262517c74a555f';
-  loggedUserId = '6708df417f34f8c4c3df65da';
+  conversationId = '';
+  loggedUserId = '';
   messages: { text: string; sender: string; date: Date }[] = [];
   newMessage = '';
   isProfileSectionVisible = false;
@@ -47,7 +47,14 @@ export class ChatApplicationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadChatContacts();
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    this.chatService.getCurrentUserId().subscribe(data => {
+      this.loggedUserId = data
+      this.loadChatContacts();
+    })
   }
 
   // Toggle profile section visibility
@@ -78,7 +85,7 @@ export class ChatApplicationComponent implements OnInit {
 
   // Load all chat contacts
   private loadChatContacts() {
-    this.chatService.getChatContacts().subscribe({
+    this.chatService.getChatContacts(this.loggedUserId).subscribe({
       next: (response: any) => {
         this.users = this.extractUniqueUsers(response);
         this.selectedUser = this.users[0]; // Default to the first user
