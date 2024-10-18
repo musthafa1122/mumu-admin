@@ -16,6 +16,8 @@ import {MatTabBody, MatTabHeader, MatTabsModule} from "@angular/material/tabs";
 import {MatDialog} from "@angular/material/dialog";
 import {WorkerProfileComponent} from "../available-workers/worker-profile/worker-profile.component";
 import {ServiceOrderData} from "../order-history/order-history.service";
+import {NotificationComponent} from "../ui-components/notification/notification.component";
+import {MiniChatComponent} from "../chat-application/mini-chat/mini-chat.component";
 
 export const GET_SERVICE_ORDERS_BY_ID = gql`
   query serviceOrderById($id: ID!) {
@@ -55,7 +57,7 @@ export const GET_SERVICE_ORDERS_BY_ID = gql`
 @Component({
   selector: 'app-service-order-details',
   standalone: true,
-  imports: [MaterialModule, TablerIconsModule, AvailableWorkersComponent, WorkersComponent, NgIf, NgForOf, FormsModule, OrderHistoryComponent, JobProposalsComponent, ServiceStatusComponent, NgClass, AppRecentTransactionsComponent, MatTabsModule, MatTabHeader, MatTabBody],
+  imports: [MaterialModule, TablerIconsModule, AvailableWorkersComponent, WorkersComponent, NgIf, NgForOf, FormsModule, OrderHistoryComponent, JobProposalsComponent, ServiceStatusComponent, NgClass, AppRecentTransactionsComponent, MatTabsModule, MatTabHeader, MatTabBody, NotificationComponent, MiniChatComponent],
   templateUrl: './service-order-details.component.html',
   styleUrl: './service-order-details.component.scss',
   encapsulation: ViewEncapsulation.None

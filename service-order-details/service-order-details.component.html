@@ -91,29 +91,40 @@
 
 
       <div class="col-sm-6 col-lg-4">
+
         <mat-card class="mat-mdc-card mdc-card cardWithShadow">
-          <mat-card-content class="mat-mdc-card-content p-y-24 text-center"><img alt="img" class="rounded-circle"
-                                                                                 src="/assets/images/profile/user-1.jpg"
-                                                                                 width="140">
+          <div [matMenuTriggerFor]="notification" style="float: right;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;padding: 12px;cursor: pointer">
+            <i-tabler class="d-flex" name="message">Contact</i-tabler>
+          </div>
+          <mat-card-content class="mat-mdc-card-content p-y-24 text-center" style="padding-top: 0 !important"><img
+            alt="img" class="rounded-circle"
+            src="/assets/images/profile/user-1.jpg"
+            width="140">
             <mat-card-title class="mat-mdc-card-title m-b-0 m-t-24">Tommoie Henderson</mat-card-title>
             <mat-card-subtitle class="mat-mdc-card-subtitle mat-body-1 m-t-8 lh-24 m-b-24">Accept the request and <br>type
               a message
             </mat-card-subtitle>
+            <mat-menu #notification="matMenu" class="cardWithShadow">
+              <div class="ng-scroll-viewport-wrapper">
+                <div class="ng-native-scrollbar-hider ng-scroll-viewport">
+                  <div class="ng-scroll-content">
+                    <app-mini-chat></app-mini-chat>
+                  </div>
+                </div>
+              </div>
+            </mat-menu>
+
             <button
-              class="m-r-8 mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
-              color="primary"
-              mat-flat-button=""
-              mat-ripple-loader-class-name="mat-mdc-button-ripple"><span
-              class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span
-              (click)="openDialog()" class="mdc-button__label">Accept</span><span
-              class="mat-mdc-focus-indicator"></span><span
-              class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span></button>
-            <button class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-warn mat-mdc-button-base"
-                    color="warn" mat-ripple-loader-class-name="mat-mdc-button-ripple"
-                    mat-stroked-button=""><span
-              class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span
-              class="mdc-button__label">Remove</span><span class="mat-mdc-focus-indicator"></span><span
-              class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span></button>
+              class="m-r-8 mdc-button  mat-mdc-unelevated-button mat-primary"
+            ><span
+              (click)="openDialog()" class="mdc-button__label">View</span></button>
+            <button
+              class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-warn"
+            ><span
+              (click)="openDialog()" class="mdc-button__label">Accept</span></button>
           </mat-card-content>
         </mat-card>
       </div>
