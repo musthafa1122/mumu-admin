@@ -34,7 +34,8 @@ export interface ServiceOrderData {
   imageUrl?: string;
   specialNotes?: string;
   email: string;
-  user: User; // Include the user information in the service order
+  user: User;
+  assignedUser: User;// Include the user information in the service order
 }
 
 export const GET_SERVICE_ORDERS = gql`

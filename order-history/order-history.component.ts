@@ -10,6 +10,15 @@ import {TablerIconsModule} from 'angular-tabler-icons';
 import {Router} from "@angular/router";
 import {ServiceStatusComponent} from "../../components/service-status/service-status.component";
 import {OrderHistoryService, ServiceOrderData} from "./order-history.service";
+import {WORKERS} from "../available-workers/constants";
+import {
+  JobProposalsListViewComponent
+} from "../job-proposals/job-proposals-list-view/job-proposals-list-view.component";
+import {
+  JobProposalsTableViewComponent
+} from "../job-proposals/job-proposals-table-view/job-proposals-table-view.component";
+import {OrderHistoryCardViewComponent} from "./order-history-card-view/order-history-card-view.component";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
@@ -21,7 +30,11 @@ import {OrderHistoryService, ServiceOrderData} from "./order-history.service";
     CommonModule,
     MatSortModule,
     MatGoogleMapsAutocompleteModule,
-    ServiceStatusComponent
+    ServiceStatusComponent,
+    JobProposalsListViewComponent,
+    JobProposalsTableViewComponent,
+    OrderHistoryCardViewComponent,
+    FormsModule
   ],
   templateUrl: './order-history.component.html',
   styleUrls: ['./order-history.component.scss'],
@@ -45,13 +58,14 @@ export class OrderHistoryComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   serviceOrders: ServiceOrderData[] = [];
   dataSource!: MatTableDataSource<ServiceOrderData>;
+  isCardView = false;
+  protected readonly workers = WORKERS;
 
   constructor(private apollo: Apollo, private router: Router, private orderHistoryService: OrderHistoryService,) {
   }
 
   ngOnInit(): void {
     this.orderHistoryService.getServiceHistory('6708df417f34f8c4c3df65da').subscribe((result: any) => {
-      console.log(result);
       this.serviceOrders = result?.data?.serviceOrderByUserId || [];
       this.dataSource = new MatTableDataSource(this.serviceOrders);
       this.dataSource.sort = this.sort;

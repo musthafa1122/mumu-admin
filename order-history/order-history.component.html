@@ -17,8 +17,13 @@
     </div>
   </div>
 </div>
-
-<mat-card class="cardWithShadow">
+<mat-slide-toggle [(ngModel)]="isCardView"
+                  class="mat-mdc-slide-toggle mat-accent  m-b-30"
+                  style=" display: flex;
+    justify-content: flex-end;">
+  {{ isCardView ? 'Table View' : 'Card View' }}
+</mat-slide-toggle>
+<mat-card *ngIf="!isCardView" class="cardWithShadow">
   <mat-card-header class="d-flex">
     <div class="search">
       <div class="search-box">
@@ -114,3 +119,4 @@
   </mat-card-content>
 </mat-card>
 
+<app-order-history-card-view *ngIf="isCardView" [data]="serviceOrders"></app-order-history-card-view>

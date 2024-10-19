@@ -1,0 +1,54 @@
+<div class="row">
+  <div *ngFor="let status of statusMap" class="col-lg-3">
+    <div>
+      <div>
+        <div
+          [ngStyle]="{ 'background-color': status.headingBgColor, 'color':'rgb(255 255 255)',
+    'font-weight': 600 }"
+          class=" p-y-8 p-x-16 rounded m-b-16">
+          <div [matBadge]="status.items.length||0" class="demo-section" matBadgeColor="primary"
+               matBadgeOverlap="false">{{ status.key }}
+          </div>
+        </div>
+        <div class="cdk-drop-list" style="gap: 17px;
+    display: flex;
+    flex-direction: column;overflow: auto;
+    height: 60vh;">
+
+          <div *ngFor="let task of status.items"
+               [ngStyle]="{ 'background-color': status.taskBgColor, 'color':'black' }"
+               style="padding: 8px; border-radius: 6px; display: flex; align-items: center;">
+
+            <!-- Image on the left -->
+            <div style="flex-shrink: 0; margin-right: 8px;">
+              <img
+                [src]="task?.assignedUser?.image"
+                alt="image"
+                class="rounded-circle border p-5"
+                height="40"
+                matTooltip="{{ task?.assignedUser?.firstName}}  {{ task?.assignedUser?.lastName }}"
+                width="40"/>
+            </div>
+
+            <!-- Text in the center -->
+            <div style="flex-grow: 1;display: flex;flex-direction: column;">
+              <div class="f-s-14 m-b-4 f-w-200">{{ task.title || '' }}</div>
+              <span class="task-description f-s-12">{{ task.serviceType || '' }}</span>
+              <span class="task-description f-s-12">{{ task.dateRequested | date: 'dd/MM/yyyy' }}</span>
+            </div>
+
+            <!-- Icon button on the right -->
+            <div style="flex-shrink: 0;">
+              <button
+                (click)="openServiceDetails(task.id)"
+                class="d-flex justify-content-center mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base">
+                <mat-icon style="color: #989898">open_in_new</mat-icon>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

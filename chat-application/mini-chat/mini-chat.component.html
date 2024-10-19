@@ -4,14 +4,23 @@
       <h3>Musthafa</h3>
     </div>
   </div>
-  <div #messageContainer class="chat-messages">
-    <div
-      *ngFor="let message of messages"
-      [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
-      class="chat-message">
-      <span>{{ message.text }}</span>
+  <!--  <ng-scrollbar #scrollbarRef="ngScrollbar">-->
+
+
+  <!--  </ng-scrollbar>-->
+  <ng-scrollbar #scrollbarRef="ngScrollbar"
+                class="scroll-event" thumbClass="white-scrollbars">
+
+
+    <div class="chat-messages">
+      <div
+        *ngFor="let message of messages"
+        [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}"
+        class="chat-message">
+        <span>{{ message.text }}</span>
+      </div>
     </div>
-  </div>
+  </ng-scrollbar>
 
   <div class="chat-input">
     <mat-form-field appearance="outline" class="message-input">
