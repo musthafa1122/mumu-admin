@@ -40,10 +40,7 @@ export const GET_SERVICE_ORDERS_BY_ID = gql`
       firstName
       lastName
       email
-      country
       phoneNumber
-      state
-      city
       dob
       gender
       password

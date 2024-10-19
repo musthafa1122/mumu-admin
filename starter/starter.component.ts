@@ -35,4 +35,7 @@ import {ServiceHomeComponent} from "../../components/service-home/service-home.c
   }`]
 })
 export class StarterComponent {
+  applyFilter($event: KeyboardEvent) {
+
+  }
 }
