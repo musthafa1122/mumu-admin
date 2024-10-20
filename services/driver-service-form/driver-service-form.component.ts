@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MaterialModule} from "../../../material.module";
 import {CommonModule} from "@angular/common";
@@ -24,7 +24,8 @@ import DirectionsRenderer = google.maps.DirectionsRenderer;
   providers: [DirectionsService],
 
   templateUrl: './driver-service-form.component.html',
-  styleUrl: './driver-service-form.component.scss'
+  styleUrl: './driver-service-form.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class DriverServiceFormComponent implements OnInit {
   driverForm!: FormGroup;
@@ -72,47 +73,146 @@ export class DriverServiceFormComponent implements OnInit {
   @ViewChild(MapInfoWindow, {static: false}) infoWindow!: MapInfoWindow;
   mapZoom = 17;
   mapCenter!: google.maps.LatLng;
+
   mapOptions: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoomControl: true,
     scrollwheel: false,
-    disableDoubleClickZoom: true,
+    disableDoubleClickZoom: false,
     maxZoom: 20,
     minZoom: 4,
+    styles: [
+      {
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#212121"
+          }
+        ]
+      },
+      {
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#000000" // Black text for labels
+          }
+        ]
+      },
+      {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+          {
+            "color": "rgba(146,236,132,0)" // White stroke for labels
+          }
+        ]
+      },
+      {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#f0f0f0" // Light gray for landscape
+          }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#e0e0e0" // Light gray for points of interest
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#cccccc" // Light gray for roads
+          }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#a4d8e1" // Light blue for water
+          }
+        ]
+      },
+      {
+        "featureType": "transit",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#e8e8e8" // Light gray for transit
+          }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#b0b0b0" // Darker gray for highways
+          }
+        ]
+      }, {
+        "elementType": "labels.icon",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },]
   };
   markerInfoContent = '';
   markerOptions: google.maps.MarkerOptions = {
     draggable: true,
-    animation: google.maps.Animation.DROP,
+    animation: google.maps.Animation.BOUNCE,
   };
   directionsRenderer: DirectionsRenderer = new google.maps.DirectionsRenderer(); // DirectionsRenderer added
   distanceInKm = 0
+  pickupDropoffForm!: FormGroup;
+  serviceDetailsForm!: FormGroup;
 
   constructor(private router: Router, private toastr: ToastrService,
               private directionsService: DirectionsService, private fb: FormBuilder,) {
   }
 
-  createDriverForm() {
-    this.driverForm = this.fb.group({
-      serviceType: ['', Validators.required],
-      vehicleType: ['', Validators.required],
-      duration: ['', Validators.required],
+  ngOnInit(): void {
+    this.createForms();
+    this.getCurrentLocation();
+  }
+
+  createForms() {
+    // Initialize pickup and dropoff form
+    this.pickupDropoffForm = this.fb.group({
       pickupLocation: this.fb.group({
         place: ['', Validators.required],
       }),
       dropoffLocation: this.fb.group({
         place: ['', Validators.required],
       }),
+    });
+
+    // Initialize service details form
+    this.serviceDetailsForm = this.fb.group({
+      serviceType: ['', Validators.required],
+      vehicleType: ['', Validators.required],
+      duration: ['', Validators.required],
       additionalServices: [[]]
     });
   }
 
   submitDriverForm() {
-    if (this.driverForm.valid) {
-      const driverData = this.driverForm.value;
-      this.driverValueChanges();
-      console.log('Driver Service Request:', driverData);
-      // this.router.navigate(['/service-home/history']);
+    if (this.pickupDropoffForm.valid && this.serviceDetailsForm.valid) {
+      const driverData = {
+        ...this.pickupDropoffForm.value,
+        ...this.serviceDetailsForm.value
+      };
     }
   }
 
@@ -133,8 +233,15 @@ export class DriverServiceFormComponent implements OnInit {
       travelMode: google.maps.TravelMode.DRIVING
     };
 
+
     this.directionsService.route(request, (response, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
+        this.directionsRenderer.setOptions({
+          polylineOptions: {
+            strokeColor: '#4fda9f', // Change this to your desired color
+            strokeWeight: 5, // Adjust the weight as needed
+          }
+        });
         this.directionsRenderer.setDirections(response);
         // @ts-ignore
         this.directionsRenderer.setMap(this.map.googleMap); // Use this.map.googleMap
@@ -183,15 +290,9 @@ export class DriverServiceFormComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.createDriverForm();
-
-    this.getCurrentLocation();
-
-  }
 
   driverValueChanges() {
-    const $event = this.driverForm.value
+    const $event = this.pickupDropoffForm.value
     const from: { lat: number | string, long: number | string } = {
       lat: $event.pickupLocation.place.latitude as number,
       long: $event.pickupLocation.place.longitude as number // Use 'long'
