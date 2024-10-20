@@ -1,0 +1,109 @@
+<div class="job-container" style="    display: flex;
+    justify-content: space-between;
+    gap: 23px;width: 100%;
+   padding: 24px;flex-direction: column;">
+
+  <div>
+    <h1>Find Jobs That Fit Your Skills</h1>
+    <p>Your Trusted Platform for Job Opportunities – Discover Openings for Drivers, Bystanders, and Errand Services in
+      Just a Few Clicks</p>
+  </div>
+
+  <div class="chat-main-container">
+    <mat-drawer-container autosize class="example-container" style="overflow: hidden !important;">
+      <div class="job-details">
+        <div class="toggle">
+          <mat-icon (click)="drawer.toggle()">list</mat-icon>
+
+        </div>
+        <!-- Job Image Section -->
+        <div class="job-image toggle">
+
+          <img *ngIf="selectedJob?.serviceType === 'Driver'" alt="Driver"
+               height="48"
+               src="https://img.freepik.com/free-vector/city-driver-concept-illustration_114360-1347.jpg?t=st=1729381605~exp=1729385205~hmac=39cf58cc253f640ee8756f0ae44cab20887a8477175ca91205bd8f5faa256c19&w=1480"
+          >
+          <img *ngIf="selectedJob?.serviceType === 'Bystander'" alt="Bystander" class="rounded-circle"
+               height="48"
+               src="https://img.freepik.com/free-vector/illustration-seniors-with-life-insurance_53876-37199.jpg?t=st=1729381674~exp=1729385274~hmac=503d2d567ddd1d172b8c67e9654b530919ef835198c5bb75579ea91793ed7e49&w=2000"
+          >
+          <img *ngIf="selectedJob?.serviceType === 'Errands'" alt="Errand Running" class="rounded-circle"
+               height="48"
+               src="https://img.freepik.com/free-vector/people-carrying-bags-groceriesconcept-illustration_114360-13394.jpg?t=st=1729382095~exp=1729385695~hmac=6bffd54285dd1b9f342e54ff5c8a0c16365ed8293ddf465493d883425bb0d49c&w=1480"
+          >
+        </div>
+
+        <!-- Job Details Section -->
+        <div class="job-info">
+          <h2 class="p">{{ selectedJob?.title }}</h2>
+          <p class="p"><strong>Service Type:</strong> {{ selectedJob?.serviceType }}</p>
+          <p class="p"><strong>Location:</strong> {{ selectedJob?.location }}</p>
+          <p class="p"><strong>Date Requested:</strong> {{ selectedJob?.dateRequested | date }}</p>
+          <p class="p"><strong>Salary:</strong> {{ selectedJob?.salary | currency:'INR' }}</p>
+          <p class="p"><strong>Special Notes:</strong> {{ selectedJob?.specialNotes }}</p>
+        </div>
+
+        <!-- Footer with Buttons -->
+        <div class="job-footer">
+          <button (click)="applyJob()" color="primary btn noShadow" mat-raised-button>Apply
+          </button>
+        </div>
+      </div>
+
+      <mat-drawer #drawer class="example-sidenav" mode="side" opened position="start">
+        <mat-form-field appearance="outline" class="p-12" style="width: 100%;padding-bottom: 0 !important;">
+          <input (input)="filterServiceOrders()" [(ngModel)]="searchQuery" matInput placeholder="Search workers...">
+        </mat-form-field>
+        <div *ngIf="filteredServiceOrders.length >= 0" class="p-12">
+          <strong>{{ filteredServiceOrders.length }} job(s) available</strong>
+        </div>
+
+        <div *ngFor="let jobs of filteredServiceOrders" class="friends-list">
+          <div class="mat-mdc-menu-content p-0">
+            <button (click)="selectJob(jobs)"
+                    [ngClass]="{ 'selected-job': selectedJob === jobs }"
+                    class="mat-mdc-menu-item mat-mdc-focus-indicator p-16"
+                    role="menuitem"
+                    tabindex="0">
+        <span class="mat-mdc-menu-item-text">
+          <div class="d-flex align-items-center justify-content-between" style="width: 100%; gap: 12px">
+            <div class="d-flex align-items-center" style="gap: 12px">
+              <!-- Conditional image based on job type -->
+              <img *ngIf="jobs?.serviceType === 'Driver'" alt="Driver" class="rounded-circle"
+                   height="48"
+                   src="https://img.freepik.com/free-vector/city-driver-concept-illustration_114360-1347.jpg?t=st=1729381605~exp=1729385205~hmac=39cf58cc253f640ee8756f0ae44cab20887a8477175ca91205bd8f5faa256c19&w=1480"
+                   style="border: solid 1px #47d99b;" width="48">
+              <img *ngIf="jobs?.serviceType === 'Bystander'" alt="Bystander" class="rounded-circle"
+                   height="48"
+                   src="https://img.freepik.com/free-vector/illustration-seniors-with-life-insurance_53876-37199.jpg?t=st=1729381674~exp=1729385274~hmac=503d2d567ddd1d172b8c67e9654b530919ef835198c5bb75579ea91793ed7e49&w=2000"
+                   style="border: solid 1px #47d99b;" width="48">
+              <img *ngIf="jobs?.serviceType === 'Errands'" alt="Errand Running" class="rounded-circle"
+                   height="48"
+                   src="https://img.freepik.com/free-vector/people-carrying-bags-groceriesconcept-illustration_114360-13394.jpg?t=st=1729382095~exp=1729385695~hmac=6bffd54285dd1b9f342e54ff5c8a0c16365ed8293ddf465493d883425bb0d49c&w=1480"
+                   style="border: solid 1px #47d99b;" width="48">
+              <!-- Job Title and Type -->
+              <div class="m-l-16" style="display: flex; flex-direction: column">
+                <strong>{{ jobs?.title }}</strong>
+                <span>{{ jobs?.serviceType }}</span>
+                <span>{{ jobs?.location }}</span>
+              </div>
+            </div>
+            <!-- Salary/Price on the right side -->
+            <div class="d-flex justify-content-end" style="flex-shrink: 0;">
+              <span>{{ jobs?.salary | currency: 'INR' }}</span>
+            </div>
+          </div>
+        </span>
+            </button>
+          </div>
+        </div>
+
+
+      </mat-drawer>
+
+      <!-- Profile Section Sidenav -->
+
+    </mat-drawer-container>
+  </div>
+
+</div>

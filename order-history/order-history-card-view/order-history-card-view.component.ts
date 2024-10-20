@@ -50,26 +50,26 @@ export class OrderHistoryCardViewComponent implements OnChanges {
     {
       items: [],
       key: "Pending",
-      headingBgColor: 'rgb(112 153 227)',
+      headingBgColor: '#f4e409',
       taskBgColor: '#ecf2ff',
     },
     {
       items: [],
       key: "In Progress",
-      headingBgColor: 'rgb(240 189 95)',
+      headingBgColor: '#0094c6',
       taskBgColor: '#fef5e5',
     },
     {
       items: [],
       key: "Completed",
-      headingBgColor: 'rgb(112 236 213)',
+      headingBgColor: '#04a777',
       taskBgColor: '#e6fffa',
     },
 
     {
       items: [],
       key: "Cancelled",
-      headingBgColor: 'rgb(255 181 162)',
+      headingBgColor: '#d62246',
       taskBgColor: '#fdede8',
     },
   ];

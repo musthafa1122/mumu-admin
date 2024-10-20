@@ -10,7 +10,8 @@
       </div>
 
       <div class="taskboard-cards cdk-drop-list">
-        <div *ngFor="let task of status.items" [ngStyle]="{ 'background-color': status.taskBgColor, 'color':'black' }"
+        <div *ngFor="let task of status.items"
+             [ngStyle]="{ 'border': '1px solid ' + status.headingBgColor, 'color': 'black' }"
              class="task-card">
 
           <!-- Image on the left -->
