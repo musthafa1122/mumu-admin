@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MaterialModule} from "../../../material.module";
 import {CommonModule} from "@angular/common";
@@ -58,6 +58,7 @@ export class DriverServiceFormComponent implements OnInit {
     {"label": "Elderly Assistance", "value": "elderlyAssistance"},
     {"label": "Airport Transfer", "value": "airportTransfer"}
   ]
+  @Output() valueChanges: EventEmitter<any> = new EventEmitter();
 
   constructor(private fb: FormBuilder, private router: Router) {
   }
@@ -84,8 +85,9 @@ export class DriverServiceFormComponent implements OnInit {
   submitDriverForm() {
     if (this.driverForm.valid) {
       const driverData = this.driverForm.value;
+      this.valueChanges.emit(this.driverForm.value);
       console.log('Driver Service Request:', driverData);
-      this.router.navigate(['/service-home/history']);
+      // this.router.navigate(['/service-home/history']);
     }
   }
 }

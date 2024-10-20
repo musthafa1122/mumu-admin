@@ -1,0 +1,51 @@
+<div class="job-container" style="display: flex;
+   padding:0 24px;flex-direction: column;">
+  <h2>Find Jobs That Fit Your Skills</h2>
+  <p style="margin: 0">Your Trusted Platform for Job Opportunities – Discover Openings for Drivers, Bystanders, and
+    Errand Services in
+    Just a Few Clicks</p>
+</div>
+
+<mat-tab-group class="mat-mdc-tab-group mat-primary m-t-12" mat-align-tabs="start" mat-stretch-tabs="mat-stretch-tabs"
+               style="--mat-tab-animation-duration: 500ms;border-top: solid 1px #e0e0e0;">
+  <mat-tab class="b-t-1">
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon m-6">hotel_class</mat-icon>
+      Top job picks for you
+    </ng-template>
+    <app-job-listing></app-job-listing>
+
+  </mat-tab>
+  <mat-tab class="b-t-1">
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon m-6">favorite</mat-icon>
+      Favorite
+    </ng-template>
+    <app-job-listing></app-job-listing>
+
+  </mat-tab>
+  <mat-tab class="b-t-1">
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon m-6">hourglass_top</mat-icon>
+      Ongoing Jobs
+    </ng-template>
+    <app-job-listing></app-job-listing>
+
+  </mat-tab>
+  <mat-tab class="b-t-1">
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon m-6">event_upcoming</mat-icon>
+      Scheduled Jobs
+    </ng-template>
+    <app-job-listing></app-job-listing>
+
+  </mat-tab>
+  <mat-tab class="b-t-1">
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon m-6">task_alt</mat-icon>
+      Completed Jobs
+    </ng-template>
+    <app-job-listing></app-job-listing>
+  </mat-tab>
+
+</mat-tab-group>
