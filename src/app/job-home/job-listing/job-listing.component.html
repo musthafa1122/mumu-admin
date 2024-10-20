@@ -1,13 +1,8 @@
 <div class="job-container" style="    display: flex;
     justify-content: space-between;
     gap: 23px;width: 100%;
-   padding: 24px;flex-direction: column;">
+   padding: 0 24px;flex-direction: column;">
 
-  <div>
-    <h1>Find Jobs That Fit Your Skills</h1>
-    <p>Your Trusted Platform for Job Opportunities – Discover Openings for Drivers, Bystanders, and Errand Services in
-      Just a Few Clicks</p>
-  </div>
 
   <div class="chat-main-container">
     <mat-drawer-container autosize class="example-container" style="overflow: hidden !important;">
@@ -35,7 +30,6 @@
 
         <!-- Job Details Section -->
         <div class="job-info">
-          <h2 class="p">{{ selectedJob?.title }}</h2>
           <p class="p"><strong>Service Type:</strong> {{ selectedJob?.serviceType }}</p>
           <p class="p"><strong>Location:</strong> {{ selectedJob?.location }}</p>
           <p class="p"><strong>Date Requested:</strong> {{ selectedJob?.dateRequested | date }}</p>
@@ -51,9 +45,24 @@
       </div>
 
       <mat-drawer #drawer class="example-sidenav" mode="side" opened position="start">
-        <mat-form-field appearance="outline" class="p-12" style="width: 100%;padding-bottom: 0 !important;">
-          <input (input)="filterServiceOrders()" [(ngModel)]="searchQuery" matInput placeholder="Search workers...">
-        </mat-form-field>
+        <div style="display: flex">
+
+          <mat-form-field appearance="outline" class="p-8 p-t-16 custom-form-field" style="width: 70%">
+            <input (input)="filterServiceOrders()" [(ngModel)]="searchQuery" matInput placeholder="Search jobs...">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="p-8 p-t-16" style="width: 30%;padding-bottom: 0">
+            <mat-select (selectionChange)="filterServiceOrders()" [(ngModel)]="selectedJobType">
+              <mat-option value="">All</mat-option>
+              <mat-option value="Driver">Driver</mat-option>
+              <mat-option value="Bystander">Bystander</mat-option>
+              <mat-option value="Errands">Errands</mat-option>
+              <!-- Add more options as needed -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <!-- Display the number of jobs available -->
         <div *ngIf="filteredServiceOrders.length >= 0" class="p-12">
           <strong>{{ filteredServiceOrders.length }} job(s) available</strong>
         </div>
@@ -68,7 +77,6 @@
         <span class="mat-mdc-menu-item-text">
           <div class="d-flex align-items-center justify-content-between" style="width: 100%; gap: 12px">
             <div class="d-flex align-items-center" style="gap: 12px">
-              <!-- Conditional image based on job type -->
               <img *ngIf="jobs?.serviceType === 'Driver'" alt="Driver" class="rounded-circle"
                    height="48"
                    src="https://img.freepik.com/free-vector/city-driver-concept-illustration_114360-1347.jpg?t=st=1729381605~exp=1729385205~hmac=39cf58cc253f640ee8756f0ae44cab20887a8477175ca91205bd8f5faa256c19&w=1480"
@@ -88,6 +96,7 @@
                 <span>{{ jobs?.location }}</span>
               </div>
             </div>
+
             <!-- Salary/Price on the right side -->
             <div class="d-flex justify-content-end" style="flex-shrink: 0;">
               <span>{{ jobs?.salary | currency: 'INR' }}</span>
@@ -100,7 +109,6 @@
 
 
       </mat-drawer>
-
       <!-- Profile Section Sidenav -->
 
     </mat-drawer-container>

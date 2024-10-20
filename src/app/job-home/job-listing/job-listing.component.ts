@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {NgScrollbarModule} from "ngx-scrollbar";
 import {MatDrawer, MatDrawerContainer} from "@angular/material/sidenav";
 import {MatIcon} from "@angular/material/icon";
 import {Apollo, gql} from "apollo-angular";
 import {ActivatedRoute} from "@angular/router";
-import {ServiceOrderData} from "../../../order-history/order-history.service";
+import {ServiceOrderData} from "../../../../order-history/order-history.service";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardContent, MatCardFooter} from "@angular/material/card";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 export const GET_SERVICE_ORDERS = gql`
   query Query {
@@ -53,25 +54,34 @@ export const GET_SERVICE_ORDERS = gql`
     MatInput,
     MatLabel,
     FormsModule,
+    MatSelect,
+    MatOption,
   ],
   templateUrl: './job-listing.component.html',
-  styleUrl: './job-listing.component.scss'
+  styleUrl: './job-listing.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class JobListingComponent implements OnInit {
   public serviceOrders!: ServiceOrderData[];
   public selectedJob: ServiceOrderData | null = null;
   public filteredServiceOrders: ServiceOrderData[] = []; // Add filtered orders
   public searchQuery: string = '';
-
+  public selectedJobType: string = ''; // For
   constructor(private apollo: Apollo, private route: ActivatedRoute,) {
   }
 
   filterServiceOrders(): void {
-    this.filteredServiceOrders = this.serviceOrders.filter(job =>
-      job.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-      job.serviceType.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-      job.location.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
+    this.filteredServiceOrders = this.serviceOrders.filter(job => {
+      const matchesJobType = this.selectedJobType ? job.serviceType === this.selectedJobType : true;
+
+      // Ensure all conditions are properly combined using parentheses
+      return (
+        (job.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          job.serviceType.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          job.location.toLowerCase().includes(this.searchQuery.toLowerCase())) &&
+        matchesJobType
+      );
+    });
   }
 
   applyJob(): void {
