@@ -25,70 +25,55 @@
 <div class="row" style="align-items: flex-start;">
   <div class="col-lg-4">
     <mat-card class="cardWithShadow theme-card p-24">
-      <mat-card-header style="padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;">
-        <mat-card-title class="m-b-0">Looking for a driver? <span
-          *ngIf="dateDiff?.days||dateDiff?.hours"> for {{ dateDiff?.days }} days and {{ dateDiff?.hours }}
-          hours</span></mat-card-title>
-
+      <mat-card-header class="d-flex justify-content-between align-items-center" style="padding: 0;">
+        <mat-card-title class="m-b-0">
+          Looking for a driver?
+          <span *ngIf="dateDiff?.days || dateDiff?.hours">
+            for {{ dateDiff?.days }} days and {{ dateDiff?.hours }} hours
+          </span>
+        </mat-card-title>
       </mat-card-header>
+
       <mat-card-content class="p-0">
         <form [formGroup]="serviceDetailsForm">
           <div class="row">
-            <div class="col-lg-12 p-12" style="display: flex;gap: 12px">
+            <!-- Booking Type -->
+            <div class="col-lg-12 p-12 d-flex gap-12">
               <mat-label class="driver-label">Booking Type</mat-label>
-              <mat-radio-group aria-label="Select an option" class="mat-mdc-radio-group"
-                               formControlName="bookingType"
-                               style="width: 100%; display: flex; justify-content: flex-start; gap: 16px;flex-wrap: wrap;">
-                <mat-radio-button class="mat-mdc-radio-button" color="primary" value="hourly_driver">
-                  <span>Hourly</span>
-                </mat-radio-button>
-                <mat-radio-button class="mat-mdc-radio-button" color="primary" value="daily_driver">
-                  <span>Daily</span>
-                </mat-radio-button>
-                <mat-radio-button class="mat-mdc-radio-button" color="primary" value="one_time">
-                  <span>Drop</span>
-                </mat-radio-button>
+              <mat-radio-group class="mat-mdc-radio-group d-flex flex-wrap" formControlName="bookingType">
+                <mat-radio-button color="primary" value="hourly_driver">Hourly</mat-radio-button>
+                <mat-radio-button color="primary" value="daily_driver">Daily</mat-radio-button>
+                <mat-radio-button color="primary" value="one_time">Drop</mat-radio-button>
               </mat-radio-group>
             </div>
-            <div class="col-lg-12 p-12"
-                 formGroupName="pickupLocation">
-              <app-google-map-search-box
-                [label]="'Pickup Location'"
-                formControlName="place">
-              </app-google-map-search-box>
+
+            <!-- Pickup Location -->
+            <div class="col-lg-12 p-12" formGroupName="pickupLocation">
+              <app-google-map-search-box [label]="'Pick up Location'"
+                                         formControlName="place"></app-google-map-search-box>
             </div>
 
+            <!-- Drop Off Location -->
             <div *ngIf="serviceDetailsForm.get('bookingType')?.value === 'one_time'" class="col-lg-12 p-12"
                  formGroupName="dropOffLocation">
-              <app-google-map-search-box
-                [label]="'Drop Off Location'"
-                formControlName="place">
-              </app-google-map-search-box>
+              <app-google-map-search-box [label]="'Drop off Location'"
+                                         formControlName="place"></app-google-map-search-box>
             </div>
-            <div class="col-lg-12 p-12" style="display: flex;gap: 12px">
+
+            <!-- Driver Type -->
+            <div class="col-lg-12 p-12 d-flex gap-12">
               <mat-label class="driver-label">Driver Type</mat-label>
-              <mat-radio-group aria-label="Select an option" class="mat-mdc-radio-group"
-                               formControlName="serviceType"
-                               style="width: 100%; display: flex; justify-content: flex-start; gap: 16px;">
-                <mat-radio-button class="mat-mdc-radio-button" color="primary" value="withCar">
-                  <span>With Car</span>
-                </mat-radio-button>
-                <mat-radio-button class="mat-mdc-radio-button" color="primary" value="withoutCar">
-                  <span>Without Car</span>
-                </mat-radio-button>
+              <mat-radio-group class="mat-mdc-radio-group d-flex gap-16" formControlName="serviceType">
+                <mat-radio-button color="primary" value="withCar">With Car</mat-radio-button>
+                <mat-radio-button color="primary" value="withoutCar">Without Car</mat-radio-button>
               </mat-radio-group>
             </div>
-            <!-- Conditional Vehicle Type Selection -->
+
+            <!-- Vehicle Type Selection -->
             <div *ngIf="serviceDetailsForm.get('serviceType')?.value === 'withCar'" class="col-lg-12 p-12">
-              <div style="display: flex;gap: 12px">
-
+              <div class="d-flex gap-12">
                 <mat-label class="f-w-600 m-b-8 d-block">Vehicle Type</mat-label>
-
-                <mat-form-field appearance="outline" class="w-100" color="primary"
-                                style="width: 100%; display: flex; justify-content: flex-start; gap: 16px;">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-select formControlName="vehicleType">
                     <mat-option *ngFor="let option of vehicleTypes" [value]="option.value">
                       {{ option.label }}
@@ -96,7 +81,6 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-
             </div>
           </div>
 
@@ -145,12 +129,13 @@
             </div>
             <ngx-mat-timepicker #pickerTo color="primary"></ngx-mat-timepicker>
           </div>
-          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
-            <div style="display: flex;gap: 12px">
-              <mat-label class="f-w-600 m-b-8 d-block">Additional Services</mat-label>
 
-              <mat-form-field appearance="outline" class="w-100" color="primary"
-                              style="width: 100%; display: flex; justify-content: flex-start; gap: 16px;">
+          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
+            <div class="d-flex gap-12">
+              <mat-label class="f-w-600 m-b-8 d-block p-l-0 p-r-0">Additional
+                Services
+              </mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
                 <mat-select formControlName="additionalServices" multiple>
                   <mat-option *ngFor="let option of additionalServices" [value]="option.value">
                     {{ option.label }}
@@ -159,18 +144,20 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="p-t-24" style="display: flex; justify-content: flex-end">
-            <button (click)="calculateDays();submitDriverForm();checkLocationValuesChanged()"
+
+          <div class="p-t-24 d-flex justify-content-end">
+            <button (click)="calculateDays(); submitDriverForm(); checkLocationValuesChanged()"
                     [disabled]="!serviceDetailsForm.valid"
                     color="primary"
                     mat-raised-button>
-              Calculate Km and Next
+              Calculate Price & Confirm
             </button>
           </div>
         </form>
       </mat-card-content>
     </mat-card>
   </div>
+
   <div class="col-lg-8">
     <app-google-map-drawings [currentLocation]="currentLocation"
                              [location]="toAndFromCoordinates"></app-google-map-drawings>

@@ -165,9 +165,9 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
       dropOffLocation: this.fb.group({
         place: ['', Validators.required],
       }),
-      fromDate: ['', Validators.required],
+      fromDate: [new Date(), Validators.required],
       fromTime: ['10:00', Validators.required],
-      toDate: ['', Validators.required],
+      toDate: [new Date(new Date().setDate(new Date().getDate() + 2)), Validators.required],
       toTime: ['18:00', Validators.required]
     });
   }
