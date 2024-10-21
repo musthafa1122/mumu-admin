@@ -35,7 +35,7 @@
 }
 
 .friends-list .mat-mdc-menu-item.selected {
-  color: #3b9a7a;
+  border-right: solid 3px #4fda9f;
   background-color: #f6f6f6;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .chat-header .header-icons mat-icon:hover {
-  color: #3b9a7a;
+  color: #4fda9f;
 }
 
 .chat-messages {
@@ -107,7 +107,7 @@
   padding: 10px;
   border-radius: 10px;
   max-width: 70%;
-  background-color: #4cda9f;
+  background-color: #4fda9f;
   color: #282828;
 }
 

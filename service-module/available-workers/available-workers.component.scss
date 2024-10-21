@@ -1,6 +1,6 @@
 .title {
   height: 100%;
-  color: #4ada9e;
+  color: #4fda9f;
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -20,7 +20,7 @@
 }
 
 .selected-filter {
-  color: #4ada9e;
+  color: #4fda9f;
   border: 1px solid rgb(76 218 159) !important;
   box-shadow: 0 0 10px rgb(229 250 239);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
