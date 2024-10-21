@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {StarterComponent} from './starter/starter.component';
+import {StarterComponent} from './common-module/starter/starter.component';
 
 export const PagesRoutes: Routes = [
   {

@@ -1,0 +1,177 @@
+<!-- Blog Card -->
+<div [ngClass]="{
+    'bg-pending': serviceOrders?.status === serviceStatus.PENDING,
+    'bg-in-progress': serviceOrders?.status === serviceStatus.IN_PROGRESS,
+    'bg-completed': serviceOrders?.status === serviceStatus.COMPLETED,
+    'bg-cancelled': serviceOrders?.status === serviceStatus.CANCELLED,
+    'bg-failed': serviceOrders?.status === serviceStatus.FAILED,
+    'bg-on-hold': serviceOrders?.status === serviceStatus.ON_HOLD,
+    'bg-not-available': serviceOrders?.status === serviceStatus.NOT_AVAILABLE
+  }" class="header-container">
+  <div class="row">
+    <div class="col-sm-8">
+      <h2 class="page-title">Service Order Details</h2>
+      <p>Order No: <strong> {{ serviceOrders?.id }}</strong></p>
+    </div>
+    <div class="col-sm-4 text-right position-relative">
+      <div class="breadcrumb-icon">
+        <img alt="breadcrumb" class="breadcrumb-img" src="../../../../assets/images/svgs/service-details.png">
+      </div>
+    </div>
+  </div>
+</div>
+<mat-card class="cardWithShadow service-details">
+  <!-- Image -->
+
+
+  <!-- Blog Body -->
+  <mat-card-content class="service-details-content" style="padding: 30px">
+    <div class="details-info">
+
+      <div class="service-details-table">
+        <div class="container">
+          <div class="label-container">
+            <div class="label-title">Title:</div>
+            <div class="label-value">{{ serviceOrders?.title }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Order ID:</div>
+            <div class="label-value">{{ serviceOrders?.id }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Order Type:</div>
+            <div class="label-value">{{ serviceOrders?.orderType }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Service Type:</div>
+            <div class="label-value">{{ serviceOrders?.serviceType }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Location:</div>
+            <div class="label-value">{{ serviceOrders?.location }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Date Requested:</div>
+            <div class="label-value">{{ serviceOrders?.dateRequested }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Duration:</div>
+            <div class="label-value">{{ serviceOrders?.duration }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Salary:</div>
+            <div class="label-value">{{ serviceOrders?.salary }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Status:</div>
+            <div class="label-value">
+              <app-service-status [status]="serviceOrders?.status||''"></app-service-status>
+            </div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Email:</div>
+            <div class="label-value">{{ serviceOrders?.email }}</div>
+          </div>
+
+          <div class="label-container">
+            <div class="label-title">Special Notes:</div>
+            <div class="label-value">{{ serviceOrders?.specialNotes }}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-6 col-lg-4">
+
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+          <div [matMenuTriggerFor]="notification" style="float: right;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;padding: 12px;cursor: pointer">
+            <i-tabler class="d-flex" name="message">Contact</i-tabler>
+          </div>
+          <mat-card-content class="mat-mdc-card-content p-y-24 text-center" style="padding-top: 0 !important"><img
+            alt="img" class="rounded-circle"
+            src="/assets/images/profile/user-1.jpg"
+            width="140">
+            <mat-card-title class="mat-mdc-card-title m-b-0 m-t-24">Tommoie Henderson</mat-card-title>
+            <mat-card-subtitle class="mat-mdc-card-subtitle mat-body-1 m-t-8 lh-24 m-b-24">Accept the request and <br>type
+              a message
+            </mat-card-subtitle>
+            <mat-menu #notification="matMenu" class="cardWithShadow">
+              <app-mini-chat></app-mini-chat>
+            </mat-menu>
+
+            <button
+              class="m-r-8 mdc-button  mat-mdc-unelevated-button mat-primary"
+            ><span
+              (click)="openDialog()" class="mdc-button__label">View</span></button>
+            <button
+              class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-warn"
+            ><span
+              (click)="openDialog()" class="mdc-button__label">Accept</span></button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+
+
+  </mat-card-content>
+</mat-card>
+<!-- Comment Section -->
+
+
+<mat-tab-group class="mat-mdc-tab-group mat-primary" mat-align-tabs="start" mat-stretch-tabs="false"
+               style="--mat-tab-animation-duration: 500ms;">
+  <mat-tab label="Proposals">
+    <app-job-proposals></app-job-proposals>
+
+  </mat-tab>
+  <mat-tab label="Comments">
+    <mat-card class="cardWithShadow">
+      <mat-card-content class="p-24">
+
+        <form>
+          <!-- Comment Textarea -->
+          <mat-form-field appearance="outline" class="w-100">
+            <textarea matInput placeholder="Write a comment" rows="5"></textarea>
+          </mat-form-field>
+
+          <!-- Submit Button -->
+          <button color="primary" mat-flat-button type="submit">Post Comment</button>
+        </form>
+
+        <!-- Comments Title -->
+        <mat-card-title class="comments-section-title">
+          Comments <span class="comments-count">4</span>
+        </mat-card-title>
+
+        <!-- Individual Comment -->
+        <div class="comment-container">
+          <div class="comment-header">
+            <img alt="user" class="user-img" src="/assets/images/profile/user-2.jpg">
+            <span class="user-name">Charlie Hamilton</span>
+            <span class="comment-time">
+          <i-tabler class="icon-7 op-5" name="circle-filled"></i-tabler> now
+        </span>
+          </div>
+          <p class="comment-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <button color="primary" mat-mini-fab>Reply</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Transactions">
+    <app-recent-transactions></app-recent-transactions>
+  </mat-tab>
+</mat-tab-group>
