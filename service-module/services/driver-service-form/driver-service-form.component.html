@@ -69,8 +69,8 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="pickupDropoffForm">
-            <form [formGroup]="pickupDropoffForm">
+          <mat-step [stepControl]="pickupDropOffForm">
+            <form [formGroup]="pickupDropOffForm">
 
               <div class="col-lg-12 p-12" formGroupName="pickupLocation">
                 <app-google-map-search-box
@@ -79,7 +79,7 @@
                 </app-google-map-search-box>
               </div>
 
-              <div class="col-lg-12 p-12" formGroupName="dropoffLocation">
+              <div class="col-lg-12 p-12" formGroupName="dropOffLocation">
                 <app-google-map-search-box
                   [label]="'Drop Off Location'"
                   formControlName="place">
@@ -87,7 +87,7 @@
               </div>
 
               <div>
-                <button (click)="driverValueChanges()" [disabled]="pickupDropoffForm.invalid" color="primary" mat-button
+                <button (click)="driverValueChanges()" [disabled]="pickupDropOffForm.invalid" color="primary" mat-button
                         mat-raised-button
                         matStepperNext>Next
                 </button>
@@ -159,20 +159,6 @@
     </mat-card>
   </div>
   <div class="col-lg-8">
-    <mat-card class="cardWithShadow theme-card">
-      <span *ngIf="distanceInKm" class="p-12"><strong class="f-s-24"> {{ distanceInKm }}</strong> Km</span>
-      <div class="google_map_container">
-        <google-map [center]="mapCenter" [options]="mapOptions" [zoom]="mapZoom" height="70vh" width="100%">
-          <map-marker
-            #marker="mapMarker"
-            (mapClick)="openInfoWindow(marker)"
-            [options]="markerOptions"
-            [position]="mapCenter">
-          </map-marker>
-          <map-info-window>{{ markerInfoContent }}</map-info-window>
-        </google-map>
-      </div>
-
-    </mat-card>
+    <app-google-map-drawings [location]="fromToLocation"></app-google-map-drawings>
   </div>
 </div>
