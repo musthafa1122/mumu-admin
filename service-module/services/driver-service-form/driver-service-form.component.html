@@ -85,10 +85,9 @@
             <div *ngIf="serviceDetailsForm.get('serviceType')?.value === 'withCar'" class="col-lg-12 p-12">
               <div style="display: flex;gap: 12px">
 
-                <mat-label class="driver-label">Vehicle Type</mat-label>
+                <mat-label class="f-w-600 m-b-8 d-block">Vehicle Type</mat-label>
 
-                <mat-form-field appearance="outline"
-                                color="primary"
+                <mat-form-field appearance="outline" class="w-100" color="primary"
                                 style="width: 100%; display: flex; justify-content: flex-start; gap: 16px;">
                   <mat-select formControlName="vehicleType">
                     <mat-option *ngFor="let option of vehicleTypes" [value]="option.value">
@@ -103,7 +102,7 @@
 
           <div class="row">
             <!-- From Date Picker -->
-            <div class="col-lg-8">
+            <div class="col-lg-8 p-12">
               <mat-label class="f-w-600 m-b-8 d-block">Select From Date</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input [matDatepicker]="fromPicker" [min]="minDate" formControlName="fromDate" matInput
@@ -114,7 +113,7 @@
             </div>
 
             <!-- From Time Picker -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 p-12">
               <mat-label class="f-w-600 m-b-8 d-block">Time</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input [min]="minTime" [ngxMatTimepicker]="pickerFrom" formControlName="fromTime" matInput
@@ -126,7 +125,7 @@
 
           <div class="row">
             <!-- To Date Picker -->
-            <div class="col-lg-8">
+            <div class="col-lg-8 p-12">
               <mat-label class="f-w-600 m-b-8 d-block">Select To Date</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input [matDatepicker]="toPicker" [min]="minToDate" formControlName="toDate" matInput
@@ -137,7 +136,7 @@
             </div>
 
             <!-- To Time Picker -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 p-12">
               <mat-label class="f-w-600 m-b-8 d-block">Time</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input [min]="minTime" [ngxMatTimepicker]="pickerTo" formControlName="toTime" matInput
@@ -146,15 +145,19 @@
             </div>
             <ngx-mat-timepicker #pickerTo color="primary"></ngx-mat-timepicker>
           </div>
-          <div class="col-lg-12">
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>Additional Services</mat-label>
-              <mat-select formControlName="additionalServices" multiple>
-                <mat-option *ngFor="let option of additionalServices" [value]="option.value">
-                  {{ option.label }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
+            <div style="display: flex;gap: 12px">
+              <mat-label class="f-w-600 m-b-8 d-block">Additional Services</mat-label>
+
+              <mat-form-field appearance="outline" class="w-100" color="primary"
+                              style="width: 100%; display: flex; justify-content: flex-start; gap: 16px;">
+                <mat-select formControlName="additionalServices" multiple>
+                  <mat-option *ngFor="let option of additionalServices" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
           <div class="p-t-24" style="display: flex; justify-content: flex-end">
             <button (click)="calculateDays();submitDriverForm();checkLocationValuesChanged()"
