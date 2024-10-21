@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {JobListingComponent} from "./job-listing/job-listing.component";
-import {AppRecentTransactionsComponent} from "../../../../components/recent-transactions/recent-transactions.component";
+import {AppRecentTransactionsComponent} from "../../components/recent-transactions/recent-transactions.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
   GoogleMapSearchBoxComponent
-} from "../../../../components/google-map-search-box/google-map-search-box.component";
+} from "../../components/google-map/google-map-search-box/google-map-search-box.component";
 import {MatButton, MatMiniFabButton} from "@angular/material/button";
 import {MatCard, MatCardContent, MatCardFooter, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";

@@ -4,7 +4,7 @@ import {MatDrawer, MatDrawerContainer} from "@angular/material/sidenav";
 import {MatIcon} from "@angular/material/icon";
 import {Apollo, gql} from "apollo-angular";
 import {ActivatedRoute} from "@angular/router";
-import {ServiceOrderData} from "../../../../order-history/order-history.service";
+import {ServiceOrderData} from "../../order-history/order-history.service";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardContent, MatCardFooter} from "@angular/material/card";

@@ -3,7 +3,9 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {MaterialModule} from "../../../material.module";
 import {CommonModule} from "@angular/common";
 import {Router} from "@angular/router";
-import {GoogleMapSearchBoxComponent} from "../../../components/google-map-search-box/google-map-search-box.component";
+import {
+  GoogleMapSearchBoxComponent
+} from "../../../components/google-map/google-map-search-box/google-map-search-box.component";
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 import {ToastrService} from "ngx-toastr";
 import DirectionsService = google.maps.DirectionsService;
