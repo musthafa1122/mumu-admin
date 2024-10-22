@@ -1,88 +1,173 @@
-<div class="bg-light-thirtiary rounded p-y-30 p-x-24 m-b-30 overflow-hidden ng-star-inserted">
-  <div class="row">
-    <div class="col-sm-8">
-      <h4 class="page-title m-0 f-s-20 f-w-600 m-b-16">Looking for an Errand Runner?</h4>
-      <div class="d-flex align-items-center overflow-hidden">
-        <span class="breadcrumb-item active ng-star-inserted">
-          Quick and reliable errand services for your daily needs, from shopping to bill payments.
-        </span>
-      </div>
-    </div>
-    <div class="col-sm-4 text-right position-relative">
-      <div class="breadcrumb-icon">
-        <img alt="breadcrumb" src="../../../assets/images/svgs/service-details.png"
-             style="margin-top: -8px;" width="320px">
-      </div>
-    </div>
+<!--<div class="bg-light-thirtiary rounded p-y-30 p-x-24 m-b-30 overflow-hidden ng-star-inserted">-->
+<!--  <div class="row">-->
+<!--    <div class="col-sm-8">-->
+<!--      <h4 class="page-title m-0 f-s-20 f-w-600 m-b-16">Looking for an Errand Runner?</h4>-->
+<!--      <div class="d-flex align-items-center overflow-hidden">-->
+<!--        <span class="breadcrumb-item active ng-star-inserted">-->
+<!--          Quick and reliable errand services for your daily needs, from shopping to bill payments.-->
+<!--        </span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="col-sm-4 text-right position-relative">-->
+<!--      <div class="breadcrumb-icon">-->
+<!--        <img alt="breadcrumb" src="../../../assets/images/svgs/service-details.png"-->
+<!--             style="margin-top: -8px;" width="320px">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
+
+<div class="row" style="align-items: flex-start;">
+  <div class="col-lg-4">
+    <mat-card class="cardWithShadow theme-card p-24">
+      <mat-card-header class="d-flex justify-content-between align-items-center" style="padding: 0;">
+        <mat-card-title class="m-b-0">
+          Looking for an Errand Runner?
+
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="p-0">
+        <form [formGroup]="errandForm">
+          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
+            <div class="d-flex gap-12">
+              <mat-label class="f-w-600 m-b-8 d-block p-l-0 p-r-0">
+                Service Type
+              </mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-select formControlName="serviceType" multiple>
+                  <mat-option *ngFor="let option of errandServiceTypes" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Booking Type -->
+            <div class="col-lg-12 p-12 d-flex gap-12">
+              <mat-label class="driver-label">Booking Type</mat-label>
+              <mat-radio-group class="mat-mdc-radio-group d-flex flex-wrap" formControlName="bookingType">
+                <mat-radio-button color="primary" value="hourly_driver">Hourly</mat-radio-button>
+                <mat-radio-button color="primary" value="daily_driver">Daily</mat-radio-button>
+                <mat-radio-button color="primary" value="one_time">Drop</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <!-- Pickup Location -->
+
+
+            <!-- Drop Off Location -->
+            <div *ngIf="errandForm.get('bookingType')?.value === 'one_time'" class="col-lg-12 p-12"
+                 formGroupName="dropOffLocation">
+              <app-google-map-search-box [label]="'Drop off Location'"
+                                         formControlName="place"></app-google-map-search-box>
+            </div>
+
+            <!-- Driver Type -->
+            <div class="col-lg-12 p-12" formGroupName="pickupLocation">
+              <app-google-map-search-box [label]="'Pick up Location'"
+                                         formControlName="place"></app-google-map-search-box>
+            </div>
+
+            <!-- Vehicle Type Selection -->
+          </div>
+
+          <div class="row">
+            <!-- From Date Picker -->
+            <div class="col-lg-8 p-12">
+              <mat-label class="f-w-600 m-b-8 d-block">Select From Date</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input [matDatepicker]="fromPicker" [min]="minDate" formControlName="fromDate" matInput
+                       placeholder="Select a date"/>
+                <mat-datepicker-toggle [for]="fromPicker" matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <!-- From Time Picker -->
+            <div class="col-lg-4 p-12">
+              <mat-label class="f-w-600 m-b-8 d-block">Time</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input [min]="minTime" [ngxMatTimepicker]="pickerFrom" formControlName="fromTime" matInput
+                       placeholder="12:00 AM"/>
+              </mat-form-field>
+            </div>
+            <ngx-mat-timepicker #pickerFrom color="primary"></ngx-mat-timepicker>
+          </div>
+          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
+            <div class="d-flex gap-12">
+              <mat-label class="f-w-600 m-b-8 d-block p-l-0 p-r-0">
+                Priority levels
+              </mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-select formControlName="priorityLevels" multiple>
+                  <mat-option *ngFor="let option of priorityLevels" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+
+          <div class="voice-note-container">
+
+            <!-- Label for the voice note recording section -->
+            <mat-label class="f-w-600 m-b-8 d-block p-l-0 p-r-0">
+              Record Additional Notes
+            </mat-label>
+            <div>
+
+              <!-- Record/Stop button with dynamic icon and label -->
+              <div class="d-flex align-items-center gap-10">
+
+                <button (click)="toggleRecording()" *ngIf="!audioUrl" mat-icon-button>
+                  <mat-icon *ngIf="!isRecording"> mic</mat-icon>
+                  <mat-icon *ngIf="isRecording">stop_circle</mat-icon>
+                </button>
+                <div *ngIf="isRecording" class="voice-note-timer">
+                  {{ recordingTime }}
+                </div>
+              </div>
+              <!-- Timer showing recording time during recording -->
+
+
+              <!-- Play button to playback the recorded voice note -->
+              <button (click)="playVoiceNote()" *ngIf="audioUrl" mat-icon-button>
+                <mat-icon>play_arrow</mat-icon>
+              </button>
+
+              <!-- Delete button to remove the recorded voice note -->
+              <button (click)="deleteVoiceNote()" *ngIf="audioUrl" mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+            <!-- Display voice note information (filename) -->
+            <!--            <div *ngIf="audioUrl" class="voice-note-info">-->
+            <!--              <p> {{ voiceNoteFileName }}</p>-->
+            <!--            </div>-->
+          </div>
+          <div class="p-t-24 d-flex justify-content-end">
+            <button
+              (click)="submitErrandForm()"
+              [disabled]="!errandForm.valid"
+              color="primary" mat-raised-button>
+              Calculate Price & Confirm
+
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-8">
+    <app-google-map-drawings [currentLocation]="currentLocation"
+                             [location]="toAndFromCoordinates"></app-google-map-drawings>
   </div>
 </div>
 
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title class="m-b-0">Errand Service Request</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="b-t-1">
-    <form [formGroup]="errandForm">
-      <div class="row">
-        <!-- Service Type -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Service Type</mat-label>
-            <mat-select formControlName="serviceType">
-              <mat-option *ngFor="let option of errandServiceTypes" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Priority Level -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Priority Level</mat-label>
-            <mat-select formControlName="priorityLevel">
-              <mat-option *ngFor="let option of priorityLevels" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Duration -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Duration</mat-label>
-            <mat-select formControlName="duration">
-              <mat-option *ngFor="let option of durations" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Additional Notes -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Additional Notes</mat-label>
-            <mat-select formControlName="additionalNotes" multiple>
-              <mat-option *ngFor="let option of additionalNotes" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Location -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Pickup/Service Location</mat-label>
-            <input formControlName="location" matInput>
-          </mat-form-field>
-        </div>
-      </div>
-      <mat-card-footer style="display: flex; justify-content: flex-end;">
-        <button (click)="submitErrandForm()" color="primary" mat-raised-button>Submit</button>
-      </mat-card-footer>
-    </form>
-  </mat-card-content>
-</mat-card>
