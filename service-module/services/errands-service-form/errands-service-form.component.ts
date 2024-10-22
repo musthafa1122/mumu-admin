@@ -72,15 +72,15 @@ export class ErrandsServiceFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {
     this.errandForm = this.fb.group({
       serviceType: [['groceryShopping'], Validators.required],
-      bookingType: ['', Validators.required],
-      priorityLevels: [['medium'], Validators.required],
-      duration: ['', Validators.required],
+      bookingType: ['one_time', Validators.required],
+      priorityLevels: ['high', Validators.required],
+      duration: ['2', Validators.required],
       additionalNotes: [[]],
       pickupLocation: this.fb.group({
         place: ['', Validators.required],
       }),
       dropOffLocation: this.fb.group({
-        place: ['', Validators.required],
+        place: [''],
       }),
       fromDate: [new Date(), Validators.required],
       fromTime: ['10:00', Validators.required],

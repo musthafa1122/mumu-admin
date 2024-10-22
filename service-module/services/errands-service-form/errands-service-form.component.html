@@ -30,8 +30,8 @@
       <mat-card-content class="p-0">
         <form [formGroup]="errandForm">
           <!-- Service Type Selection -->
-          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
-            <mat-label class="f-w-600 m-b-8 d-block">Service Type</mat-label>
+          <div class="col-lg-12 p-12 d-flex align-items-center" style="padding: 12px 0 !important;">
+            <mat-label class="f-w-600 d-block " style="width: 40%">Service Type</mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
               <mat-select formControlName="serviceType" multiple>
                 <mat-option *ngFor="let option of errandServiceTypes" [value]="option.value">
@@ -92,18 +92,17 @@
           </div>
 
           <!-- Priority Levels Selection -->
-          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
-            <mat-label class="f-w-600 m-b-8 d-block">Priority Levels</mat-label>
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-select formControlName="priorityLevels" multiple>
-                <mat-option *ngFor="let option of priorityLevels" [value]="option.value">
-                  {{ option.label }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <div class="col-lg-12 p-12 d-flex gap-12 justify-content-between" style="padding: 12px 0 !important;">
+            <mat-label class="driver-label">Priority Levels</mat-label>
+            <mat-radio-group class="d-flex flex-wrap" formControlName="priorityLevels">
+              <mat-radio-button *ngFor="let option of priorityLevels" [value]="option.value"
+                                color="primary"> {{ option.label }}
+              </mat-radio-button>
+            </mat-radio-group>
           </div>
-          <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
-            <mat-label class="f-w-600 m-b-8 d-block">Additional Notes</mat-label>
+
+          <div class="col-lg-12 p-12 d-flex align-items-center" style="padding: 12px 0 !important;">
+            <mat-label class="f-w-600 d-block " style="width: 40%">Additional Notes</mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
               <textarea formControlName="additionalNotes" matInput
                         placeholder="Enter any additional notes here"></textarea>
