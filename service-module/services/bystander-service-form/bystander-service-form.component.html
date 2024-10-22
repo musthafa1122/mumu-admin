@@ -4,8 +4,9 @@
   <!-- Left Column: Errand Runner Form -->
   <div class="col-lg-4">
     <mat-card class="cardWithShadow theme-card p-24">
-      <mat-card-header class="d-flex justify-content-between align-items-center p-0">
+      <mat-card-header class="d-flex gap-10 p-0">
         <mat-card-title class="m-b-0">Looking for a Bystander?</mat-card-title>
+        <mat-icon>blind</mat-icon>
       </mat-card-header>
 
       <mat-card-content class="p-0">
@@ -92,25 +93,7 @@
           <!-- Voice Note Recording -->
           <div class="voice-note-container">
             <mat-label class="f-w-600 m-b-8 d-block">Record Additional Notes</mat-label>
-            <div class="d-flex align-items-center gap-10">
-              <button (click)="toggleRecording()" *ngIf="!audioUrl" mat-icon-button>
-                <mat-icon *ngIf="!isRecording">mic</mat-icon>
-                <mat-icon *ngIf="isRecording">stop_circle</mat-icon>
-              </button>
-
-              <!-- Timer showing during recording -->
-              <div *ngIf="isRecording" class="voice-note-timer">{{ recordingTime }}</div>
-
-              <!-- Play button for recorded voice note -->
-              <button (click)="playVoiceNote()" *ngIf="audioUrl" mat-icon-button>
-                <mat-icon>play_arrow</mat-icon>
-              </button>
-
-              <!-- Delete button to remove the recorded voice note -->
-              <button (click)="deleteVoiceNote()" *ngIf="audioUrl" mat-icon-button>
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
+            <app-audio-recording formControlName="additionalNotesVoice"></app-audio-recording>
           </div>
 
           <!-- Submit Button -->
