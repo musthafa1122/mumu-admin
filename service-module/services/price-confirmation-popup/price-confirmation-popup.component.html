@@ -1,5 +1,7 @@
 <mat-card class="m-b-0">
   <mat-card-content>
+    <mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
+
     <div class="bg-light-primary rounded m-y-20 overflow-hidden m-b-24">
       <div class="p-24">
         <div class="d-flex align-items-center justify-content-center"><h4
@@ -7,28 +9,35 @@
       </div>
     </div>
     <div class="hstack justify-content-between align-items-center p-b-12 b-b-1">
-      <div><span class="mat-body-1 text-muted f-w-500 d-block">Added to Cart</span><span
-        class="mat-body-1 f-s-13 f-w-500 m-t-4">5 clicks</span></div>
+      <div><span class="mat-body-1 text-muted f-w-500 d-block">Base Fare</span></div>
       <div class="text-right"><h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">$21,120.70</h5><span
-        class="text-success f-s-13 f-w-500">+13.2%</span></div>
+        class="text-error f-s-13 f-w-500">-13.2%</span></div>
     </div>
     <div class="hstack justify-content-between align-items-center p-b-12 p-t-12 b-b-1">
-      <div><span class="mat-body-1 text-muted f-w-500 d-block">Reached to Checkout</span><span
-        class="mat-body-1 f-s-13 f-w-500 m-t-4">12 clicks</span></div>
+      <div><span class="mat-body-1 text-muted f-w-500 d-block">Service Fee</span></div>
       <div class="text-right"><h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">$16,100.00</h5><span
         class="text-error f-s-13 f-w-500">-7.4%</span></div>
     </div>
     <div class="hstack justify-content-between align-items-center p-b-12 p-t-12">
-      <div><span class="mat-body-1 text-muted f-w-500 d-block">Added to Cart</span><span
-        class="mat-body-1 f-s-13 f-w-500 m-t-4">24 views</span></div>
-      <div class="text-right"><h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">$21,120.70</h5><span
-        class="text-success f-s-13 f-w-500">+9.3%</span></div>
+      <div><span class="mat-body-1 text-muted f-w-500 d-block">Additional Charges</span><span
+        class="mat-body-1 f-s-13 f-w-500 m-t-4">Night Time</span></div>
+      <div class="text-right"><h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">$120.70</h5></div>
+    </div>
+    <div class="hstack justify-content-between align-items-center p-b-12 p-t-12">
+      <div>
+        <span class="mat-body-1 text-muted f-w-500 d-block">Discount</span>
+        <span class="mat-body-1 f-s-13 f-w-500 m-t-4">Promo Code Applied</span>
+      </div>
+      <div class="text-right">
+        <h5 class="f-w-700 text-error f-s-15 mat-subtitle-1 m-b-4">-$30.00</h5>
+      </div>
     </div>
   </mat-card-content>
 
   <mat-card-footer>
     <div class="p-24 d-flex w-100 justify-content-end">
       <button
+        (click)="submit()"
         class="w-100"
         color="primary"
         mat-raised-button>
