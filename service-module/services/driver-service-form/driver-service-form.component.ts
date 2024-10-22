@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MaterialModule} from '../../../../material.module';
 import {CommonModule} from '@angular/common';
@@ -17,6 +17,8 @@ import {
   NgxMatTimepickerToggleComponent
 } from 'ngx-mat-timepicker';
 import {Subscription} from 'rxjs';
+import {MatDialog} from "@angular/material/dialog";
+import {PriceConfirmationPopupComponent} from "../price-confirmation-popup/price-confirmation-popup.component";
 
 @Component({
   selector: 'app-driver-service-form',
@@ -41,7 +43,7 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   vehicleTypes = this.getVehicleTypes();
   additionalServices = this.getAdditionalServices();
   serviceDetailsForm!: FormGroup;
-
+  readonly dialog = inject(MatDialog);
   toAndFromCoordinates!: {
     pickupLatitude: number;
     pickupLongitude: number;
@@ -53,7 +55,7 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   minDate!: Date;
   minToDate!: Date;
   currentLocation!: { lat: number; long: number; };
-
+  showProgress = false
   private fromDateSubscription: Subscription | null = null;
   private pickupLocationSubscription: Subscription | null = null;
 
@@ -72,8 +74,15 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
 
   submitDriverForm(): void {
     if (this.serviceDetailsForm.valid) {
+      this.showProgress = true;
+
       const driverData = {...this.serviceDetailsForm.value};
-      console.log(driverData); // Log or process the driver data as needed
+      console.log(driverData);
+      setTimeout(() => {
+        this.openDialog()// Log or process the driver data as needed
+        this.showProgress = false
+      }, 7000);
+
     }
   }
 
@@ -120,6 +129,14 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  openDialog() {
+    const dialogConfig = {
+      width: '30%',  // Set the desired width
+    };
+
+    this.dialog.open(PriceConfirmationPopupComponent, dialogConfig);
+
+  }
 
   private getVehicleTypes() {
     return [

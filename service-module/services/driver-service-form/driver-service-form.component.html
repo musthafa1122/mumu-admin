@@ -21,6 +21,7 @@
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
+<mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
 
 <div class="row" style="align-items: flex-start;">
   <div class="col-lg-4">
@@ -163,3 +164,4 @@
                              [location]="toAndFromCoordinates"></app-google-map-drawings>
   </div>
 </div>
+
