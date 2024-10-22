@@ -1,88 +1,134 @@
-<div class="bg-light-secondary rounded p-y-30 p-x-24 m-b-30 overflow-hidden ng-star-inserted">
-  <div class="row">
-    <div class="col-sm-8">
-      <h4 class="page-title m-0 f-s-20 f-w-600 m-b-16">Looking for a Bystander?</h4>
-      <div class="d-flex align-items-center overflow-hidden">
-        <span class="breadcrumb-item active ng-star-inserted">
-          Reliable bystanders for hospital, home care, elderly care, and more.
-        </span>
-      </div>
-    </div>
-    <div class="col-sm-4 text-right position-relative">
-      <div class="breadcrumb-icon">
-        <img alt="breadcrumb" src="../../../assets/images/svgs/service-details.png"
-             style="margin-top: -8px;" width="320px">
-      </div>
-    </div>
+<mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
+
+<div class="row align-items-start">
+  <!-- Left Column: Errand Runner Form -->
+  <div class="col-lg-4">
+    <mat-card class="cardWithShadow theme-card p-24">
+      <mat-card-header class="d-flex justify-content-between align-items-center p-0">
+        <mat-card-title class="m-b-0">Looking for a Bystander?</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="p-0">
+        <form [formGroup]="bystanderForm">
+          <!-- Service Type Selection -->
+          <div class="col-lg-12 p-12 d-flex align-items-center" style="padding: 12px 0 !important;">
+            <mat-label class="f-w-600 d-block " style="width: 40%">Service Type</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-select formControlName="serviceType" multiple>
+                <mat-option *ngFor="let option of bystanderServiceTypes" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Booking Type Selection -->
+          <div class="col-lg-12 p-12 d-flex gap-12 justify-content-between" style="padding: 12px 0 !important;">
+            <mat-label class="driver-label">Booking Type</mat-label>
+            <mat-radio-group class="d-flex flex-wrap" formControlName="bookingType">
+              <mat-radio-button color="primary" value="hourly_driver">Hourly</mat-radio-button>
+              <mat-radio-button color="primary" value="daily_driver">Daily</mat-radio-button>
+              <mat-radio-button color="primary" value="one_time">Drop</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <!-- Pickup and Drop Off Locations -->
+          <!-- Pickup Location -->
+          <div class="col-lg-12 p-12 p-l-0 p-r-0" formGroupName="pickupLocation">
+            <app-google-map-search-box [label]="'Pick up Location'"
+                                       formControlName="place"></app-google-map-search-box>
+          </div>
+
+          <!-- Date and Time Selection -->
+          <div class="row">
+            <!-- From Date Picker -->
+            <div class="col-lg-8 p-12">
+              <mat-label class="f-w-600 m-b-8 d-block">Select From Date</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input [matDatepicker]="fromPicker" [min]="minDate" formControlName="fromDate" matInput
+                       placeholder="Select a date"/>
+                <mat-datepicker-toggle [for]="fromPicker" matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <!-- From Time Picker -->
+            <div class="col-lg-4 p-12">
+              <mat-label class="f-w-600 m-b-8 d-block">Time</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input [min]="minTime" [ngxMatTimepicker]="pickerFrom" formControlName="fromTime" matInput
+                       placeholder="12:00 AM"/>
+              </mat-form-field>
+            </div>
+            <ngx-mat-timepicker #pickerFrom color="primary"></ngx-mat-timepicker>
+          </div>
+
+          <!-- Priority Levels Selection -->
+          <div class="col-lg-12 p-12 d-flex gap-12 justify-content-between" style="padding: 12px 0 !important;">
+            <mat-label class="driver-label">Gender Preferences</mat-label>
+            <mat-radio-group class="d-flex flex-wrap" formControlName="genderPreferences">
+              <mat-radio-button *ngFor="let option of genderPreferences" [value]="option.value"
+                                color="primary"> {{ option.label }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-lg-12 p-12 d-flex align-items-center" style="padding: 12px 0 !important;">
+            <mat-label class="f-w-600 d-block " style="width: 40%">Service Type</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-select formControlName="specialRequirements" multiple>
+                <mat-option *ngFor="let option of specialRequirements" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-12 p-12 d-flex align-items-center" style="padding: 12px 0 !important;">
+            <mat-label class="f-w-600 d-block " style="width: 40%">Additional Notes</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <textarea formControlName="additionalNotes" matInput
+                        placeholder="Enter any additional notes here"></textarea>
+            </mat-form-field>
+          </div>
+          <!-- Voice Note Recording -->
+          <div class="voice-note-container">
+            <mat-label class="f-w-600 m-b-8 d-block">Record Additional Notes</mat-label>
+            <div class="d-flex align-items-center gap-10">
+              <button (click)="toggleRecording()" *ngIf="!audioUrl" mat-icon-button>
+                <mat-icon *ngIf="!isRecording">mic</mat-icon>
+                <mat-icon *ngIf="isRecording">stop_circle</mat-icon>
+              </button>
+
+              <!-- Timer showing during recording -->
+              <div *ngIf="isRecording" class="voice-note-timer">{{ recordingTime }}</div>
+
+              <!-- Play button for recorded voice note -->
+              <button (click)="playVoiceNote()" *ngIf="audioUrl" mat-icon-button>
+                <mat-icon>play_arrow</mat-icon>
+              </button>
+
+              <!-- Delete button to remove the recorded voice note -->
+              <button (click)="deleteVoiceNote()" *ngIf="audioUrl" mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="p-t-24 d-flex justify-content-end">
+            <button (click)="submitBystanderForm()" [disabled]="!bystanderForm.valid"
+                    color="primary" mat-raised-button>
+              Calculate Price & Confirm
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Right Column: Google Map Display -->
+  <div class="col-lg-8">
+    <app-google-map-drawings [currentLocation]="currentLocation"
+                             [location]="toAndFromCoordinates"></app-google-map-drawings>
   </div>
 </div>
 
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title class="m-b-0">Bystander Service Request</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="b-t-1">
-    <form [formGroup]="bystanderForm">
-      <div class="row">
-        <!-- Service Type -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Service Type</mat-label>
-            <mat-select formControlName="serviceType">
-              <mat-option *ngFor="let option of bystanderServiceTypes" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Gender Preference -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Gender Preference</mat-label>
-            <mat-select formControlName="genderPreference">
-              <mat-option *ngFor="let option of genderPreferences" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Duration -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Duration</mat-label>
-            <mat-select formControlName="duration">
-              <mat-option *ngFor="let option of durations" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Special Requirements -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Special Requirements</mat-label>
-            <mat-select formControlName="specialRequirements" multiple>
-              <mat-option *ngFor="let option of specialRequirements" [value]="option.value">
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <!-- Location -->
-        <div class="col-lg-6">
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <mat-label>Location</mat-label>
-            <input formControlName="location" matInput>
-          </mat-form-field>
-        </div>
-      </div>
-      <mat-card-footer style="display: flex; justify-content: flex-end;">
-        <button (click)="submitBystanderForm()" color="primary" mat-raised-button>Submit</button>
-      </mat-card-footer>
-    </form>
-  </mat-card-content>
-</mat-card>

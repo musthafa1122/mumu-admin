@@ -182,6 +182,20 @@ export class ErrandsServiceFormComponent implements OnInit {
     }
   }
 
+  checkLocationValuesChanged(): void {
+    const dropOffLocation = this.errandForm.get('dropOffLocation')?.value?.place;
+    const pickupLocation = this.errandForm.get('pickupLocation')?.value?.place;
+
+    if (dropOffLocation && pickupLocation) {
+      const {latitude: dropOffLatitude, longitude: dropOffLongitude} = dropOffLocation;
+      const {latitude: pickupLatitude, longitude: pickupLongitude} = pickupLocation;
+
+      console.log('Pickup Location:', pickupLongitude, pickupLatitude);
+      console.log('Dropoff Location:', dropOffLatitude, dropOffLongitude);
+      this.driverValueChanges(pickupLatitude, pickupLongitude, dropOffLatitude, dropOffLongitude);
+    }
+  }
+
   private handleDateChange(selectedDate: Date): void {
     const now = new Date();
     if (selectedDate.toDateString() === now.toDateString()) {

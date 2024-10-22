@@ -58,6 +58,7 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   showProgress = false
   private fromDateSubscription: Subscription | null = null;
   private pickupLocationSubscription: Subscription | null = null;
+  private dropOffLocationSubscription: Subscription | null = null;
 
   constructor(private router: Router, private fb: FormBuilder) {
   }
@@ -202,11 +203,21 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
         this.currentLocation = {lat: location.place.latitude, long: location.place.longitude};
       }
     }) as Subscription;
+    // this.dropOffLocationSubscription = this.serviceDetailsForm.get('dropOffLocation')?.valueChanges.subscribe(location => {
+    //
+    //   if (location?.place?.latitude && location?.place?.longitude) {
+    //     console.log(location)
+    //     this.checkLocationValuesChanged();
+    //     this.cdr.markForCheck();
+    //   }
+    // }) as Subscription;
   }
 
   private unsubscribeFromFormChanges(): void {
     this.fromDateSubscription?.unsubscribe();
     this.pickupLocationSubscription?.unsubscribe();
+    this.dropOffLocationSubscription?.unsubscribe();
+
   }
 
   private handleDateChange(selectedDate: Date): void {

@@ -1,27 +1,8 @@
-<!--<div class="bg-light-thirtiary rounded p-y-30 p-x-24 m-b-30 overflow-hidden ng-star-inserted">-->
-<!--  <div class="row">-->
-<!--    <div class="col-sm-8">-->
-<!--      <h4 class="page-title m-0 f-s-20 f-w-600 m-b-16">Looking for an Errand Runner?</h4>-->
-<!--      <div class="d-flex align-items-center overflow-hidden">-->
-<!--        <span class="breadcrumb-item active ng-star-inserted">-->
-<!--          Quick and reliable errand services for your daily needs, from shopping to bill payments.-->
-<!--        </span>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="col-sm-4 text-right position-relative">-->
-<!--      <div class="breadcrumb-icon">-->
-<!--        <img alt="breadcrumb" src="../../../assets/images/svgs/service-details.png"-->
-<!--             style="margin-top: -8px;" width="320px">-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
 <mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
 
 <div class="row align-items-start">
   <!-- Left Column: Errand Runner Form -->
-  <div class="col-lg-6">
+  <div class="col-lg-4">
     <mat-card class="cardWithShadow theme-card p-24">
       <mat-card-header class="d-flex justify-content-between align-items-center p-0">
         <mat-card-title class="m-b-0">Looking for an Errand Runner?</mat-card-title>
@@ -134,7 +115,8 @@
 
           <!-- Submit Button -->
           <div class="p-t-24 d-flex justify-content-end">
-            <button (click)="submitErrandForm()" [disabled]="!errandForm.valid" color="primary" mat-raised-button>
+            <button (click)="submitErrandForm(); checkLocationValuesChanged()" [disabled]="!errandForm.valid"
+                    color="primary" mat-raised-button>
               Calculate Price & Confirm
             </button>
           </div>
@@ -144,7 +126,7 @@
   </div>
 
   <!-- Right Column: Google Map Display -->
-  <div class="col-lg-6">
+  <div class="col-lg-8">
     <app-google-map-drawings [currentLocation]="currentLocation"
                              [location]="toAndFromCoordinates"></app-google-map-drawings>
   </div>
