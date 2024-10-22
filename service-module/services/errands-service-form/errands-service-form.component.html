@@ -19,62 +19,55 @@
 
 <mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
 
-<div class="row" style="align-items: flex-start;">
+<div class="row align-items-start">
+  <!-- Left Column: Errand Runner Form -->
   <div class="col-lg-4">
     <mat-card class="cardWithShadow theme-card p-24">
-      <mat-card-header class="d-flex justify-content-between align-items-center" style="padding: 0;">
-        <mat-card-title class="m-b-0">
-          Looking for an Errand Runner?
-
-        </mat-card-title>
+      <mat-card-header class="d-flex justify-content-between align-items-center p-0">
+        <mat-card-title class="m-b-0">Looking for an Errand Runner?</mat-card-title>
       </mat-card-header>
 
       <mat-card-content class="p-0">
         <form [formGroup]="errandForm">
+          <!-- Service Type Selection -->
           <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
-            <div class="d-flex gap-12">
-              <mat-label class="f-w-600 m-b-8 d-block p-l-0 p-r-0">
-                Service Type
-              </mat-label>
-              <mat-form-field appearance="outline" class="w-100" color="primary">
-                <mat-select formControlName="serviceType" multiple>
-                  <mat-option *ngFor="let option of errandServiceTypes" [value]="option.value">
-                    {{ option.label }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+            <mat-label class="f-w-600 m-b-8 d-block">Service Type</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-select formControlName="serviceType" multiple>
+                <mat-option *ngFor="let option of errandServiceTypes" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
+
+          <!-- Booking Type Selection -->
+          <div class="col-lg-12 p-12 d-flex gap-12 justify-content-between" style="padding: 12px 0 !important;">
+            <mat-label class="driver-label">Booking Type</mat-label>
+            <mat-radio-group class="d-flex flex-wrap" formControlName="bookingType">
+              <mat-radio-button color="primary" value="hourly_driver">Hourly</mat-radio-button>
+              <mat-radio-button color="primary" value="daily_driver">Daily</mat-radio-button>
+              <mat-radio-button color="primary" value="one_time">Drop</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <!-- Pickup and Drop Off Locations -->
           <div class="row">
-            <!-- Booking Type -->
-            <div class="col-lg-12 p-12 d-flex gap-12">
-              <mat-label class="driver-label">Booking Type</mat-label>
-              <mat-radio-group class="mat-mdc-radio-group d-flex flex-wrap" formControlName="bookingType">
-                <mat-radio-button color="primary" value="hourly_driver">Hourly</mat-radio-button>
-                <mat-radio-button color="primary" value="daily_driver">Daily</mat-radio-button>
-                <mat-radio-button color="primary" value="one_time">Drop</mat-radio-button>
-              </mat-radio-group>
-            </div>
-
             <!-- Pickup Location -->
-
-
-            <!-- Drop Off Location -->
-            <div *ngIf="errandForm.get('bookingType')?.value === 'one_time'" class="col-lg-12 p-12"
-                 formGroupName="dropOffLocation">
-              <app-google-map-search-box [label]="'Drop off Location'"
-                                         formControlName="place"></app-google-map-search-box>
-            </div>
-
-            <!-- Driver Type -->
             <div class="col-lg-12 p-12" formGroupName="pickupLocation">
               <app-google-map-search-box [label]="'Pick up Location'"
                                          formControlName="place"></app-google-map-search-box>
             </div>
 
-            <!-- Vehicle Type Selection -->
+            <!-- Drop Off Location (only for one-time bookings) -->
+            <div *ngIf="errandForm.get('bookingType')?.value === 'one_time'" class="col-lg-12 p-12"
+                 formGroupName="dropOffLocation">
+              <app-google-map-search-box [label]="'Drop off Location'"
+                                         formControlName="place"></app-google-map-search-box>
+            </div>
           </div>
 
+          <!-- Date and Time Selection -->
           <div class="row">
             <!-- From Date Picker -->
             <div class="col-lg-8 p-12">
@@ -97,45 +90,32 @@
             </div>
             <ngx-mat-timepicker #pickerFrom color="primary"></ngx-mat-timepicker>
           </div>
+
+          <!-- Priority Levels Selection -->
           <div class="col-lg-12 p-12" style="padding: 12px 0 !important;">
-            <div class="d-flex gap-12">
-              <mat-label class="f-w-600 m-b-8 d-block p-l-0 p-r-0">
-                Priority levels
-              </mat-label>
-              <mat-form-field appearance="outline" class="w-100" color="primary">
-                <mat-select formControlName="priorityLevels" multiple>
-                  <mat-option *ngFor="let option of priorityLevels" [value]="option.value">
-                    {{ option.label }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+            <mat-label class="f-w-600 m-b-8 d-block">Priority Levels</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-select formControlName="priorityLevels" multiple>
+                <mat-option *ngFor="let option of priorityLevels" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
 
-
+          <!-- Voice Note Recording -->
           <div class="voice-note-container">
+            <mat-label class="f-w-600 m-b-8 d-block">Record Additional Notes</mat-label>
+            <div class="d-flex align-items-center gap-10">
+              <button (click)="toggleRecording()" *ngIf="!audioUrl" mat-icon-button>
+                <mat-icon *ngIf="!isRecording">mic</mat-icon>
+                <mat-icon *ngIf="isRecording">stop_circle</mat-icon>
+              </button>
 
-            <!-- Label for the voice note recording section -->
-            <mat-label class="f-w-600 m-b-8 d-block p-l-0 p-r-0">
-              Record Additional Notes
-            </mat-label>
-            <div>
+              <!-- Timer showing during recording -->
+              <div *ngIf="isRecording" class="voice-note-timer">{{ recordingTime }}</div>
 
-              <!-- Record/Stop button with dynamic icon and label -->
-              <div class="d-flex align-items-center gap-10">
-
-                <button (click)="toggleRecording()" *ngIf="!audioUrl" mat-icon-button>
-                  <mat-icon *ngIf="!isRecording"> mic</mat-icon>
-                  <mat-icon *ngIf="isRecording">stop_circle</mat-icon>
-                </button>
-                <div *ngIf="isRecording" class="voice-note-timer">
-                  {{ recordingTime }}
-                </div>
-              </div>
-              <!-- Timer showing recording time during recording -->
-
-
-              <!-- Play button to playback the recorded voice note -->
+              <!-- Play button for recorded voice note -->
               <button (click)="playVoiceNote()" *ngIf="audioUrl" mat-icon-button>
                 <mat-icon>play_arrow</mat-icon>
               </button>
@@ -145,19 +125,12 @@
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
-
-            <!-- Display voice note information (filename) -->
-            <!--            <div *ngIf="audioUrl" class="voice-note-info">-->
-            <!--              <p> {{ voiceNoteFileName }}</p>-->
-            <!--            </div>-->
           </div>
-          <div class="p-t-24 d-flex justify-content-end">
-            <button
-              (click)="submitErrandForm()"
-              [disabled]="!errandForm.valid"
-              color="primary" mat-raised-button>
-              Calculate Price & Confirm
 
+          <!-- Submit Button -->
+          <div class="p-t-24 d-flex justify-content-end">
+            <button (click)="submitErrandForm()" [disabled]="!errandForm.valid" color="primary" mat-raised-button>
+              Calculate Price & Confirm
             </button>
           </div>
         </form>
@@ -165,6 +138,7 @@
     </mat-card>
   </div>
 
+  <!-- Right Column: Google Map Display -->
   <div class="col-lg-8">
     <app-google-map-drawings [currentLocation]="currentLocation"
                              [location]="toAndFromCoordinates"></app-google-map-drawings>

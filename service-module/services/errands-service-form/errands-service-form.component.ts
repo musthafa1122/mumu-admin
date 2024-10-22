@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MaterialModule} from "../../../../material.module";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
@@ -20,7 +20,7 @@ import {NgxMatTimepickerComponent, NgxMatTimepickerDirective} from "ngx-mat-time
   styleUrl: './errands-service-form.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class ErrandsServiceFormComponent {
+export class ErrandsServiceFormComponent implements OnInit {
   errandServiceTypes = [
     {label: "Grocery Shopping", value: "groceryShopping"},
     {label: "Package Pickup", value: "packagePickup"},
@@ -87,6 +87,21 @@ export class ErrandsServiceFormComponent {
       toDate: [this.calculateToDate(), Validators.required],
       toTime: ['18:00', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
+    this.errandForm.get('fromDate')?.valueChanges.subscribe(selectedDate => {
+      if (selectedDate) {
+        this.minToDate = selectedDate;
+        this.handleDateChange(selectedDate);
+      }
+    })
+
+    this.errandForm.get('pickupLocation')?.valueChanges.subscribe(location => {
+      if (location?.place?.latitude && location?.place?.longitude) {
+        this.currentLocation = {lat: location.place.latitude, long: location.place.longitude};
+      }
+    })
   }
 
   deleteVoiceNote() {
@@ -164,6 +179,17 @@ export class ErrandsServiceFormComponent {
     if (this.audioUrl) {
       const audio = new Audio(this.audioUrl);
       audio.play();
+    }
+  }
+
+  private handleDateChange(selectedDate: Date): void {
+    const now = new Date();
+    if (selectedDate.toDateString() === now.toDateString()) {
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      this.minTime = `${hours}:${minutes}`;
+    } else {
+      this.minTime = '00:00';
     }
   }
 
