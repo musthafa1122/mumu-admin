@@ -2,17 +2,54 @@
   <mat-card-content>
     <mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
 
-    <div class="bg-light-primary rounded m-y-20 overflow-hidden m-b-24">
-      <div class="p-24">
-        <div class="d-flex align-items-center justify-content-center"><h4
-          class="mat-subtitle-1 f-s-28 f-w-600">$2,120</h4></div>
+    <!-- Trip Details -->
+    <div class="trip-details m-b-24 p-16 bg-light rounded">
+      <h5 class="f-w-700 mat-subtitle-1">Trip Information</h5>
+      <div>
+        <p class="d-flex justify-content-between gap-6"><strong>Business Hours:</strong> <span
+          class="d-flex gap-6">{{ data.businessHours }}
+          <mat-icon (click)="openInfoDialog(infoTemplate)">info</mat-icon></span>
+        </p>
+        <p class="d-flex justify-content-between gap-6"><strong
+        >Distance:</strong> {{ data.distanceInKm }}
+        </p>
+        <p class="d-flex justify-content-between gap-6"><strong>Duration:</strong><span
+        >{{ data.duration }}</span></p>
+        <p class="d-flex justify-content-between gap-6"><strong>Start
+          Address:</strong><span [matTooltip]=" data?.pickupLocation?.placeName"
+                                 class="text-ellipsis">{{ data?.pickupLocation?.placeName }}</span>
+        </p>
+        <p class="d-flex justify-content-between gap-6"><strong>End Address:</strong><span
+          [matTooltip]=" data?.dropOffLocation?.placeName"
+          class="text-ellipsis">{{ data?.dropOffLocation?.placeName }}</span></p>
       </div>
     </div>
+
+    <!--    &lt;!&ndash; Price Negotiation Section &ndash;&gt;-->
+    <!--    <div class="bg-light-primary rounded m-y-20 overflow-hidden m-b-24">-->
+    <!--      <div class="p-24 text-center">-->
+    <!--        <h4 class="mat-subtitle-1 f-s-28 f-w-600">Price Negotiation</h4>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <!-- Mumu Suggested Price -->
     <div class="hstack justify-content-between align-items-center p-b-12 b-b-1">
-      <div><span class="mat-body-1 text-muted f-w-500 d-block">Base Fare</span></div>
-      <div class="text-right"><h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">$21,120.70</h5><span
-        class="text-error f-s-13 f-w-500">-13.2%</span></div>
+      <div><span class="mat-body-1 text-muted f-w-500 d-block">Mumu Suggested Price</span></div>
+      <div class="text-right">
+        <h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">{{ data.mumuSuggestedPrice | currency }}</h5><span
+        class="text-error f-s-13 f-w-500">-13.2%</span>
+      </div>
     </div>
+
+    <!-- Service Offer Price -->
+    <!--    <div class="hstack justify-content-between align-items-center p-b-12 p-t-12 b-b-1">-->
+    <!--      <div><span class="mat-body-1 text-muted f-w-500 d-block">Service Offer Price</span></div>-->
+    <!--      <div class="text-right">-->
+    <!--        <h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">{{ serviceOfferPrice | currency }}</h5>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+
     <div class="hstack justify-content-between align-items-center p-b-12 p-t-12 b-b-1">
       <div><span class="mat-body-1 text-muted f-w-500 d-block">Service Fee</span></div>
       <div class="text-right"><h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">$16,100.00</h5><span
@@ -23,7 +60,7 @@
         class="mat-body-1 f-s-13 f-w-500 m-t-4">Night Time</span></div>
       <div class="text-right"><h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">$120.70</h5></div>
     </div>
-    <div class="hstack justify-content-between align-items-center p-b-12 p-t-12">
+    <div class="hstack justify-content-between align-items-center p-b-12 p-t-12 b-b-1">
       <div>
         <span class="mat-body-1 text-muted f-w-500 d-block">Discount</span>
         <span class="mat-body-1 f-s-13 f-w-500 m-t-4">Promo Code Applied</span>
@@ -32,17 +69,70 @@
         <h5 class="f-w-700 text-error f-s-15 mat-subtitle-1 m-b-4">-$30.00</h5>
       </div>
     </div>
+    <!-- User Offered Price (Input Field) -->
+    <div class="hstack justify-content-between align-items-center p-b-12 p-t-12 b-b-1">
+      <div><span class="mat-body-1 text-muted f-w-500 d-block">Your Offered Price</span></div>
+      <div class="text-right w-50">
+        <mat-form-field appearance="outline" class="w-100">
+          <input [(ngModel)]="data.serviceOfferPrice" [placeholder]="data.mumuSuggestedPrice.toString()" matInput
+                 style="
+    font-size: large !important;
+    font-weight: 900 !important;"
+                 type="number"/>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Accepted Price -->
+    <div class="hstack justify-content-between align-items-center p-b-12 p-t-12">
+      <div><span class="mat-body-1 text-muted f-w-500 d-block">Agreed Price</span></div>
+      <div class="text-right">
+        <h5 class="f-w-700 f-s-15 mat-subtitle-1 m-b-4">
+          {{ data.acceptedPrice ? (data.acceptedPrice | currency) : 'Negotiating...' }}
+        </h5>
+      </div>
+    </div>
+
   </mat-card-content>
 
   <mat-card-footer>
     <div class="p-24 d-flex w-100 justify-content-end">
-      <button
-        (click)="submit()"
-        class="w-100"
-        color="primary"
-        mat-raised-button>
-        Confirm Booking
+      <!-- Submit Button -->
+      <button (click)="confirmPrice()" class="w-100" color="primary" mat-raised-button>
+        Confirm & Negotiate Price
       </button>
     </div>
   </mat-card-footer>
 </mat-card>
+<ng-template #infoTemplate>
+
+  <mat-card class="p-24 m-b-0">
+    <mat-label class="f-w-600 m-b-8 d-block"><h2>Explanation of Business Hours</h2></mat-label>
+
+    <mat-card-content>
+      <p>“Business hours” refer to the standard working hours during which services are provided in a day. In this
+        context, we calculate time based on a typical 8-hour workday (from 9:00 AM to 5:00 PM).</p>
+
+      <h4>How it works:</h4>
+      <ul>
+        <li>1 business day = 8 working hours.</li>
+        <li>If your service requires more than 8 hours, it will extend to the next business day.</li>
+        <li>If the task duration includes a round trip, we will double the required time to account for both the
+          outgoing and return journeys.
+        </li>
+      </ul>
+
+      <h4>Example:</h4>
+      <ul>
+        <li>If a service requires 16 hours of work, it will be counted as 2 business days (since 1 day = 8 hours).</li>
+        <li>For shorter services, like 4 hours, it will count as half a business day.</li>
+        <li>For round trips, a 4-hour task would be treated as an 8-hour total (one full business day) because we
+          calculate the return journey.
+        </li>
+      </ul>
+
+      <p>This ensures that the scheduling is realistic, and customers understand how the service time is determined,
+        especially when round trips are involved.</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

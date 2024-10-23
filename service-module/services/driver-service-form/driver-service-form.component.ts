@@ -7,6 +7,7 @@ import {
   GoogleMapSearchBoxComponent
 } from '../../../../components/google-map/google-map-search-box/google-map-search-box.component';
 import {
+  DistanceChangeEvent,
   GoogleMapDrawingsComponent
 } from '../../../../components/google-map/google-map-drawings/google-map-drawings.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -19,6 +20,9 @@ import {
 import {Subscription} from 'rxjs';
 import {MatDialog} from "@angular/material/dialog";
 import {PriceConfirmationPopupComponent} from "../price-confirmation-popup/price-confirmation-popup.component";
+import {ServiceOrderService} from "../service-order.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {OrderHistoryService} from "../../order-history/order-history.service";
 
 @Component({
   selector: 'app-driver-service-form',
@@ -60,7 +64,12 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   private pickupLocationSubscription: Subscription | null = null;
   private dropOffLocationSubscription: Subscription | null = null;
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(private router: Router,
+              private fb: FormBuilder,
+              private serviceOrderService: ServiceOrderService,
+              private snackBar: MatSnackBar,
+              private orderHistoryService: OrderHistoryService
+  ) {
   }
 
   ngOnInit(): void {
@@ -77,13 +86,50 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
     if (this.serviceDetailsForm.valid) {
       this.showProgress = true;
 
-      const driverData = {...this.serviceDetailsForm.value};
-      console.log(driverData);
-      setTimeout(() => {
-        this.openDialog()// Log or process the driver data as needed
-        this.showProgress = false
-      }, 7000);
+      const formValue = this.serviceDetailsForm.value;  // Get values from the form
 
+      const variables = {
+        pickupLocation: formValue.pickupLocation.place,
+        dropOffLocation: formValue.dropOffLocation.place,
+        fromDate: formValue.fromDate.toISOString(),  // Convert to ISO string
+        fromTime: formValue.fromTime,
+        toDate: formValue.toDate.toISOString(),
+        toTime: formValue.toTime,
+        user: '6708df417f34f8c4c3df65da',  // Replace with actual user ID
+        service: '67085c2577bc64c98ab89f06',  // Replace with actual service ID
+        genderPreferences: formValue.genderPreferences,
+        serviceType: formValue.serviceType,
+        specialRequirements: formValue.specialRequirements,
+        bookingType: formValue.bookingType,
+        duration: formValue.duration,
+        mumuSuggestedPrice: formValue.mumuSuggestedPrice,  // Pricing
+        serviceOfferPrice: formValue.serviceOfferPrice,  // Pricing
+        userOfferedPrice: formValue.userOfferedPrice,  // Pricing
+        acceptedPrice: formValue.acceptedPrice,  // Pricing
+        businessHours: formValue.businessHours,  // Business hours
+        distanceInKm: formValue.distanceInKm,  // Distance in km
+        priorityLevels: formValue.priorityLevels,  // Priority levels
+        additionalNotes: formValue.additionalNotes,  // Additional notes
+        additionalNotesVoice: formValue.additionalNotesVoice ? formValue.additionalNotesVoice.toString() : null,  // Voice notes
+        additionalServices: formValue.additionalServices.join(','),  // Additional services
+      };
+      console.log('Submitting Driver Service Request:', variables);
+      this.openDialog(variables)
+      // Call the service order save function (GraphQL mutation)
+      // this.serviceOrderService.saveServiceOrder(variables).subscribe(
+      //   (response: any) => {
+      //     // Handle successful service order save
+      //     console.log('Service Order successfully saved:', response);
+      //     this.showProgress = false;
+      //   },
+      //   (error: any) => {
+      //     // Handle error when saving service order
+      //     console.error('Error saving Service Order:', error);
+      //     this.showProgress = false;
+      //   }
+      // );
+    } else {
+      console.log('Form is invalid');
     }
   }
 
@@ -130,13 +176,93 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDialog() {
+  openDialog(event: any) {
     const dialogConfig = {
-      width: '30%',  // Set the desired width
+      width: '40%',  // Set the desired width
+      data: event
     };
 
     this.dialog.open(PriceConfirmationPopupComponent, dialogConfig);
+    const dialogRef = this.dialog.open(PriceConfirmationPopupComponent, dialogConfig);
 
+    // Subscribe to afterClosed() to get the response
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with response:', result);
+        this.serviceOrderService.saveServiceOrder(result).subscribe(
+          (response: any) => {
+            this.orderHistoryService.getServiceHistory('6708df417f34f8c4c3df65da').subscribe(data => {
+              console.log(data);
+            })
+            this.snackBar.open('Service Order successfully saved!', 'Close', {
+              duration: 3000, // Duration in milliseconds
+              horizontalPosition: 'right', // Position of the toast
+              verticalPosition: 'top', // Position of the toast
+              panelClass: ['success-snackbar'] // Optional: Custom CSS class for styling
+            });
+            this.router.navigateByUrl("/service-home/history");
+            this.showProgress = false;
+          },
+          (error: any) => {
+            // Handle error when saving service order
+            console.error('Error saving Service Order:', error);
+            this.showProgress = false;
+          }
+        );
+      }
+    });
+  }
+
+  distanceChanges(event: DistanceChangeEvent) {
+    console.log('Distance changes:', event);
+
+    // Update form group fields with data from the event
+    this.serviceDetailsForm.patchValue({
+      businessHours: event.businessHours,  // Set business hours
+      distanceInKm: event.distance.text,  // Set distance text
+      duration: event.duration.text,  // Set duration text
+    });
+    this.submitDriverForm()
+  }
+
+  private createForms() {
+    this.serviceDetailsForm = this.fb.group({
+      serviceType: ['withoutCar', Validators.required],
+      vehicleType: [''],  // This may be optional, depending on the service
+      bookingType: ['one_time', Validators.required],
+      additionalServices: [[]],  // Array of additional services
+      duration: [''],
+      // Location FormGroup
+      pickupLocation: this.fb.group({
+        place: ['', Validators.required],  // Location data
+      }),
+      dropOffLocation: this.fb.group({
+        place: ['', Validators.required],  // Location data
+      }),
+
+      // Date and Time
+      fromDate: [new Date(), Validators.required],  // Start date
+      fromTime: ['10:00', Validators.required],  // Start time
+      toDate: [this.calculateToDate(), Validators.required],  // End date
+      toTime: ['18:00', Validators.required],  // End time
+
+      // Additional Fields
+      specialRequirements: [''],  // Text input for special requirements
+      genderPreferences: ['any'],  // Optional gender preferences
+      priorityLevels: ['normal'],  // Optional priority levels
+      additionalNotes: [''],  // Any additional notes
+      additionalNotesVoice: [''],  // Voice notes, can be optional
+
+      // Pricing Fields (added here)
+      mumuSuggestedPrice: [0],  // Default value set to 0
+      serviceOfferPrice: [0],  // Default value set to 0
+      userOfferedPrice: [0],  // Default value set to 0
+      acceptedPrice: [0],  // Default value set to 0
+
+      // Business Hours and Distance
+      businessHours: [''],  // Default empty string
+      distanceInKm: [''],  // Default empty string
+    });
   }
 
   private getVehicleTypes() {
@@ -159,25 +285,6 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
       {label: 'Elderly Assistance', value: 'elderlyAssistance'},
       {label: 'Airport Transfer', value: 'airportTransfer'},
     ];
-  }
-
-  private createForms() {
-    this.serviceDetailsForm = this.fb.group({
-      serviceType: ['withoutCar', Validators.required],
-      vehicleType: [''],
-      bookingType: ['one_time', Validators.required],
-      additionalServices: [[]],
-      pickupLocation: this.fb.group({
-        place: ['', Validators.required],
-      }),
-      dropOffLocation: this.fb.group({
-        place: ['', Validators.required],
-      }),
-      fromDate: [new Date(), Validators.required],
-      fromTime: ['10:00', Validators.required],
-      toDate: [this.calculateToDate(), Validators.required],
-      toTime: ['18:00', Validators.required],
-    });
   }
 
   private calculateToDate(): Date {

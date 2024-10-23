@@ -21,7 +21,31 @@ export interface User {
   phoneNumberVerified: boolean;
 }
 
+export interface Location {
+  latitude: number;        // Number type for latitude
+  longitude: number;       // Number type for longitude
+  placeName: string;       // String type for placeName
+  imageUrl?: string;       // Optional string field (use ? to make it optional)
+  locationUrl?: string;    // Optional string field
+}
+
+
+export interface Service {
+  id: string;
+  imgSrc: string,
+  title: string,
+  description: string,
+  price: number, // Use Number as the price is a number in your data
+  negotiatedPrice: number, // Use Number as well
+  parentServiceType: string
+}
+
 export interface ServiceOrderData {
+  bookingType: string;
+  fromDate: Date;
+  pickupLocation: Location;
+  dropOffLocation?: Location;
+  service: Service;
   id: number;
   serviceType: string;
   title: string;
@@ -39,36 +63,44 @@ export interface ServiceOrderData {
 }
 
 export const GET_SERVICE_ORDERS = gql`
-  query ServiceOrderByUserId($userId: ID!) {
+  query Query($userId: ID!) {
   serviceOrderByUserId(userId: $userId) {
     id
-    orderId
     serviceType
-    title
-    location
-    dateRequested
-    salary
-    orderType
     duration
+    bookingType
+    pickupLocation {
+      latitude
+      longitude
+      placeName
+      imageUrl
+      locationUrl
+    }
+    fromDate
+    fromTime
+    toDate
+    toTime
     status
-    imageUrl
-    specialNotes
-    email
-    user {
-      firstName
-      lastName
-      id
-      phoneNumber
-      email
-      image
+    service {
+      imgSrc
+      title
+      description
+      price
+      negotiatedPrice
+      parentServiceType
     }
     assignedUser {
       firstName
       lastName
-      id
-      phoneNumber
-      email
-      image
+    }
+    createdAt
+    updatedAt
+    dropOffLocation {
+      latitude
+      longitude
+      placeName
+      imageUrl
+      locationUrl
     }
   }
 }

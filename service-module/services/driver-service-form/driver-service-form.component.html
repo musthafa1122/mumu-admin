@@ -123,7 +123,7 @@
           </div>
 
           <div class="p-t-24 d-flex justify-content-end">
-            <button (click)="calculateDays(); submitDriverForm(); checkLocationValuesChanged()"
+            <button (click)="calculateDays(); checkLocationValuesChanged()"
                     [disabled]="!serviceDetailsForm.valid"
                     color="primary"
                     mat-raised-button>
@@ -136,7 +136,8 @@
   </div>
 
   <div class="col-lg-8">
-    <app-google-map-drawings [currentLocation]="currentLocation"
+    <app-google-map-drawings (distanceChanges)="distanceChanges($event)"
+                             [currentLocation]="currentLocation"
                              [location]="toAndFromCoordinates"></app-google-map-drawings>
   </div>
 </div>

@@ -43,7 +43,7 @@
         <ng-container matColumnDef="image">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>Image</th>
           <td *matCellDef="let element" mat-cell>
-            <img [src]="element.imageUrl" alt="{{ element.title }}" class="rounded" width="48"/>
+            <img [src]="element.image" alt="{{ element.title }}" class="rounded" width="48"/>
           </td>
         </ng-container>
 
@@ -104,7 +104,7 @@
         <ng-container matColumnDef="action">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>Action</th>
           <td *matCellDef="let element" mat-cell>
-            <button (click)="applyForJob(element.id)" color="primary" mat-button>Edit</button>
+            <button (click)="applyForJob(element.id)" color="primary" mat-button>View</button>
           </td>
         </ng-container>
 

@@ -10,6 +10,7 @@ import {
 } from "../../../../components/google-map/google-map-search-box/google-map-search-box.component";
 import {NgxMatTimepickerComponent, NgxMatTimepickerDirective} from "ngx-mat-timepicker";
 import {AudioRecordingComponent} from "../../../../components/audio-recording/audio-recording.component";
+import {ServiceOrderService} from "../service-order.service";
 
 @Component({
   selector: 'app-bystander-service-form',
@@ -69,7 +70,7 @@ export class BystanderServiceFormComponent {
   };
   currentLocation!: { lat: number; long: number; };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private serviceOrderService: ServiceOrderService) {
     this.bystanderForm = this.fb.group({
       serviceType: [['hospitalBystander'], Validators.required],
       genderPreferences: ['male', Validators.required],
@@ -92,8 +93,32 @@ export class BystanderServiceFormComponent {
   submitBystanderForm() {
     if (this.bystanderForm.valid) {
       const bystanderData = this.bystanderForm.value;
-      console.log('Bystander Service Request:', bystanderData);
-      // Handle bystander service request submission
+
+      // Convert the form data to the format required for the GraphQL mutation
+      const variables = {
+        pickupLocation: bystanderData.pickupLocation.place,
+        fromDate: bystanderData.fromDate.toISOString(),
+        fromTime: bystanderData.fromTime,
+        toDate: bystanderData.toDate.toISOString(),
+        toTime: bystanderData.toTime,
+        user: '6708df417f34f8c4c3df65da',  // Replace with the logged-in user ID
+        service: '67085c2577bc64c98ab89f06',  // Replace with the service ID
+        genderPreferences: bystanderData.genderPreferences,
+        serviceType: bystanderData.serviceType.join(','),
+        specialRequirements: bystanderData.specialRequirements,
+        bookingType: bystanderData.bookingType,
+        priorityLevels: bystanderData.priorityLevels,
+        additionalNotes: bystanderData.additionalNotes,
+        mumuSuggestedPrice: 0,
+        serviceOfferPrice: 0,
+        userOfferedPrice: 0,
+        acceptedPrice: 0,
+        additionalNotesVoice: bystanderData.additionalNotesVoice ? bystanderData.additionalNotesVoice.toString() : null,
+      };
+      console.log('Submitting Bystander Service Request:', variables);
+      this.serviceOrderService.saveServiceOrder(variables);
+    } else {
+      console.log('Form is invalid');
     }
   }
 

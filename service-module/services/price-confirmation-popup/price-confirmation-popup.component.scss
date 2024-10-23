@@ -1,0 +1,9 @@
+.text-ellipsis {
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide any overflow text */
+  text-overflow: ellipsis; /* Display ellipsis for overflowing text */
+  display: inline-block; /* Ensure inline-block behavior */
+  max-width: 300px; /* Set a max width to control text area */
+  vertical-align: bottom;
+  width: auto /* Align with the surrounding text */
+}
