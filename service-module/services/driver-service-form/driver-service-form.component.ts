@@ -83,6 +83,7 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   }
 
   submitDriverForm(): void {
+    console.log(12);
     if (this.serviceDetailsForm.valid) {
       this.showProgress = true;
 
@@ -113,21 +114,7 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
         additionalNotesVoice: formValue.additionalNotesVoice ? formValue.additionalNotesVoice.toString() : null,  // Voice notes
         additionalServices: formValue.additionalServices.join(','),  // Additional services
       };
-      console.log('Submitting Driver Service Request:', variables);
       this.openDialog(variables)
-      // Call the service order save function (GraphQL mutation)
-      // this.serviceOrderService.saveServiceOrder(variables).subscribe(
-      //   (response: any) => {
-      //     // Handle successful service order save
-      //     console.log('Service Order successfully saved:', response);
-      //     this.showProgress = false;
-      //   },
-      //   (error: any) => {
-      //     // Handle error when saving service order
-      //     console.error('Error saving Service Order:', error);
-      //     this.showProgress = false;
-      //   }
-      // );
     } else {
       console.log('Form is invalid');
     }
@@ -169,9 +156,6 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
     if (dropOffLocation && pickupLocation) {
       const {latitude: dropOffLatitude, longitude: dropOffLongitude} = dropOffLocation;
       const {latitude: pickupLatitude, longitude: pickupLongitude} = pickupLocation;
-
-      console.log('Pickup Location:', pickupLongitude, pickupLatitude);
-      console.log('Dropoff Location:', dropOffLatitude, dropOffLongitude);
       this.driverValueChanges(pickupLatitude, pickupLongitude, dropOffLatitude, dropOffLongitude);
     }
   }
@@ -181,30 +165,25 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
       width: '40%',  // Set the desired width
       data: event
     };
-
-    this.dialog.open(PriceConfirmationPopupComponent, dialogConfig);
     const dialogRef = this.dialog.open(PriceConfirmationPopupComponent, dialogConfig);
 
-    // Subscribe to afterClosed() to get the response
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with response:', result);
         this.serviceOrderService.saveServiceOrder(result).subscribe(
           (response: any) => {
             this.orderHistoryService.getServiceHistory('6708df417f34f8c4c3df65da').subscribe(data => {
               console.log(data);
+              this.snackBar.open('Service Order successfully saved!', 'Close', {
+                duration: 3000, // Duration in milliseconds
+                horizontalPosition: 'right', // Position of the toast
+                verticalPosition: 'top', // Position of the toast
+                panelClass: ['success-snackbar'] // Optional: Custom CSS class for styling
+              });
+              this.showProgress = false;
+              this.router.navigateByUrl("/service-home/history");
             })
-            this.snackBar.open('Service Order successfully saved!', 'Close', {
-              duration: 3000, // Duration in milliseconds
-              horizontalPosition: 'right', // Position of the toast
-              verticalPosition: 'top', // Position of the toast
-              panelClass: ['success-snackbar'] // Optional: Custom CSS class for styling
-            });
-            this.router.navigateByUrl("/service-home/history");
-            this.showProgress = false;
           },
           (error: any) => {
-            // Handle error when saving service order
             console.error('Error saving Service Order:', error);
             this.showProgress = false;
           }
@@ -214,9 +193,6 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   }
 
   distanceChanges(event: DistanceChangeEvent) {
-    console.log('Distance changes:', event);
-
-    // Update form group fields with data from the event
     this.serviceDetailsForm.patchValue({
       businessHours: event.businessHours,  // Set business hours
       distanceInKm: event.distance.text,  // Set distance text
@@ -232,34 +208,25 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
       bookingType: ['one_time', Validators.required],
       additionalServices: [[]],  // Array of additional services
       duration: [''],
-      // Location FormGroup
       pickupLocation: this.fb.group({
         place: ['', Validators.required],  // Location data
       }),
       dropOffLocation: this.fb.group({
         place: ['', Validators.required],  // Location data
       }),
-
-      // Date and Time
       fromDate: [new Date(), Validators.required],  // Start date
       fromTime: ['10:00', Validators.required],  // Start time
       toDate: [this.calculateToDate(), Validators.required],  // End date
       toTime: ['18:00', Validators.required],  // End time
-
-      // Additional Fields
       specialRequirements: [''],  // Text input for special requirements
       genderPreferences: ['any'],  // Optional gender preferences
       priorityLevels: ['normal'],  // Optional priority levels
       additionalNotes: [''],  // Any additional notes
       additionalNotesVoice: [''],  // Voice notes, can be optional
-
-      // Pricing Fields (added here)
       mumuSuggestedPrice: [0],  // Default value set to 0
       serviceOfferPrice: [0],  // Default value set to 0
       userOfferedPrice: [0],  // Default value set to 0
       acceptedPrice: [0],  // Default value set to 0
-
-      // Business Hours and Distance
       businessHours: [''],  // Default empty string
       distanceInKm: [''],  // Default empty string
     });
@@ -310,14 +277,6 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
         this.currentLocation = {lat: location.place.latitude, long: location.place.longitude};
       }
     }) as Subscription;
-    // this.dropOffLocationSubscription = this.serviceDetailsForm.get('dropOffLocation')?.valueChanges.subscribe(location => {
-    //
-    //   if (location?.place?.latitude && location?.place?.longitude) {
-    //     console.log(location)
-    //     this.checkLocationValuesChanged();
-    //     this.cdr.markForCheck();
-    //   }
-    // }) as Subscription;
   }
 
   private unsubscribeFromFormChanges(): void {
