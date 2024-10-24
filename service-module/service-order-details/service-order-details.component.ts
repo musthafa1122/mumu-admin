@@ -20,35 +20,63 @@ import {NotificationComponent} from "../../extra/ui-components/notification/noti
 import {MiniChatComponent} from "../../common-module/chat-application/mini-chat/mini-chat.component";
 
 export const GET_SERVICE_ORDERS_BY_ID = gql`
-  query serviceOrderById($id: ID!) {
-    serviceOrderById(id: $id) {
-      id
-      dateRequested
-      duration
-      email
-      imageUrl
-      location
-      orderId
-      orderType
-      salary
-      serviceType
-      specialNotes
-      status
-      title
-      user {
-      id
+  query ServiceOrderById($serviceOrderByIdId: ID!) {
+  serviceOrderById(id: $serviceOrderByIdId) {
+    acceptedPrice
+    additionalNotes
+    additionalNotesVoice
+    assignedUser {
       firstName
       lastName
-      email
-      phoneNumber
-      dob
-      gender
-      password
-      emailVerified
-      phoneNumberVerified
+      id
     }
+    bookingType
+    businessHours
+    createdAt
+    distanceInKm
+    dropOffLocation {
+      latitude
+      longitude
+      placeName
+      imageUrl
+      locationUrl
     }
+    duration
+    fromDate
+    fromTime
+    genderPreferences
+    id
+    mumuSuggestedPrice
+    pickupLocation {
+      latitude
+      longitude
+      placeName
+      imageUrl
+      locationUrl
+    }
+    priorityLevels
+    service {
+      id
+      imgSrc
+      title
+      description
+      price
+      negotiatedPrice
+      parentServiceType
+    }
+    serviceOfferPrice
+    serviceType
+    specialRequirements
+    status
+    toDate
+    toTime
+    updatedAt
+    user {
+      id
+    }
+    userOfferedPrice
   }
+}
 `;
 
 @Component({
@@ -95,7 +123,7 @@ export class ServiceOrderDetailsComponent implements OnInit {
       .watchQuery({
         query: GET_SERVICE_ORDERS_BY_ID,
         variables: {
-          id: orderId
+          serviceOrderByIdId: orderId
         }
       })
       .valueChanges.subscribe((result: any) => {

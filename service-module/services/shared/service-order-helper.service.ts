@@ -1,5 +1,11 @@
 import {Injectable} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ServiceOrderService} from "../service-order.service";
+import {OrderHistoryService} from "../../order-history/order-history.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {map, Observable, switchMap, throwError} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 export interface Location {
   latitude: number;           // Required: Latitude of the location
@@ -40,7 +46,10 @@ export interface ServiceOrderPatchPayload {
   providedIn: 'root',
 })
 export class ServiceOrderHelperService {
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private serviceOrderService: ServiceOrderService,
+              private orderHistoryService: OrderHistoryService,
+              private snackBar: MatSnackBar, private router: Router) {
   }
 
   createFormGroup() {
@@ -177,10 +186,46 @@ export class ServiceOrderHelperService {
     }
   }
 
+  processServiceOrder(result: ServiceOrderPatchPayload, userId: string): Observable<any> {
+    return this.serviceOrderService.saveServiceOrder(result).pipe(
+      switchMap((response: any) => {
+        // On successful save, get the service history
+        return this.orderHistoryService.getServiceHistory(userId).pipe(
+          map(data => {
+            this.showSuccessSnackbar('Service Order successfully saved!');
+            this.router.navigate([`service-home/service-order-details/${response.data.addServiceOrder.id}`]);
+            return data; // Return the service history data
+          })
+        );
+      }),
+      catchError((error: any) => {
+        this.handleError('Error saving Service Order:', error);
+        return throwError(error); // Rethrow the error for further handling if needed
+      })
+    );
+  }
+
+  private showSuccessSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds
+      horizontalPosition: 'right', // Position of the toast
+      verticalPosition: 'top', // Position of the toast
+      panelClass: ['success-snackbar'] // Optional: Custom CSS class for styling
+    });
+  }
+
+  private handleError(message: string, error: any): void {
+    this.snackBar.open('An error occurred while processing your request.', 'Close', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: ['error-snackbar'] // Optional: Custom CSS class for error styling
+    });
+  }
+
   private calculateToDate(): Date {
     const date = new Date();
     date.setDate(date.getDate() + 2);
     return date;
   }
-
 }

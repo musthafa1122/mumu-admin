@@ -2,7 +2,6 @@ import {Component, inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {MaterialModule} from '../../../../material.module';
 import {CommonModule} from '@angular/common';
-import {Router} from '@angular/router';
 import {
   GoogleMapSearchBoxComponent
 } from '../../../../components/google-map/google-map-search-box/google-map-search-box.component';
@@ -20,9 +19,6 @@ import {
 import {Subscription} from 'rxjs';
 import {MatDialog} from "@angular/material/dialog";
 import {PriceConfirmationPopupComponent} from "../price-confirmation-popup/price-confirmation-popup.component";
-import {ServiceOrderService} from "../service-order.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {OrderHistoryService} from "../../order-history/order-history.service";
 import {ServiceOrderHelperService} from "../shared/service-order-helper.service";
 
 @Component({
@@ -63,11 +59,8 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   private fromDateSubscription: Subscription | null = null;
   private pickupLocationSubscription: Subscription | null = null;
 
-  constructor(private router: Router,
-              private serviceOrderService: ServiceOrderService,
-              private snackBar: MatSnackBar,
-              private orderHistoryService: OrderHistoryService,
-              private serviceOrderHelper: ServiceOrderHelperService,
+  constructor(
+    private serviceOrderHelper: ServiceOrderHelperService,
   ) {
   }
 
@@ -114,26 +107,14 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(PriceConfirmationPopupComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.serviceOrderService.saveServiceOrder(result).subscribe(
-          (response: any) => {
-            this.orderHistoryService.getServiceHistory('6708df417f34f8c4c3df65da').subscribe(data => {
-              console.log(data);
-              this.snackBar.open('Service Order successfully saved!', 'Close', {
-                duration: 3000, // Duration in milliseconds
-                horizontalPosition: 'right', // Position of the toast
-                verticalPosition: 'top', // Position of the toast
-                panelClass: ['success-snackbar'] // Optional: Custom CSS class for styling
-              });
-              this.showProgress = false;
-              this.router.navigateByUrl("/service-home/history");
-            })
-          },
-          (error: any) => {
-            console.error('Error saving Service Order:', error);
-            this.showProgress = false;
-          }
-        );
+
+      if (result) {  // Check if result is valid
+        this.serviceOrderHelper.processServiceOrder(result, '6708df417f34f8c4c3df65da')
+          .subscribe(data => {
+            this.showProgress = false
+          });
+      } else {
+        this.showProgress = false
       }
     });
   }
