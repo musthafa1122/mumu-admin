@@ -108,7 +108,7 @@ export class ServiceOrderHelperService {
         longitude: formValue.dropOffLocation.place.longitude,
         placeName: formValue.dropOffLocation.place.placeName,
         locationUrl: formValue.dropOffLocation.place.locationUrl,
-        imageUrl: formValue.dropOffLocation.place.imageUrl
+        imageUrl: formValue.dropOffLocation.place.imageUrl,
       }
     }
 
