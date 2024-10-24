@@ -113,10 +113,10 @@ export class ServiceOrderHelperService {
     }
 
     return {
-      id: formValue.id || undefined,
       pickupLocation: pickupLocation || null,
-      dropOffLocation: dropOffLocation || null,
+      id: formValue.id || undefined,
       fromDate: new Date(Number(formValue.fromDate)) || new Date(),
+      dropOffLocation: dropOffLocation || null,
       fromTime: formValue.fromTime,
       toDate: new Date(Number(formValue.toDate)) || new Date(),
       toTime: formValue.toTime,
