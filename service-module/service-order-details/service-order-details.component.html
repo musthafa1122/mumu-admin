@@ -32,7 +32,7 @@
         <div class="container">
           <div class="label-container">
             <div class="label-title">Title:</div>
-            <div class="label-value">{{ serviceOrders?.title }}</div>
+            <div class="label-value">{{ serviceOrders?.service?.title }}</div>
           </div>
 
           <div class="label-container">
@@ -42,7 +42,7 @@
 
           <div class="label-container">
             <div class="label-title">Order Type:</div>
-            <div class="label-value">{{ serviceOrders?.orderType }}</div>
+            <div class="label-value">{{ serviceOrders?.service?.description }}</div>
           </div>
 
           <div class="label-container">
@@ -52,12 +52,12 @@
 
           <div class="label-container">
             <div class="label-title">Location:</div>
-            <div class="label-value">{{ serviceOrders?.location }}</div>
+            <div class="label-value">{{ serviceOrders?.pickupLocation?.placeName }}</div>
           </div>
 
           <div class="label-container">
             <div class="label-title">Date Requested:</div>
-            <div class="label-value">{{ serviceOrders?.dateRequested }}</div>
+            <div class="label-value">{{ serviceOrders?.fromDate }}</div>
           </div>
 
           <div class="label-container">
@@ -67,7 +67,7 @@
 
           <div class="label-container">
             <div class="label-title">Salary:</div>
-            <div class="label-value">{{ serviceOrders?.salary }}</div>
+            <div class="label-value">{{ serviceOrders?.serviceOfferPrice }}</div>
           </div>
 
           <div class="label-container">
@@ -77,14 +77,10 @@
             </div>
           </div>
 
-          <div class="label-container">
-            <div class="label-title">Email:</div>
-            <div class="label-value">{{ serviceOrders?.email }}</div>
-          </div>
 
           <div class="label-container">
             <div class="label-title">Special Notes:</div>
-            <div class="label-value">{{ serviceOrders?.specialNotes }}</div>
+            <div class="label-value">{{ serviceOrders?.additionalNotes }}</div>
           </div>
         </div>
       </div>

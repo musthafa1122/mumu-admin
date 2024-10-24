@@ -20,6 +20,8 @@ import {Subscription} from 'rxjs';
 import {MatDialog} from "@angular/material/dialog";
 import {PriceConfirmationPopupComponent} from "../price-confirmation-popup/price-confirmation-popup.component";
 import {ServiceOrderHelperService} from "../shared/service-order-helper.service";
+import {ActivatedRoute} from "@angular/router";
+import {ServiceOrderService} from "../service-order.service";
 
 @Component({
   selector: 'app-driver-service-form',
@@ -56,22 +58,42 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   minToDate!: Date;
   currentLocation!: { lat: number; long: number; };
   showProgress = false
+  pickupLocation = {
+    latitude: 48.1857354,
+    longitude: 11.5338356,
+    placeName: 'Henckystraße 7, 80993 München, Germany',
+    locationUrl: '',
+    imageUrl: ''
+  };
   private fromDateSubscription: Subscription | null = null;
   private pickupLocationSubscription: Subscription | null = null;
 
   constructor(
     private serviceOrderHelper: ServiceOrderHelperService,
+    private serviceOrderService: ServiceOrderService,
+    private route: ActivatedRoute,
   ) {
   }
 
   ngOnInit(): void {
     this.serviceDetailsForm = this.serviceOrderHelper.createFormGroup();
 
-    this.subscribeToFormChanges();
-    this.minDate = new Date();
+    this.route.params.subscribe(params => {
+      const serviceOrderId = params['serviceOrderId'];
+      if (serviceOrderId) {
+        this.serviceOrderService.fetchOrderDetails(serviceOrderId).subscribe(data => {
+          const patchedData = this.serviceOrderHelper.patchServiceOrder(data);
+          this.serviceDetailsForm.patchValue(patchedData);
+          this.checkLocationValuesChanged();
+        });
+      }
+    });
+    this.subscribeToFormChanges(); // Subscribe to form changes if needed
+    this.minDate = new Date(); // Set the minimum date for date inputs
 
-    this.vehicleTypes = this.serviceOrderHelper.getVehicleTypes()
-    this.additionalServices = this.serviceOrderHelper.getAdditionalServices()
+    // Populate the vehicle types and additional services lists
+    this.vehicleTypes = this.serviceOrderHelper.getVehicleTypes();
+    this.additionalServices = this.serviceOrderHelper.getAdditionalServices();
   }
 
   ngOnDestroy(): void {
@@ -81,7 +103,7 @@ export class DriverServiceFormComponent implements OnInit, OnDestroy {
   submitDriverForm(): void {
     if (this.serviceDetailsForm.valid) {
       this.showProgress = true;
-      this.openDialog(this.serviceOrderHelper.patchServiceOrder(this.serviceDetailsForm.value))
+      this.openDialog(this.serviceOrderHelper.patchServiceOrder(this.serviceDetailsForm.value, undefined, undefined, true))
     } else {
       console.log('Form is invalid');
     }

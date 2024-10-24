@@ -7,7 +7,6 @@ import {ServiceStatus, UserCard, WORKERS} from "../available-workers/constants";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {OrderHistoryComponent} from "../order-history/order-history.component";
 import {ActivatedRoute} from "@angular/router";
-import {Apollo, gql} from 'apollo-angular';
 import {FormsModule} from "@angular/forms";
 import {JobProposalsComponent} from "../job-proposals/job-proposals.component";
 import {ServiceStatusComponent} from "../../../components/service-status/service-status.component";
@@ -15,69 +14,11 @@ import {AppRecentTransactionsComponent} from "../../../components/recent-transac
 import {MatTabBody, MatTabHeader, MatTabsModule} from "@angular/material/tabs";
 import {MatDialog} from "@angular/material/dialog";
 import {WorkerProfileComponent} from "../available-workers/worker-profile/worker-profile.component";
-import {ServiceOrderData} from "../order-history/order-history.service";
 import {NotificationComponent} from "../../extra/ui-components/notification/notification.component";
 import {MiniChatComponent} from "../../common-module/chat-application/mini-chat/mini-chat.component";
+import {ServiceOrderService} from "../services/service-order.service";
+import {ServiceOrderPatchPayload} from "../services/shared/service-order-helper.service";
 
-export const GET_SERVICE_ORDERS_BY_ID = gql`
-  query ServiceOrderById($serviceOrderByIdId: ID!) {
-  serviceOrderById(id: $serviceOrderByIdId) {
-    acceptedPrice
-    additionalNotes
-    additionalNotesVoice
-    assignedUser {
-      firstName
-      lastName
-      id
-    }
-    bookingType
-    businessHours
-    createdAt
-    distanceInKm
-    dropOffLocation {
-      latitude
-      longitude
-      placeName
-      imageUrl
-      locationUrl
-    }
-    duration
-    fromDate
-    fromTime
-    genderPreferences
-    id
-    mumuSuggestedPrice
-    pickupLocation {
-      latitude
-      longitude
-      placeName
-      imageUrl
-      locationUrl
-    }
-    priorityLevels
-    service {
-      id
-      imgSrc
-      title
-      description
-      price
-      negotiatedPrice
-      parentServiceType
-    }
-    serviceOfferPrice
-    serviceType
-    specialRequirements
-    status
-    toDate
-    toTime
-    updatedAt
-    user {
-      id
-    }
-    userOfferedPrice
-  }
-}
-`;
 
 @Component({
   selector: 'app-service-order-details',
@@ -91,11 +32,11 @@ export const GET_SERVICE_ORDERS_BY_ID = gql`
 export class ServiceOrderDetailsComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   workers: UserCard[] = WORKERS;
-  public serviceOrders!: ServiceOrderData;
+  public serviceOrders!: ServiceOrderPatchPayload;
   serviceStatus = ServiceStatus;
   private orderId!: string | null;
 
-  constructor(private apollo: Apollo, private route: ActivatedRoute,) {
+  constructor(private route: ActivatedRoute, private serviceOrderService: ServiceOrderService) {
   }
 
   openDialog() {
@@ -113,22 +54,10 @@ export class ServiceOrderDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.orderId = params.get('orderId');
       if (this.orderId) {
-        this.fetchOrderDetails(this.orderId);
+        this.serviceOrderService.fetchOrderDetails(this.orderId).subscribe(data => {
+          this.serviceOrders = data
+        });
       }
     });
   }
-
-  fetchOrderDetails(orderId: string): void {
-    this.apollo
-      .watchQuery({
-        query: GET_SERVICE_ORDERS_BY_ID,
-        variables: {
-          serviceOrderByIdId: orderId
-        }
-      })
-      .valueChanges.subscribe((result: any) => {
-      this.serviceOrders = result?.data?.serviceOrderById;
-    });
-  }
-
 }

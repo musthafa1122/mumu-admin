@@ -6,6 +6,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {map, Observable, switchMap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {ServiceStatus} from "../../available-workers/constants";
 
 export interface Location {
   latitude: number;           // Required: Latitude of the location
@@ -16,14 +17,16 @@ export interface Location {
 }
 
 export interface ServiceOrderPatchPayload {
+  id?: string | undefined;
   pickupLocation: any | Location;
   dropOffLocation: any | Location;
-  fromDate: string;
+  fromDate: Date;
   fromTime: string;
-  toDate: string; // ISO string format
+  status: ServiceStatus;
+  toDate: Date; // ISO string format
   toTime: string;
   user: string; // User ID
-  service: string; // Service ID
+  service: any; // Service ID
   genderPreferences: string;
   serviceType: string;
   specialRequirements: string[];
@@ -46,6 +49,8 @@ export interface ServiceOrderPatchPayload {
   providedIn: 'root',
 })
 export class ServiceOrderHelperService {
+
+
   constructor(private fb: FormBuilder,
               private serviceOrderService: ServiceOrderService,
               private orderHistoryService: OrderHistoryService,
@@ -54,6 +59,7 @@ export class ServiceOrderHelperService {
 
   createFormGroup() {
     return this.fb.group({
+      id: undefined,
       serviceType: ['withoutCar', Validators.required],
       bookingType: ['one_time', Validators.required],
       duration: [''],
@@ -85,13 +91,34 @@ export class ServiceOrderHelperService {
     });
   }
 
-  patchServiceOrder(formValue: ServiceOrderPatchPayload, serviceId = '67085c2577bc64c98ab89f06', userId = '6708df417f34f8c4c3df65da'): ServiceOrderPatchPayload {
+  patchServiceOrder(formValue: ServiceOrderPatchPayload, serviceId = '67085c2577bc64c98ab89f06', userId = '6708df417f34f8c4c3df65da', forSave = false): ServiceOrderPatchPayload {
+    let pickupLocation = forSave ? formValue.pickupLocation.place : {place: formValue.pickupLocation};
+    let dropOffLocation = forSave ? formValue.dropOffLocation.place : {place: formValue.dropOffLocation};
+    console.log(pickupLocation)
+    if (forSave) {
+      pickupLocation = {
+        latitude: formValue.pickupLocation.place.latitude,
+        longitude: formValue.pickupLocation.place.longitude,
+        placeName: formValue.pickupLocation.place.placeName,
+        locationUrl: formValue.pickupLocation.place.locationUrl,
+        imageUrl: formValue.pickupLocation.place.imageUrl
+      }
+      dropOffLocation = {
+        latitude: formValue.dropOffLocation.place.latitude,
+        longitude: formValue.dropOffLocation.place.longitude,
+        placeName: formValue.dropOffLocation.place.placeName,
+        locationUrl: formValue.dropOffLocation.place.locationUrl,
+        imageUrl: formValue.dropOffLocation.place.imageUrl
+      }
+    }
+
     return {
-      pickupLocation: formValue.pickupLocation.place || null,
-      dropOffLocation: formValue.dropOffLocation.place || null,
-      fromDate: formValue.fromDate,
+      id: formValue.id || undefined,
+      pickupLocation: pickupLocation || null,
+      dropOffLocation: dropOffLocation || null,
+      fromDate: new Date(Number(formValue.fromDate)) || new Date(),
       fromTime: formValue.fromTime,
-      toDate: formValue.toDate,
+      toDate: new Date(Number(formValue.toDate)) || new Date(),
       toTime: formValue.toTime,
       user: userId,  // Replace with actual user ID
       service: serviceId,  // Replace with actual service ID
@@ -108,9 +135,10 @@ export class ServiceOrderHelperService {
       businessHours: formValue.businessHours,
       distanceInKm: formValue.distanceInKm,
       priorityLevels: formValue.priorityLevels,
+      status: formValue.status || 'Pending',  // Default to 'Pending' if not provided
       additionalNotes: formValue.additionalNotes,
       additionalNotesVoice: formValue.additionalNotesVoice ? formValue.additionalNotesVoice.toString() : null,
-      additionalServices: formValue.additionalServices.join(','),
+      additionalServices: formValue.additionalNotesVoice ? formValue.additionalServices.join(',') : null,
     }
   }
 
@@ -138,7 +166,7 @@ export class ServiceOrderHelperService {
 
   getMinTime(selectedDate: Date): string {
     let minTime: string = ''
-    if (selectedDate.toDateString() === new Date().toDateString()) {
+    if (new Date(selectedDate).toDateString() === new Date().toDateString()) {
       const hours = new Date().getHours().toString().padStart(2, '0');
       const minutes = new Date().getMinutes().toString().padStart(2, '0');
       minTime = `${hours}:${minutes}`;
